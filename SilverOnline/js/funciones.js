@@ -57,7 +57,8 @@ function envioDatosEmail(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
 
 }
 
-function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email,pass,roll){
+function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,nombre_Recibe,apellidoP_Recibe,apellidoM_Recibe,email,pass,roll){
+  debugger;
   cadena = "NOMBRE=" +nombre +
   "&apellidoP=" + apellidoP +
   "&apellidoM=" +apellidoM +
@@ -67,6 +68,9 @@ function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
   "&CIUDAD=" + ciudad +
   "&ESTADO=" + estado +
   "&CEL=" + cel +
+  "&NOMBRE_RECIBE=" + nombre_Recibe +
+  "&apellidoP_Recibe=" + apellidoP_Recibe +
+  "&apellidoM_Recibe=" + apellidoM_Recibe +
   "&EMAIL=" + email +
   "&PASS=" + pass +
   "&ROLL=" + roll;
@@ -76,6 +80,7 @@ function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
     url: "php/agregarUsuarios.php",
     data:cadena,
     success:function(result){
+      debugger;
       if(result==1){
 
         alert("Se registro el usuario de forma correcta...");
@@ -105,7 +110,7 @@ function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
 }
 
 function loginValidaCostoEnv(email, pass){
-debugger;
+  debugger;
   cadena = "EMAIL=" + email + "&PASS=" + pass;
 
   $.ajax({

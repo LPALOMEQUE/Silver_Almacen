@@ -372,7 +372,6 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
                   <input type="number" class="form-control" id="txtCp" value="" required>
                 </div>
               </div>
-
               <div class="row">
                 <div class="col-md-4" "mb-3">
                   <label for="txtCiudad">Ciudad</label>
@@ -385,6 +384,21 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
                 <div class="col-md-4" "mb-3">
                   <label for="txtCel">Celular</label>
                   <input type="number" class="form-control" id="txtCel" value="" required>
+                </div>
+              </div>
+              <br/>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="txtNombre">Nombre(s) quien recibe</label>
+                  <input type="text" class="form-control" id="txtNombre_Recibe" value="" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="txtApellidoP">Apellido P. Quien recibe</label>
+                  <input type="text" class="form-control" id="txtApellidoP_Recibe" value="" required>
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="txtApellidoM">Apellido M. Quien recibe</label>
+                  <input type="text" class="form-control" id="txtApellidoM_Recibe" value="" required>
                 </div>
               </div>
               <br/>
@@ -1045,6 +1059,9 @@ $(document).ready(function(){
     ciudad = $('#txtCiudad').val();
     estado = $('#txtEstado').val();
     cel = $('#txtCel').val();
+    nombre_Recibe = $('#txtNombre_Recibe').val();
+    apellidoP_Recibe = $('#txtApellidoP_Recibe').val();
+    apellidoM_Recibe = $('#txtApellidoM_Recibe').val();
     email= $('#txtEmail').val();
 
     if(validar_email( email ) )
@@ -1093,6 +1110,18 @@ $(document).ready(function(){
       alert("Debe ingresar un número de contacto...");
     }
 
+    if(nombre_Recibe == ""){
+
+      alert("Debe ingresar un nombre de quien recibirá el producto...");
+    }
+    if(apellidoP_Recibe == ""){
+
+      alert("Debe ingresar un apellido paterno de quien recibirá el producto...");
+    }if(apellidoM_Recibe == ""){
+
+      alert("Debe ingresar un apellido Materno de quien recibirá el producto...");
+    }
+
     if (txtCel.value.length != 10) {
       alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
       txtCel.focus();
@@ -1115,152 +1144,171 @@ $(document).ready(function(){
     apellidoM != "" &&
     calle != "" &&
     numCalle != "" &&
-    cp != "" && ciudad != "" &&
-    estado != "" && cel != "" && txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
-      agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email, pass,roll);
-    }
-  });
+    cp != "" &&
+    ciudad != "" &&
+    estado != "" &&
+    cel != "" &&
+    nombre_Recibe != "" &&
+    apellidoP_Recibe != "" &&
+    apellidoM_Recibe != "" &&
+    txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
+      agregarUsuarios(nombre,
+        apellidoP,
+        apellidoM,
+        calle,
+        numCalle,
+        cp,ciudad,
+        estado,
+        cel,
+        nombre_Recibe,
+        apellidoP_Recibe,
+        apellidoM_Recibe,
+        email,
+        pass,
+        roll);
+      }
+    });
 
-  $('#btnGuardarArt').click(function(){
+    $('#btnGuardarArt').click(function(){
 
-    nomArt= $('#txtNameArt').val();
-    descArt= $('#txtDescArt').val();
-    barCode = $('#txtBarCode').val();
-    modelArt = $('#txtModelo').val();
-    marcaArt = $("#cbmMarca option:selected").val();
-    precioArt = $('#txtPrecio').val();
-    categoria = $("#cbmCategoria option:selected").val();
-    subCatego = $("#cbmSubcategoria option:selected").val();
-    statusArt = $("#cbmStatus option:selected").val();
-    nombreImg = $('#txtNameIMG').val();
+      nomArt= $('#txtNameArt').val();
+      descArt= $('#txtDescArt').val();
+      barCode = $('#txtBarCode').val();
+      modelArt = $('#txtModelo').val();
+      marcaArt = $("#cbmMarca option:selected").val();
+      precioArt = $('#txtPrecio').val();
+      categoria = $("#cbmCategoria option:selected").val();
+      subCatego = $("#cbmSubcategoria option:selected").val();
+      statusArt = $("#cbmStatus option:selected").val();
+      nombreImg = $('#txtNameIMG').val();
 
 
-    if(nomArt == ""){
+      if(nomArt == ""){
 
-      alert("Debe ingresar el nombre del artículo...");
-    }
-    if(descArt == ""){
+        alert("Debe ingresar el nombre del artículo...");
+      }
+      if(descArt == ""){
 
-      alert("Debe ingresar la descripción del artículo...");
-    }
-    if(barCode == ""){
+        alert("Debe ingresar la descripción del artículo...");
+      }
+      if(barCode == ""){
 
-      alert("Debe ingresar el codigo de barra del artículo...");
-    }
-
-    if (txtBarCode.value.length != 11) {
-      alert('El codigo de barra es incorrecto ya que tiene una longitud de ' + txtBarCode.value.length + ' y debe contener 11 caracteres...');
-      txtBarCode.focus();
-    }
-
-    if(modelArt == ""){
-
-      alert("Debe ingresar el modelo del artículo...");
-    }
-    if(marcaArt == 0){
-
-      alert("Debe seleccionar una marca...");
-    }
-    if(precioArt == "" && precioArt !=0){
-
-      alert("Debe ingresar el precio del artículo...");
-    }
-    if(categoria == 0){
-
-      alert("Debe seleccionar una categoría...");
-    }
-    if(subCatego == 0){
-
-      alert("Debe seleccionar una subcategoría...");
-    }
-    if(statusArt == 2){
-
-      alert("Debe seleccionar un estatus del artículo...");
-    }
-
-    if (validaImg == 0) {
-
-      alert("Debe cargar la imagen del artículo...");
-    }
-
-    if (nomArt != "" && descArt != "" && barCode != "" && txtBarCode.value.length == 11 && modelArt != "" && precioArt != "" && precioArt != 0 && nameArticulo != "" && marcaArt !=0 && statusArt !=2 && validaImg != 0){
-      guardarArt(nomArt,
-        descArt,
-        barCode,
-        modelArt,
-        marcaArt,
-        precioArt,
-        categoria,
-        subCatego,
-        statusArt,
-        nameArticulo);
-        validaImg=0;
-        nameArticulo = "";
+        alert("Debe ingresar el codigo de barra del artículo...");
       }
 
-    });
-    $('#upload').on('click', function() {
+      if (txtBarCode.value.length != 11) {
+        alert('El codigo de barra es incorrecto ya que tiene una longitud de ' + txtBarCode.value.length + ' y debe contener 11 caracteres...');
+        txtBarCode.focus();
+      }
 
-      var file_data = $('#sortpicture').prop('files')[0];
-      var form_data = new FormData();
-      form_data.append('file', file_data);
-      $.ajax({
-        url: 'cargaIMG.php', // point to server-side PHP script
-        dataType: 'text',  // what to expect back from the PHP script, if anything
-        cache: false,
-        contentType: false,
-        processData: false,
-        data: form_data,
-        type: 'post',
-        success: function(result){
-          if (result != "") {
-            validaImg =1;
-            nameArticulo = result;
-            document.getElementById("sortpicture").value = "";
-          }else{
-            validaImg=0;
-            document.getElementById("sortpicture").value = "";
-          }
+      if(modelArt == ""){
+
+        alert("Debe ingresar el modelo del artículo...");
+      }
+      if(marcaArt == 0){
+
+        alert("Debe seleccionar una marca...");
+      }
+      if(precioArt == "" && precioArt !=0){
+
+        alert("Debe ingresar el precio del artículo...");
+      }
+      if(categoria == 0){
+
+        alert("Debe seleccionar una categoría...");
+      }
+      if(subCatego == 0){
+
+        alert("Debe seleccionar una subcategoría...");
+      }
+      if(statusArt == 2){
+
+        alert("Debe seleccionar un estatus del artículo...");
+      }
+
+      if (validaImg == 0) {
+
+        alert("Debe cargar la imagen del artículo...");
+      }
+
+      if (nomArt != "" && descArt != "" && barCode != "" && txtBarCode.value.length == 11 && modelArt != "" && precioArt != "" && precioArt != 0 && nameArticulo != "" && marcaArt !=0 && statusArt !=2 && validaImg != 0){
+        guardarArt(nomArt,
+          descArt,
+          barCode,
+          modelArt,
+          marcaArt,
+          precioArt,
+          categoria,
+          subCatego,
+          statusArt,
+          nameArticulo);
+          validaImg=0;
+          nameArticulo = "";
         }
+
+      });
+      $('#upload').on('click', function() {
+
+        var file_data = $('#sortpicture').prop('files')[0];
+        var form_data = new FormData();
+        form_data.append('file', file_data);
+        $.ajax({
+          url: 'cargaIMG.php', // point to server-side PHP script
+          dataType: 'text',  // what to expect back from the PHP script, if anything
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: form_data,
+          type: 'post',
+          success: function(result){
+            if (result != "") {
+              validaImg =1;
+              nameArticulo = result;
+              document.getElementById("sortpicture").value = "";
+            }else{
+              validaImg=0;
+              document.getElementById("sortpicture").value = "";
+            }
+          }
+        });
       });
     });
-  });
 
-  $('#btnLogOut').click(function(){
-    vaciar = 1;
+    $('#btnLogOut').click(function(){
+      vaciar = 1;
 
-    logOut(vaciar);
-  });
+      logOut(vaciar);
+    });
 
-  $('#btnEntrar').click(function(){
+    $('#btnEntrar').click(function(){
 
-    email= $('#txt_Email').val();
-    pass= $('#txt_Pass').val();
+      email= $('#txt_Email').val();
+      pass= $('#txt_Pass').val();
 
-    if(email == ""){
+      if(email == ""){
 
-      alert("Debe ingresar un E-mail...");
+        alert("Debe ingresar un E-mail...");
+      }
+      if(pass == ""){
+
+        alert("Debe ingresar una contraseña...");
+      }
+      if(email != "" && pass != ""){
+        login(email, pass);
+      }
+    });
+
+    //   function ValidarBarCode(barcode) {
+    //   if (barcode.value.length = 11) {
+    //     alert("Escriba su número completo");
+    //     barcode.focus();
+    //     barcode.select();
+    //   }
+    // }
+
+    function validar_email( email )
+    {
+      var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      return regex.test(email) ? true : false;
     }
-    if(pass == ""){
-
-      alert("Debe ingresar una contraseña...");
-    }
-    if(email != "" && pass != ""){
-      login(email, pass);
-    }
-  });
-
-  //   function ValidarBarCode(barcode) {
-  //   if (barcode.value.length = 11) {
-  //     alert("Escriba su número completo");
-  //     barcode.focus();
-  //     barcode.select();
-  //   }
-  // }
-
-  function validar_email( email )
-  {
-    var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    return regex.test(email) ? true : false;
-  }
-  </script>
+    </script>
