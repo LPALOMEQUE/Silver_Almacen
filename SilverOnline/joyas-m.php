@@ -45,14 +45,16 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     foreach($ID_ARTICLES as $key => $item){
 
       $id = $item['id'];
-      $sql = "SELECT PRICE FROM articles where ID_ARTICLES='$id'";
-      $result = mysqli_query($con,$sql);
-
-      while($arti = mysqli_fetch_row($result)){
-        $TotalxArtGlobal += $arti[0] * $item['cantidad'];
+      $sql = "SELECT COSTO_PROM FROM INVE13 where CVE_ART='$id'";
+      $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+      if (0 !== sqlsrv_num_rows($res)){
+        while ($fila = sqlsrv_fetch_array($res)) {
+          $TotalxArtGlobal += $fila['COSTO_PROM'] * $item['cantidad'];
+        }
       }
     }
-    mysqli_close($con);
+
+    sqlsrv_close($con);
   }
   $p =   $key+1;
 
@@ -325,15 +327,15 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                     <div class="row">
                       <div class="col-md-4 mb-3">
                         <label for="txtNombre">Nombre(s)</label>
-                        <input type="text" class="form-control" id="txtNombre" value="" required>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre" value="" required>
                       </div>
                       <div class="col-md-4 mb-3">
                         <label for="txtApellidoP">Apellido Paterno</label>
-                        <input type="text" class="form-control" id="txtApellidoP" value="" required>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP" value="" required>
                       </div>
                       <div class="col-md-4 mb-3">
                         <label for="txtApellidoM">Apellido Materno</label>
-                        <input type="text" class="form-control" id="txtApellidoM" value="" required>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM" value="" required>
                       </div>
                     </div>
                     <h6>Datos de envío...</h6>
@@ -341,7 +343,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                     <div class="row">
                       <div class="col-md-4 mb-3">
                         <label for="txtCalle">Calle</label>
-                        <input type="text" class="form-control" id="txtCalle" value="" required>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCalle" value="" required>
                       </div>
                       <div class="col-md-4 mb-3">
                         <label for="txtNumCalle">Núm(#)</label>
@@ -352,15 +354,14 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                         <input type="number" class="form-control" id="txtCp" value="" required>
                       </div>
                     </div>
-
                     <div class="row">
                       <div class="col-md-4" "mb-3">
                         <label for="txtCiudad">Ciudad</label>
-                        <input type="text" class="form-control" id="txtCiudad" value="" required>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudad" value="" required>
                       </div>
                       <div class="col-md-4" "mb-3">
                         <label for="txtEstado">Estado</label>
-                        <input type="text" class="form-control" id="txtEstado" value="" required>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstado" value="" required>
                       </div>
                       <div class="col-md-4" "mb-3">
                         <label for="txtCel">Celular</label>
@@ -368,11 +369,26 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                       </div>
                     </div>
                     <br/>
+                    <div class="row">
+                      <div class="col-md-4 mb-3">
+                        <label for="txtNombre">Nombre(s) quien recibe</label>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre_Recibe" value="" required>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="txtApellidoP">Apellido P. Quien recibe</label>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP_Recibe" value="" required>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="txtApellidoM">Apellido M. Quien recibe</label>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM_Recibe" value="" required>
+                      </div>
+                    </div>
+                    <br/>
                     <h6>Datos de cuenta...</h6>
                     <div class="row">
                       <div class="col-md-6 mb-3">
                         <label for="txtEmail">E-MaiL</label>
-                        <input type="email" class="form-control" id="txtEmail" value="" required>
+                        <input type="email" onkeyup="minus(this);" class="form-control" id="txtEmail" value="" required>
                       </div>
                       <div class="col-md-6 mb-3">
                         <label for="txtPass">Contraseña</label>
@@ -449,143 +465,168 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
       $accesorio = '___________';
     }
 
-    $sql = "SELECT " .
-    "art.ID_ARTICLES, ".
-    "art.NAME_ART, " .
-    "art.PRICE, " .
-    "art.URL_IMAGE, " .
-    "art.Description, ".
-    "br.NAME_BRAND ".
-    "FROM articles art " .
-    "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-    "where art.STATUS = 1 AND ".
-    "art.ID_CATEGORY = 1 AND ".
-    "art.ID_SUB_CATEGORY = 2 AND ".
-    "art.BARCODE like '$material' AND ".
-    "art.BARCODE like '$accesorio' AND ".
-    "art.PRICE BETWEEN $valMin AND $valMax ".
-    "ORDER BY art.PRICE";
+    // $sql = "SELECT " .
+    // "art.ID_ARTICLES, ".
+    // "art.NAME_ART, " .
+    // "art.PRICE, " .
+    // "art.URL_IMAGE, " .
+    // "art.Description, ".
+    // "br.NAME_BRAND ".
+    // "FROM articles art " .
+    // "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
+    // "where art.STATUS = 1 AND ".
+    // "art.ID_CATEGORY = 1 AND ".
+    // "art.ID_SUB_CATEGORY = 1 AND ".
+    // "art.BARCODE like '$material' AND ".
+    // "art.BARCODE like '$accesorio' AND ".
+    // "art.PRICE BETWEEN $valMin AND $valMax ".
+    // "ORDER BY art.PRICE";
+
+    $sql="SELECT TOP 50 ".
+    "i.CVE_ART, ".
+    "i.DESCR as Nombre, ".
+    "i.COSTO_PROM, ".
+    "i.CVE_IMAGEN, ".
+    "i.DESCR as Descripcion ".
+    "FROM INVE13 i ".
+    "WHERE i.CVE_ART LIKE '$material' AND ".
+    "i.CVE_ART LIKE '$accesorio' AND ".
+    "i.COSTO_PROM BETWEEN $valMin AND $valMax AND ".
+    "i.STATUS = 'A' ".
+    "ORDER BY i.COSTO_PROM";
+
   }
   else {
-    $sql = "SELECT " .
-    "art.ID_ARTICLES, ".
-    "art.NAME_ART, " .
-    "art.PRICE, " .
-    "art.URL_IMAGE, " .
-    "art.Description, ".
-    "br.NAME_BRAND ".
-    "FROM articles art " .
-    "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-    "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 2";
+    // $sql = "SELECT " .
+    // "art.ID_ARTICLES, ".
+    // "art.NAME_ART, " .
+    // "art.PRICE, " .
+    // "art.URL_IMAGE, " .
+    // "art.Description, ".
+    // "br.NAME_BRAND ".
+    // "FROM articles art " .
+    // "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
+    // "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1";
+
+
+    $sql="SELECT TOP 50 ".
+    "i.CVE_ART, ".
+    "i.DESCR as Nombre, ".
+    "i.COSTO_PROM, ".
+    "i.CVE_IMAGEN, ".
+    "i.DESCR as Descripcion ".
+    "FROM INVE13 i ".
+
+    "WHERE i.STATUS = 'A'";
   }
 
   // print_r($sql);
-  $result = mysqli_query($con,$sql);
+  $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+  if (0 !== sqlsrv_num_rows($res)){
+    while ($category = sqlsrv_fetch_array($res)) {
+      ?>
+      <!-- ****** Quick View Modal Area Start ****** -->
+      <div class="modal fade" id="quickview<?php echo $category['CVE_ART'] ?>" tabindex="-1" role="dialog" aria-labelledby="quickview" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
 
-  while($category = mysqli_fetch_row($result)){
+            <div class="modal-body">
+              <div class="quickview_body">
+                <div class="container">
 
-    ?>
-    <!-- ****** Quick View Modal Area Start ****** -->
-    <div class="modal fade" id="quickview<?php echo $category[0] ?>" tabindex="-1" role="dialog" aria-labelledby="quickview" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+                  <div class="row">
 
-          <div class="modal-body">
-            <div class="quickview_body">
-              <div class="container">
-
-                <div class="row">
-
-                  <div class="col-12 col-lg-5">
-                    <div class="quickview_pro_img">
-                      <img src="<?php echo $category[3] ?>" alt="">
+                    <div class="col-12 col-lg-5">
+                      <div class="quickview_pro_img">
+                        <img src="img/product-img/<?php echo $category['CVE_IMAGEN'] ?>.JPG" alt="">
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-12 col-lg-7">
-                    <div class="quickview_pro_des">
-                      <h4 class="title"><?php echo $category[1] ?></h4>
-                      <div class="top_seller_product_rating mb-15">
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                        <i class="fa fa-star" aria-hidden="true"></i>
-                      </div>
-                      <h5 class="price">$<?php echo number_format($category[2],2) ?> <span>$624</span></h5>
-                      <p>Marca: <?php echo $category[5] ?></p>
-                      <p><?php echo $category[4] ?></p>
-                    </div>
-                    <div class="row">
-                      <!-- Add to Cart Form -->
-                      <!-- <form id="formEnvio" class="cart" method="post"> -->
-                      <div class="quantity">
-                        <button type="button" class="qty-minus" id="btnMenos<?php echo $category[0] ?>">-</button>
-                        <input type="number" class="qty-text" id="qty<?php echo $category[0] ?>" name="CANTIDAD" value="1">
-                        <button type="button" class="qty-minus" id="btnMas<?php echo $category[0] ?>">+</button>
-
-                      </div>
-                      <input type="hidden" name="ID" id="txtid<?php echo $category[0] ?>" value="<?php echo $category[0] ?>">
-                      <input type="hidden" name="NOMBRE" id="txtnombre<?php echo $category[0] ?>" value="<?php echo $category[1] ?>">
-                      <input type="hidden" name="PRECIO" id="txtprecio<?php echo $category[0] ?>" value="<?php echo $category[2] ?>">
-                      <input type="hidden" name="URL" id="txturl<?php echo $category[0] ?>" value="<?php echo $category[3] ?>">
-                      <button type="button" class="btn cart-submit" id="btnSendPost<?php echo $category[0] ?>"> + CARRITO</button>
-                      <script type="text/javascript">
-                      $(document).ready(function(){
-                        $('#btnSendPost<?php echo $category[0] ?>').click(function(){
-
-                          id= $('#txtid<?php echo $category[0] ?>').val();
-                          nombre= $('#txtnombre<?php echo $category[0] ?>').val();
-                          precio= $('#txtprecio<?php echo $category[0] ?>').val();
-                          url= $('#txturl<?php echo $category[0] ?>').val();
-                          cantidad= $('#qty<?php echo $category[0] ?>').val();
-
-                          AddCart(id,
-                            nombre,
-                            precio,
-                            url,
-                            cantidad);
-
-                          });
-                          $('#btnMenos<?php echo $category[0] ?>').click(function(){
-                            valor = document.getElementById("qty<?php echo $category[0] ?>");
-                            valor.value --;
-
-                          });
-                          $('#btnMas<?php echo $category[0] ?>').click(function(){
-                            valor = document.getElementById("qty<?php echo $category[0] ?>");
-                            valor.value ++;
-
-                          });
-
-                          var input = document.getElementById("qty<?php echo $category[0] ?>");
-                          // Execute a function when the user releases a key on the keyboard
-                          input.addEventListener("keyup", function(event) {
-                            // Number 13 is the "Enter" key on the keyboard
-                            if (event.keyCode === 13) {
-                              // Cancel the default action, if needed
-                              event.preventDefault();
-                              // Trigger the button element with a click
-                              document.getElementById("btnSendPost<?php echo $category[0] ?>").click();
-                            }
-                          });
-                        });
-                        </script>
-
-                      </div>
-                      <!-- END ENVIO DE DATOS POR URL ESCONDIDA -->
-                      <div class="share_wf mt-30">
-                        <p>Comparte con tus amigos</p>
-                        <div class="_icon">
-                          <a href="https://es-la.facebook.com/newsilverevolution/"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                          <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                          <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-                          <a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+                    <div class="col-12 col-lg-7">
+                      <div class="quickview_pro_des">
+                        <h4 class="title"><?php echo $category['Nombre'] ?></h4>
+                        <div class="top_seller_product_rating mb-15">
+                          <i class="fa fa-star" aria-hidden="true"></i>
+                          <i class="fa fa-star" aria-hidden="true"></i>
+                          <i class="fa fa-star" aria-hidden="true"></i>
+                          <i class="fa fa-star" aria-hidden="true"></i>
+                          <i class="fa fa-star" aria-hidden="true"></i>
                         </div>
+                        <h5 class="price">$<?php echo number_format($category['COSTO_PROM'],2) ?> <span>$624</span></h5>
+                        <p>Marca: SILVER</p>
+                        <p><?php echo $category['Descripcion'] ?></p>
                       </div>
+                      <div class="row">
+                        <!-- Add to Cart Form -->
+                        <!-- <form id="formEnvio" class="cart" method="post"> -->
+                        <div class="quantity">
+                          <button type="button" class="qty-minus" id="btnMenos<?php echo $category['CVE_ART'] ?>">-</button>
+                          <input type="number" class="qty-text" id="qty<?php echo $category['CVE_ART'] ?>" name="CANTIDAD" value="1">
+                          <button type="button" class="qty-minus" id="btnMas<?php echo $category['CVE_ART'] ?>">+</button>
 
+                        </div>
+                        <input type="hidden" name="ID" id="txtid<?php echo $category['CVE_ART'] ?>" value="<?php echo $category['CVE_ART'] ?>">
+                        <input type="hidden" name="NOMBRE" id="txtnombre<?php echo $category['CVE_ART'] ?>" value="<?php echo $category['Nombre'] ?>">
+                        <input type="hidden" name="PRECIO" id="txtprecio<?php echo $category['CVE_ART'] ?>" value="<?php echo $category['COSTO_PROM'] ?>">
+                        <input type="hidden" name="URL" id="txturl<?php echo $category['CVE_ART'] ?>" value="<?php echo $category['CVE_IMAGEN'] ?>">
+                        <button type="button" class="btn cart-submit" id="btnSendPost<?php echo $category['CVE_ART'] ?>"> + CARRITO</button>
+                        <script type="text/javascript">
+                        $(document).ready(function(){
+                          $('#btnSendPost<?php echo $category['CVE_ART'] ?>').click(function(){
+
+                            id= $('#txtid<?php echo $category['CVE_ART'] ?>').val();
+                            nombre= $('#txtnombre<?php echo $category['CVE_ART'] ?>').val();
+                            precio= $('#txtprecio<?php echo $category['CVE_ART'] ?>').val();
+                            url= $('#txturl<?php echo $category['CVE_ART'] ?>').val();
+                            cantidad= $('#qty<?php echo $category['CVE_ART'] ?>').val();
+
+                            AddCart(id,
+                              nombre,
+                              precio,
+                              url,
+                              cantidad);
+
+                            });
+                            $('#btnMenos<?php echo $category['CVE_ART'] ?>').click(function(){
+                              valor = document.getElementById("qty<?php echo $category['CVE_ART'] ?>");
+                              valor.value --;
+
+                            });
+                            $('#btnMas<?php echo $category['CVE_ART'] ?>').click(function(){
+                              valor = document.getElementById("qty<?php echo $category['CVE_ART'] ?>");
+                              valor.value ++;
+
+                            });
+
+                            var input = document.getElementById("qty<?php echo $category['CVE_ART'] ?>");
+                            // Execute a function when the user releases a key on the keyboard
+                            input.addEventListener("keyup", function(event) {
+                              // Number 13 is the "Enter" key on the keyboard
+                              if (event.keyCode === 13) {
+                                // Cancel the default action, if needed
+                                event.preventDefault();
+                                // Trigger the button element with a click
+                                document.getElementById("btnSendPost<?php echo $category['CVE_ART'] ?>").click();
+                              }
+                            });
+                          });
+                          </script>
+
+                        </div>
+                        <!-- END ENVIO DE DATOS POR URL ESCONDIDA -->
+                        <div class="share_wf mt-30">
+                          <p>Comparte con tus amigos</p>
+                          <div class="_icon">
+                            <a href="https://es-la.facebook.com/newsilverevolution/"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                            <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                            <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                            <a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+                          </div>
+                        </div>
+
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -593,10 +634,10 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
             </div>
           </div>
         </div>
-      </div>
-      <?php
+        <?php
+      }
+      sqlsrv_close($con);
     }
-    mysqli_close($con);
     ?>
     <!-- ****** Quick View Modal Area End ****** -->
 
@@ -691,8 +732,8 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                   }
                   ?>
                 </label>
-              </h6>
 
+              </h6>
               <div class="widget-desc">
                 <select id="cbmMaterial"  class="form-control" name="material">
                   <option value="0">Selecciona...</option>
@@ -730,8 +771,8 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                 }
                 ?>
               </label>
-            </h6>
 
+            </h6>
             <div class="widget-desc">
 
               <select id="cbmAccesorio"  class="form-control" name="accesorio">
@@ -779,7 +820,6 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
             <button type="button" class="btn btnSearch" id="btnBusAcs">Filtrar</button>
 
           </div>
-
         </div>
       </div>
       <div class="col-12 col-md-8 col-lg-9">
@@ -789,6 +829,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
             require_once "php/Conexion.php";
             $con = conexion();
             if($queryVal == 2) {
+              // if (isset($_SESSION['filtro_price'])) {
               $valMin = $_SESSION['filtro_price'][0]['min'];
               $valMax = $_SESSION['filtro_price'][0]['max'];
               $material = $_SESSION['filtro_price'][0]['material'];
@@ -805,60 +846,86 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                 $accesorio = '___________';
               }
 
-              $sql = "SELECT " .
-              "art.ID_ARTICLES, ".
-              "art.NAME_ART, " .
-              "art.PRICE, " .
-              "art.URL_IMAGE, " .
-              "art.Description, ".
-              "br.NAME_BRAND ".
-              "FROM articles art " .
-              "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-              "where art.STATUS = 1 AND ".
-              "art.ID_CATEGORY = 1 AND ".
-              "art.ID_SUB_CATEGORY = 2 AND ".
-              "art.BARCODE like '$material' AND ".
-              "art.BARCODE like '$accesorio' AND ".
-              "art.PRICE BETWEEN $valMin AND $valMax ".
-              "ORDER BY art.PRICE";
+              // $sql = "SELECT " .
+              // "art.ID_ARTICLES, ".
+              // "art.NAME_ART, " .
+              // "art.PRICE, " .
+              // "art.URL_IMAGE, " .
+              // "art.Description, ".
+              // "br.NAME_BRAND ".
+              // "FROM articles art " .
+              // "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
+              // "where art.STATUS = 1 AND ".
+              // "art.ID_CATEGORY = 1 AND ".
+              // "art.ID_SUB_CATEGORY = 1 AND ".
+              // "art.BARCODE like '$material' AND ".
+              // "art.BARCODE like '$accesorio' AND ".
+              // "art.PRICE BETWEEN $valMin AND $valMax ".
+              // "ORDER BY art.PRICE";
+
+              $sql="SELECT TOP 50".
+              "i.CVE_ART, ".
+              "i.DESCR as Nombre, ".
+              "i.COSTO_PROM, ".
+              "i.CVE_IMAGEN, ".
+              "i.DESCR as Descripcion ".
+              "FROM INVE13 i ".
+              "WHERE i.CVE_ART LIKE '$material' AND ".
+              "i.CVE_ART  LIKE '$accesorio' AND ".
+              "i.COSTO_PROM BETWEEN $valMin AND $valMax AND ".
+              "i.STATUS = 'A' ".
+              "ORDER BY i.COSTO_PROM";
+
             }
             else {
-              $sql = "SELECT " .
-              "art.ID_ARTICLES, ".
-              "art.NAME_ART, " .
-              "art.PRICE, " .
-              "art.URL_IMAGE, " .
-              "art.Description, ".
-              "br.NAME_BRAND ".
-              "FROM articles art " .
-              "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-              "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 2";
+              // $sql = "SELECT " .
+              // "art.ID_ARTICLES, ".
+              // "art.NAME_ART, " .
+              // "art.PRICE, " .
+              // "art.URL_IMAGE, " .
+              // "art.Description, ".
+              // "br.NAME_BRAND ".
+              // "FROM articles art " .
+              // "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
+              // "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1";
+
+
+              $sql="SELECT TOP 50 ".
+              "i.CVE_ART, ".
+              "i.DESCR as Nombre, ".
+              "i.COSTO_PROM, ".
+              "i.CVE_IMAGEN, ".
+              "i.DESCR as Descripcion ".
+              "FROM INVE13 i ".
+              "WHERE i.STATUS = 'A'";
             }
-            $result = mysqli_query($con,$sql);
+            $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+            if (0 !== sqlsrv_num_rows($res)){
+              while ($category = sqlsrv_fetch_array($res)) {
 
-            while($category = mysqli_fetch_row($result)){
+                ?>
 
-              ?>
-
-              <!-- Single gallery Item -->
-              <div class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.2s">
-                <!-- Product Image -->
-                <div class="product-img">
-                  <img src="<?php echo $category[3] ?>" alt="">
-                  <div class="product-quicview">
-                    <a href="#" data-toggle="modal" data-target="#quickview<?php echo $category[0] ?>"><i class="ti-plus"></i></a>
+                <!-- Single gallery Item -->
+                <div class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.2s">
+                  <!-- Product Image -->
+                  <div class="product-img">
+                    <img src="img/product-img/<?php echo $category['CVE_IMAGEN'] ?>.jpg" alt="">
+                    <div class="product-quicview">
+                      <a href="#" data-toggle="modal" data-target="#quickview<?php echo $category['CVE_ART'] ?>"><i class="ti-plus"></i></a>
+                    </div>
+                  </div>
+                  <!-- Product Description -->
+                  <div class="product-description">
+                    <h4 class="product-price">$<?php echo number_format($category['COSTO_PROM'],2) ; ?></h4>
+                    <p><?php echo $category['Nombre'] ?></p>
+                    <!-- Add to Cart -->
+                    <!-- <a href="#" class="add-to-cart-btn">ADD TO CART</a> -->
                   </div>
                 </div>
-                <!-- Product Description -->
-                <div class="product-description">
-                  <h4 class="product-price">$<?php echo number_format($category[2],2) ; ?></h4>
-                  <p><?php echo $category[1] ?></p>
-                  <!-- Add to Cart -->
-                </div>
-              </div>
-            <?php
-          }
-          mysqli_close($con);
+                <?php
+              }
+              sqlsrv_close($con);
+            }
             ?>
             <div>
             </div>
@@ -998,6 +1065,9 @@ $(document).ready(function(){
     ciudad = $('#txtCiudad').val();
     estado = $('#txtEstado').val();
     cel = $('#txtCel').val();
+    nombre_Recibe = $('#txtNombre_Recibe').val();
+    apellidoP_Recibe = $('#txtApellidoP_Recibe').val();
+    apellidoM_Recibe = $('#txtApellidoM_Recibe').val();
     email= $('#txtEmail').val();
 
     if(validar_email( email ) )
@@ -1008,7 +1078,6 @@ $(document).ready(function(){
       alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
       email = 1;
     }
-
     pass= $('#txtPass').val();
     roll = $("#cbmRoll option:selected").val();
 
@@ -1045,6 +1114,24 @@ $(document).ready(function(){
 
       alert("Debe ingresar un número de contacto...");
     }
+
+    if(nombre_Recibe == ""){
+
+      alert("Debe ingresar un nombre de quien recibirá el producto...");
+    }
+    if(apellidoP_Recibe == ""){
+
+      alert("Debe ingresar un apellido paterno de quien recibirá el producto...");
+    }if(apellidoM_Recibe == ""){
+
+      alert("Debe ingresar un apellido Materno de quien recibirá el producto...");
+    }
+
+    if (txtCel.value.length != 10) {
+      alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
+      txtCel.focus();
+    }
+
     if(email == ""){
 
       alert("Debe ingresar un E-mail...");
@@ -1057,10 +1144,35 @@ $(document).ready(function(){
 
       alert("Debe seleccionar un roll de usuario...");
     }
-    if(nombre != "" && apellidoP != "" && apellidoM != "" && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && pass != "" && roll !=0){
-      agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email, pass,roll);
-    }
-  });
+    if(nombre != "" &&
+    apellidoP != "" &&
+    apellidoM != "" &&
+    calle != "" &&
+    numCalle != "" &&
+    cp != "" &&
+    ciudad != "" &&
+    estado != "" &&
+    cel != "" &&
+    nombre_Recibe != "" &&
+    apellidoP_Recibe != "" &&
+    apellidoM_Recibe != "" &&
+    txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
+      agregarUsuarios(nombre,
+        apellidoP,
+        apellidoM,
+        calle,
+        numCalle,
+        cp,ciudad,
+        estado,
+        cel,
+        nombre_Recibe,
+        apellidoP_Recibe,
+        apellidoM_Recibe,
+        email,
+        pass,
+        roll);
+      }
+    });
 
   $('#btnBusPrecio').click(function(){
     query=0;
@@ -1075,13 +1187,13 @@ $(document).ready(function(){
       alert('El monto mínimo no puede ser mayor que el monto máximo.')
     }
     if (minval < maxval && maxval > minval ) {
-      filtrosMujer(minval,maxval,material,accesorio,query);
+      filtros(minval,maxval,material,accesorio,query);
     }
   });
 
   $('#btnLimpiarPriceFilter').click(function(){
     vaciar=1;
-    limpiarPriceFilterM(vaciar);
+    limpiarPriceFilter(vaciar);
   });
 
   $('#btnBusMaterial').click(function(){
@@ -1095,7 +1207,7 @@ $(document).ready(function(){
       alert("Debe seleccionar un material...");
     }else{
       query = 2;
-      filtrosMujer(minval,maxval,material,accesorio,query);
+      filtros(minval,maxval,material,accesorio,query);
     }
   });
 
@@ -1110,7 +1222,7 @@ $(document).ready(function(){
       alert("Debe seleccionar un accesorio...");
     }else{
       query = 2;
-      filtrosMujer(minval,maxval,material,accesorio,query);
+      filtros(minval,maxval,material,accesorio,query);
     }
 
   });
@@ -1129,6 +1241,13 @@ $(document).ready(function(){
 
 });
 
+function mayus(e) {
+    e.value = e.value.toUpperCase();
+}
+function minus(e) {
+    e.value = e.value.toLowerCase();
+}
+
 function validar_email( email )
 {
   var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -1146,5 +1265,6 @@ slider.oninput = function() {
 sliderMax.oninput = function() {
   $('#maxVal').val(sliderMax.value);
 }
+
 
 </script>

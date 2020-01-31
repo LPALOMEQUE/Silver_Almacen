@@ -345,15 +345,15 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
               <div class="row">
                 <div class="col-md-4 mb-3">
                   <label for="txtNombre">Nombre(s)</label>
-                  <input type="text" class="form-control" id="txtNombre" value="" required>
+                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre" value="" required>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label for="txtApellidoP">Apellido Paterno</label>
-                  <input type="text" class="form-control" id="txtApellidoP" value="" required>
+                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP" value="" required>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label for="txtApellidoM">Apellido Materno</label>
-                  <input type="text" class="form-control" id="txtApellidoM" value="" required>
+                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM" value="" required>
                 </div>
               </div>
               <h6>Datos de envío...</h6>
@@ -361,7 +361,7 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
               <div class="row">
                 <div class="col-md-4 mb-3">
                   <label for="txtCalle">Calle</label>
-                  <input type="text" class="form-control" id="txtCalle" value="" required>
+                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCalle" value="" required>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label for="txtNumCalle">Núm(#)</label>
@@ -375,11 +375,11 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
               <div class="row">
                 <div class="col-md-4" "mb-3">
                   <label for="txtCiudad">Ciudad</label>
-                  <input type="text" class="form-control" id="txtCiudad" value="" required>
+                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudad" value="" required>
                 </div>
                 <div class="col-md-4" "mb-3">
                   <label for="txtEstado">Estado</label>
-                  <input type="text" class="form-control" id="txtEstado" value="" required>
+                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstado" value="" required>
                 </div>
                 <div class="col-md-4" "mb-3">
                   <label for="txtCel">Celular</label>
@@ -390,15 +390,15 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
               <div class="row">
                 <div class="col-md-4 mb-3">
                   <label for="txtNombre">Nombre(s) quien recibe</label>
-                  <input type="text" class="form-control" id="txtNombre_Recibe" value="" required>
+                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre_Recibe" value="" required>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label for="txtApellidoP">Apellido P. Quien recibe</label>
-                  <input type="text" class="form-control" id="txtApellidoP_Recibe" value="" required>
+                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP_Recibe" value="" required>
                 </div>
                 <div class="col-md-4 mb-3">
                   <label for="txtApellidoM">Apellido M. Quien recibe</label>
-                  <input type="text" class="form-control" id="txtApellidoM_Recibe" value="" required>
+                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM_Recibe" value="" required>
                 </div>
               </div>
               <br/>
@@ -406,7 +406,7 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
               <div class="row">
                 <div class="col-md-6 mb-3">
                   <label for="txtEmail">E-MaiL</label>
-                  <input type="email" class="form-control" id="txtEmail" value="" required>
+                  <input type="email" onkeyup="minus(this);" class="form-control" id="txtEmail" value="" required>
                 </div>
                 <div class="col-md-6 mb-3">
                   <label for="txtPass">Contraseña</label>
@@ -1304,7 +1304,12 @@ $(document).ready(function(){
     //     barcode.select();
     //   }
     // }
-
+    function mayus(e) {
+        e.value = e.value.toUpperCase();
+    }
+    function minus(e) {
+        e.value = e.value.toLowerCase();
+    }
     function validar_email( email )
     {
       var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;

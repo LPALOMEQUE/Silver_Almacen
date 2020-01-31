@@ -340,11 +340,11 @@ if (isset($_SESSION['ID_ARTICLES'])) {
               <div class="row">
                 <div class="col-md-12 mb-3">
                     <label for="txtName">Nombre del Vendedor<span>*</span></label>
-                    <input type="text" class="form-control" id="txtName" value="<?php echo $nombre ?>" readonly required>
+                    <input type="text" onkeyup="mayus(this);" class="form-control" id="txtName" value="<?php echo $nombre ?>" readonly required>
                   </div>
                   <div class="col-md-12 mb-3">
                     <label for="txtApellidoP">Nombre quien recibe <span>*</span></label>
-                    <input type="text" class="form-control" id="txtApellidoP" value="<?php echo $nombreRecibe ?>" required>
+                    <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP" value="<?php echo $nombreRecibe ?>" required>
                   </div>
                   <!-- <div class="col-md-6 mb-3">
                   <label for="txtApellidoM">Apellido Materno <span>*</span></label>
@@ -352,7 +352,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                 </div> -->
                 <div class="col-6 mb-3">
                   <label for="txtCalle">Calle <span>*</span></label>
-                  <input type="text" class="form-control mb-3" id="txtCalle" value="<?php echo $calle ?>">
+                  <input type="text" onkeyup="mayus(this);" class="form-control mb-3" id="txtCalle" value="<?php echo $calle ?>">
                 </div>
                 <div class="col-3 mb-3">
                   <label for="txtNumCalle">Número # <span>*</span></label>
@@ -364,11 +364,11 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                 </div>
                 <div class="col-12 mb-3">
                   <label for="txtCiudad">Ciudad <span>*</span></label>
-                  <input type="text" class="form-control" id="txtCiudad" value="<?php echo $ciudad ?>">
+                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudad" value="<?php echo $ciudad ?>">
                 </div>
                 <div class="col-12 mb-3">
                   <label for="txtEstado">Estado <span>*</span></label>
-                  <input type="text" class="form-control" id="txtEstado" value="<?php echo $estado ?>">
+                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstado" value="<?php echo $estado ?>">
                 </div>
                 <div class="col-12 mb-3">
                   <label for="txtCel">Num. de contacto <span>*</span></label>
@@ -697,6 +697,8 @@ $(document).ready(function(){
 
   });
 
+
+
   function validar_email( email )
   {
     var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -704,5 +706,10 @@ $(document).ready(function(){
   }
 
 });
-
+function mayus(e) {
+    e.value = e.value.toUpperCase();
+}
+function minus(e) {
+    e.value = e.value.toLowerCase();
+}
 </script>

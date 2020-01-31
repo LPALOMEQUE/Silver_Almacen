@@ -327,15 +327,15 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                     <div class="row">
                       <div class="col-md-4 mb-3">
                         <label for="txtNombre">Nombre(s)</label>
-                        <input type="text" class="form-control" id="txtNombre" value="" required>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre" value="" required>
                       </div>
                       <div class="col-md-4 mb-3">
                         <label for="txtApellidoP">Apellido Paterno</label>
-                        <input type="text" class="form-control" id="txtApellidoP" value="" required>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP" value="" required>
                       </div>
                       <div class="col-md-4 mb-3">
                         <label for="txtApellidoM">Apellido Materno</label>
-                        <input type="text" class="form-control" id="txtApellidoM" value="" required>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM" value="" required>
                       </div>
                     </div>
                     <h6>Datos de envío...</h6>
@@ -343,7 +343,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                     <div class="row">
                       <div class="col-md-4 mb-3">
                         <label for="txtCalle">Calle</label>
-                        <input type="text" class="form-control" id="txtCalle" value="" required>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCalle" value="" required>
                       </div>
                       <div class="col-md-4 mb-3">
                         <label for="txtNumCalle">Núm(#)</label>
@@ -354,15 +354,14 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                         <input type="number" class="form-control" id="txtCp" value="" required>
                       </div>
                     </div>
-
                     <div class="row">
                       <div class="col-md-4" "mb-3">
                         <label for="txtCiudad">Ciudad</label>
-                        <input type="text" class="form-control" id="txtCiudad" value="" required>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudad" value="" required>
                       </div>
                       <div class="col-md-4" "mb-3">
                         <label for="txtEstado">Estado</label>
-                        <input type="text" class="form-control" id="txtEstado" value="" required>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstado" value="" required>
                       </div>
                       <div class="col-md-4" "mb-3">
                         <label for="txtCel">Celular</label>
@@ -370,11 +369,26 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                       </div>
                     </div>
                     <br/>
+                    <div class="row">
+                      <div class="col-md-4 mb-3">
+                        <label for="txtNombre">Nombre(s) quien recibe</label>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre_Recibe" value="" required>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="txtApellidoP">Apellido P. Quien recibe</label>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP_Recibe" value="" required>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="txtApellidoM">Apellido M. Quien recibe</label>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM_Recibe" value="" required>
+                      </div>
+                    </div>
+                    <br/>
                     <h6>Datos de cuenta...</h6>
                     <div class="row">
                       <div class="col-md-6 mb-3">
                         <label for="txtEmail">E-MaiL</label>
-                        <input type="email" class="form-control" id="txtEmail" value="" required>
+                        <input type="email" onkeyup="minus(this);" class="form-control" id="txtEmail" value="" required>
                       </div>
                       <div class="col-md-6 mb-3">
                         <label for="txtPass">Contraseña</label>
@@ -1051,6 +1065,9 @@ $(document).ready(function(){
     ciudad = $('#txtCiudad').val();
     estado = $('#txtEstado').val();
     cel = $('#txtCel').val();
+    nombre_Recibe = $('#txtNombre_Recibe').val();
+    apellidoP_Recibe = $('#txtApellidoP_Recibe').val();
+    apellidoM_Recibe = $('#txtApellidoM_Recibe').val();
     email= $('#txtEmail').val();
 
     if(validar_email( email ) )
@@ -1061,7 +1078,6 @@ $(document).ready(function(){
       alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
       email = 1;
     }
-
     pass= $('#txtPass').val();
     roll = $("#cbmRoll option:selected").val();
 
@@ -1098,6 +1114,24 @@ $(document).ready(function(){
 
       alert("Debe ingresar un número de contacto...");
     }
+
+    if(nombre_Recibe == ""){
+
+      alert("Debe ingresar un nombre de quien recibirá el producto...");
+    }
+    if(apellidoP_Recibe == ""){
+
+      alert("Debe ingresar un apellido paterno de quien recibirá el producto...");
+    }if(apellidoM_Recibe == ""){
+
+      alert("Debe ingresar un apellido Materno de quien recibirá el producto...");
+    }
+
+    if (txtCel.value.length != 10) {
+      alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
+      txtCel.focus();
+    }
+
     if(email == ""){
 
       alert("Debe ingresar un E-mail...");
@@ -1110,10 +1144,35 @@ $(document).ready(function(){
 
       alert("Debe seleccionar un roll de usuario...");
     }
-    if(nombre != "" && apellidoP != "" && apellidoM != "" && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && pass != "" && roll !=0){
-      agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email, pass,roll);
-    }
-  });
+    if(nombre != "" &&
+    apellidoP != "" &&
+    apellidoM != "" &&
+    calle != "" &&
+    numCalle != "" &&
+    cp != "" &&
+    ciudad != "" &&
+    estado != "" &&
+    cel != "" &&
+    nombre_Recibe != "" &&
+    apellidoP_Recibe != "" &&
+    apellidoM_Recibe != "" &&
+    txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
+      agregarUsuarios(nombre,
+        apellidoP,
+        apellidoM,
+        calle,
+        numCalle,
+        cp,ciudad,
+        estado,
+        cel,
+        nombre_Recibe,
+        apellidoP_Recibe,
+        apellidoM_Recibe,
+        email,
+        pass,
+        roll);
+      }
+    });
 
   $('#btnBusPrecio').click(function(){
     query=0;
@@ -1181,6 +1240,13 @@ $(document).ready(function(){
   });
 
 });
+
+function mayus(e) {
+    e.value = e.value.toUpperCase();
+}
+function minus(e) {
+    e.value = e.value.toLowerCase();
+}
 
 function validar_email( email )
 {
