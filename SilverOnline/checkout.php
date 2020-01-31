@@ -344,7 +344,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                   </div>
                   <div class="col-md-12 mb-3">
                     <label for="txtApellidoP">Nombre quien recibe <span>*</span></label>
-                    <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP" value="<?php echo $nombreRecibe ?>" required>
+                    <input type="text" onkeyup="mayus(this);" class="form-control" id="txtName_Recibe" value="<?php echo $nombreRecibe ?>" required>
                   </div>
                   <!-- <div class="col-md-6 mb-3">
                   <label for="txtApellidoM">Apellido Materno <span>*</span></label>
@@ -628,8 +628,8 @@ $(document).ready(function(){
   $('#btnActualizarDatos').click(function(){
 
     nombre = $('#txtName').val();
-    apellidoP = $('#txtApellidoP').val();
-    apellidoM = $('#txtApellidoM').val();
+    debugger;
+    nombre_recibe = $('#txtName_Recibe').val();
     calle = $('#txtCalle').val();
     numCalle = $('#txtNumCalle').val();
     cp = $('#txtCp').val();
@@ -653,12 +653,9 @@ $(document).ready(function(){
 
       alert("Debe ingresar un nombre...");
     }
-    if(apellidoP == ""){
+    if(nombre_recibe == ""){
 
-      alert("Debe ingresar un apellido paterno...");
-    }if(apellidoM == ""){
-
-      alert("Debe ingresar un apellido Materno...");
+      alert("Debe ingresar nombre de la persona que recibbirá el producto...");
     }
     if(calle == ""){
 
@@ -691,8 +688,8 @@ $(document).ready(function(){
       alert("Debe ingresar una contraseña...");
     }
 
-    if(nombre != "" && apellidoP != "" && apellidoM != "" && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && pass != ""){
-      ModDatosUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email, pass);
+    if(nombre != "" && nombre_recibe != ""  && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && pass != ""){
+      ModDatosUsuarios(nombre,nombre_recibe,calle,numCalle,cp,ciudad,estado,cel,email, pass);
     }
 
   });

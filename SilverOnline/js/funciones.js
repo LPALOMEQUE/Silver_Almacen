@@ -1,7 +1,7 @@
-function ModDatosUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email){
+function ModDatosUsuarios(nombre,nombre_recibe,calle,numCalle,cp,ciudad,estado,cel,email){
+  debugger;
   cadena = "NOMBRE=" +nombre +
-  "&apellidoP=" + apellidoP +
-  "&apellidoM=" +apellidoM +
+  "&NOMBRE_RECIBE=" +nombre_recibe +
   "&CALLE=" + calle +
   "&numCalle=" + numCalle +
   "&CP=" + cp +
@@ -15,6 +15,7 @@ function ModDatosUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,es
     url: "php/modUsuarios.php",
     data:cadena,
     success:function(result){
+      debugger;
       if(result==1){
 
         alert("Se actualizarón los datos de forma correcta...");
@@ -75,7 +76,7 @@ function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
   "&PASS=" + pass +
   "&ROLL=" + roll;
 
-  
+
   $.ajax({
     type:"POST",
     url: "php/agregarUsuarios.php",
