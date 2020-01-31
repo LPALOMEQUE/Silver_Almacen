@@ -527,7 +527,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
 
                     <div class="col-12 col-lg-5">
                       <div class="quickview_pro_img">
-                        <img src="img/product-img/<?php echo $category['CVE_IMAGEN'] ?>.jpg" alt="">
+                        <img src="img/product-img/<?php echo $category['CVE_IMAGEN'] ?>.JPG" alt="">
                       </div>
                     </div>
                     <div class="col-12 col-lg-7">
@@ -849,7 +849,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               // "art.PRICE BETWEEN $valMin AND $valMax ".
               // "ORDER BY art.PRICE";
 
-              $sql="SELECT TOP 50 ".
+              $sql="SELECT TOP 50".
               "i.CVE_ART, ".
               "i.DESCR as Nombre, ".
               "i.COSTO_PROM, ".

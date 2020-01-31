@@ -75,6 +75,7 @@ function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
   "&PASS=" + pass +
   "&ROLL=" + roll;
 
+  
   $.ajax({
     type:"POST",
     url: "php/agregarUsuarios.php",
