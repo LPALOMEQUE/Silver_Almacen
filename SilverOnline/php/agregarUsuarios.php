@@ -1,8 +1,5 @@
 <?php
 $NuevaClave = "";
-require_once "Conexion.php";
-
-$con = conexion();
 
 $nombre = $_POST['NOMBRE'];
 $apellidoP = $_POST['apellidoP'];
@@ -21,18 +18,14 @@ $pass = $_POST['PASS'];
 $roll = $_POST['ROLL'];
 
 
-require_once "php/Conexion.php";
+require_once "Conexion.php";
 $con = conexion();
 
-
-$id = $item['id'];
-$sql = "SELECT TOP 1 CLAVE  FROM CLIE13 WHERE CLAVE LIKE 'WEB%' ORDER BY CLAVE DESC";
+// $id = $item['id'];
+$sql = "SELECT TOP 1 CLAVE  FROM CLIE13 WHERE CLAVE LIKE 'WEB-%' ORDER BY CLAVE DESC";
 $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 if (0 !== sqlsrv_num_rows($res)){
 
-  sqlsrv_close($con);
-}
-else {
   while ($fila = sqlsrv_fetch_array($res)) {
     $identificador = $fila['CLAVE'];
 
@@ -43,210 +36,194 @@ else {
     //echo $num+1;
     $claveOld = $array[0];
     //echo $CVE;
-    $NuevaClave = $claveOld . $num;
+    $NuevaClave = $claveOld .'-'. $num;
+
   }
   sqlsrv_close($con);
+}
+else {
 
+  sqlsrv_close($con);
 }
 
-$sql = "INSERT INTO CLIE13
-(-- CORREO
-  CRUZAMIENTOS_ENVIO,
+require_once "Conexion.php";
+$con = conexion();
+$sql2=" INSERT INTO CLIE13
+(CLAVE,
+  STATUS,
   NOMBRE,
-  -- NOMBRE_RECIBE
-  ADDENDAF,
+  RFC,
   CALLE,
+  NUMINT,
   NUMEXT,
+  CRUZAMIENTOS,
+  CRUZAMIENTOS2,
+  COLONIA,
   CODIGO,
   LOCALIDAD,
+  MUNICIPIO,
   ESTADO,
+  PAIS,
+  NACIONALIDAD,
+  REFERDIR,
   TELEFONO,
+  CLASIFIC,
+  FAX,
+  PAG_WEB,
+  CURP,
+  CVE_ZONA,
+  IMPRIR,
+  MAIL,
+  NIVELSEC,
+  ENVIOSILEN,
+  EMAILPRED,
+  DIAREV,
+  DIAPAGO,
+  CON_CREDITO,
+  DIASCRED,
+  LIMCRED,
+  SALDO,
+  LISTA_PREC,
+  CVE_BITA,
+  ULT_PAGOD,
+  ULT_PAGOM,
+  ULT_PAGOF,
+  DESCUENTO,
+  ULT_VENTAD,
+  ULT_COMPM,
+  FCH_ULTCOM,
+  VENTAS,
+  CVE_VEND,
+  CVE_OBS,
+  TIPO_EMPRESA,
+  MATRIZ,
+  PROSPECTO,
+  CALLE_ENVIO,
+  NUMINT_ENVIO,
+  NUMEXT_ENVIO,
+  -- CORREO
+  CRUZAMIENTOS_ENVIO,
   -- PASS
   CRUZAMIENTOS_ENVIO2,
+  COLONIA_ENVIO,
+  LOCALIDAD_ENVIO,
+  MUNICIPIO_ENVIO,
+  ESTADO_ENVIO,
+  PAIS_ENVIO,
+  CODIGO_ENVIO,
+  CVE_ZONA_ENVIO,
+  REFERENCIA_ENVIO,
+  CUENTA_CONTABLE,
+  -- NOMBRE_RECIBE
+  ADDENDAF,
+  ADDENDAD,
+  NAMESPACE,
+  METODODEPAGO,
+  NUMCTAPAGO,
   -- ROLL
-  MODELO)
+  MODELO,
+  DES_IMPU1,
+  DES_IMPU2,
+  DES_IMPU3,
+  DES_IMPU4,
+  DES_PER,
+  LAT_GENERAL,
+  LON_GENERAL,
+  LAT_ENVIO,
+  LON_ENVIO,
+  FINGERPRINT)
   VALUES
-  ('$NuevaClave',
-    '$email',
-    '$nombre',
-    '$nombre_recibe',
+  (
+    '$NuevaClave',
+    'A',
+    '$nombre' + ' ' + '$apellidoP' + ' ' + '$apellidoM',
+    ' ',
     '$calle',
-    $numCalle,
-    $cp,
+    ' ',
+    '$numCalle',
+    ' ',
+    ' ',
+    ' ',
+    '$cp',
+    '$ciudad',
     '$ciudad',
     '$estado',
+    ' ',
+    ' ',
+    ' ',
     '$cel',
+    ' ',
+    ' ',
+    ' ',
+    ' ',
+    ' ',
+    ' ',
+    ' ',
+    0,
+    ' ',
+    ' ',
+    ' ',
+    ' ',
+    ' ',
+    0,
+    0,
+    0,
+    0,
+    0,
+    ' ',
+    0,
+    -- getdate()
+    0,
+    ' ',
+    0,
+    ' ',
+    0,
+    -- getdate()
+    0,
+    ' ',
+    0,
+    ' ',
+    0,
+    ' ',
+    ' ',
+    ' ',
+    ' ',
+    '$email',
     '$pass',
-    '$roll')";
-    // EL echo NOS RETORNA UN 0 O UN 1 DEPENDIENDO SI EJECUTA O NO EL COMANDO
+    ' ',
+    ' ',
+    ' ',
+    ' ',
+    ' ',
+    ' ',
+    ' ',
+    ' ',
+    ' ',
+    '$nombre_recibe' + ' ' + '$apellidoP_recibe' + ' ' + '$apellidoM_recibe',
+    ' ',
+    ' ',
+    ' ',
+    ' ',
+    '$roll',
+    ' ',
+    ' ',
+    ' ',
+    ' ',
+    ' ',
+    0,
+    0,
+    0,
+    0,
+    ' ')";
 
-    echo $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+    $res =  sqlsrv_query($con, $sql2, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+    if (0 !== sqlsrv_num_rows($res)){
+      echo "1";
+      sqlsrv_close($con);
+    }else{
+      echo "2";
+      sqlsrv_close($con);
+    }
 
-    $sql=" INSERT INTO
-    (CLAVE,
-      STATUS,
-      NOMBRE,
-      RFC,
-      CALLE,
-      NUMINT,
-      NUMEXT,
-      CRUZAMIENTOS,
-      CRUZAMIENTOS2,
-      COLONIA,
-      CODIGO,
-      LOCALIDAD,
-      MUNICIPIO,
-      ESTADO,
-      PAIS,
-      NACIONALIDAD,
-      REFERDIR,
-      TELEFONO,
-      CLASIFIC,
-      FAX,
-      PAG_WEB,
-      CURP,
-      CVE_ZONA,
-      IMPRIR,
-      MAIL,
-      NIVELSEC,
-      ENVIOSILEN,
-      EMAILPRED,
-      DIAREV,
-      DIAPAGO,
-      CON_CREDITO,
-      DIASCRED,
-      LIMCRED,
-      SALDO,
-      LISTA_PREC,
-      CVE_BITA,
-      ULT_PAGOD,
-      ULT_PAGOM,
-      ULT_PAGOF,
-      DESCUENTO,
-      ULT_VENTAD,
-      ULT_COMPM,
-      FCH_ULTCOM,
-      VENTAS,
-      CVE_VEND,
-      CVE_OBS,
-      TIPO_EMPRESA,
-      MATRIZ,
-      PROSPECTO,
-      CALLE_ENVIO,
-      NUMINT_ENVIO,
-      NUMEXT_ENVIO,
-      -- CORREO
-      CRUZAMIENTOS_ENVIO,
-      -- PASS
-      CRUZAMIENTOS_ENVIO2,
-      COLONIA_ENVIO,
-      LOCALIDAD_ENVIO,
-      MUNICIPIO_ENVIO,
-      ESTADO_ENVIO,
-      PAIS_ENVIO,
-      CODIGO_ENVIO,
-      CVE_ZONA_ENVIO,
-      REFERENCIA_ENVIO,
-      CUENTA_CONTABLE,
-        -- NOMBRE_RECIBE
-      ADDENDAF,
-      ADDENDAD,
-      NAMESPACE,
-      METODODEPAGO,
-      NUMCTAPAGO,
-      -- ROLL
-      MODELO,
-      DES_IMPU1,
-      DES_IMPU2,
-      DES_IMPU3,
-      DES_IMPU4,
-      DES_PER,
-      LAT_GENERAL,
-      LON_GENERAL,
-      LAT_ENVIO,
-      LON_ENVIO,
-      FINGERPRINT)
-      VALUES
-      (
-        '$NuevaClave',
-        'A',
-        '$nombre',
-        ' ',
-        '$calle',
-        ' ',
-        '$numCalle',
-        ' ',
-        ' ',
-        ' ',
-        '$cp',
-        '$ciudad',
-        '$ciudad',
-        '$estado',
-        ' ',
-        ' ',
-        ' ',
-        '$cel',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        ' ',
-        0,
-         ' ',
-         ' ',
-         ' ',
-         ' ',
-         ' ',
-         0,
-         0,
-         0,
-         0,
-         0,
-         ' ',
-         0,
-         -- getdate()
-         ' ',
-         0,
-         ' ',
-         0,
-         -- getdate()
-         ' ',
-         0,
-         ' ',
-         0,
-         ' ',
-         ' ',
-         ' ',
-         ' ',
-         ' ',
-         ' ',
-         '$email',
-         '$pass',
-         ' ',
-         ' ',
-         ' ',
-         ' ',
-         ' ',
-         ' ',
-         ' ',
-         ' ',
-         ' ',
-         '$nombre_recibe',
-         ' ',
-         ' ',
-         ' ',
-         ' ',
-         '$roll',
-         ' ',
-            ' ',
-         ' ',
-         ' ',
-         ' ',
-         0,
-         0,
-         0,
-         0,
-         ' ')";
-      ?>
+
+    ?>
