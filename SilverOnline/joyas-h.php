@@ -903,13 +903,14 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
             <ul class="pagination">
               <?php
               $i=0;
+              $paginaADD=$pagina;
               require_once "php/Conexion.php";
               $con = conexion();
               $pagina = 0;
               if (isset($_GET['p'])) {
                 $pagina = $_GET['p'];
               }
-              $cantidadRegistros = 5;
+              $cantidadRegistros = 10;
               $Reg_Ignorados = $pagina * $cantidadRegistros;
 
               $sql="SELECT 0
@@ -919,32 +920,56 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               OFFSET $Reg_Ignorados ROWS
               FETCH NEXT  $cantidadRegistros ROWS ONLY";
               ?>
-              <li><a href="joyas-h.php?p=<?php echo $pagina-1?>">«</a></li>
+              <!-- <li><a href="joyas-h.php?p=<?php echo $pagina-1?>">«</a></li> -->
+              <li><a href="joyas-h.php?p=0">«</a></li>
               <?php
               $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
               if (0 !== sqlsrv_num_rows($res)){
                 while ($category = sqlsrv_fetch_array($res)) {
                   ?>
-
-                  
-                  <!-- <li class="page-item active"><a class="page-link" href="joyas-h.php?p=<?php echo $i?>"><?php echo $i ?></a></li> -->
-                  <li><a href="joyas-h.php?p=<?php echo $i?>"><?php echo $i ?></a></li>
+                  <li><a href="joyas-h.php?p=<?php
+                  if($pagina <= 9){
+                    echo $i;
+                  }else{
+                    echo $paginaADD;
+                  }
+                  ?>">
+                  <?php
+                  if($pagina <= 9){
+                    echo $i+1;
+                  }
+                  else{
+                    echo $paginaADD;
+                  }
+                  ?>  </a></li>
                   <?php
                   $i++;
+                  $paginaADD++;
                 }
+
                 ?>
-                  <li><a href="joyas-h.php?p=<?php echo $pagina+1?>">»</a></li>
+                <li><a href="joyas-h.php?p=<?php echo $pagina+1?>">»</a></li>
                 <?php
                 sqlsrv_close($con);
               } ?>
-              <!-- <li class="page-item"><a class="page-link" href="#">02</a></li>
-              <li class="page-item"><a class="page-link" href="#">03</a></li> -->
             </ul>
           </nav>
         </div>
-
+        <div class="row">
+          <div class="col-md-3">
+            <!-- <a>Pagina: </a> -->
+          </div>
+          <div class="col-md-3">
+            <!-- <a>Pagina: </a> -->
+          </div>
+          <div class="col-md-3">
+            <!-- <a>Pagina: </a> -->
+          </div>
+          <div class="col-md-3">
+            <a><strong>Pagina: <?php echo $pagina+1 ?></strong> </a>
+          </div>
+        </div>
       </div>
-
     </div>
   </div>
 </section>

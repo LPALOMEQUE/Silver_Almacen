@@ -66,10 +66,3 @@ ul.pagination li a.active {
 }
 
 ul.pagination li a:hover:not(.active) {background-color: #ff084e;}
-
-
-/* .containerScroll {
-    width: 30em;
-    overflow-x: auto;
-    white-space: nowrap;
-} */

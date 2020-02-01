@@ -447,6 +447,13 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
   <?php
   require_once "php/Conexion.php";
   $con = conexion();
+  $pagina = 0;
+  if (isset($_GET['p'])) {
+    $pagina = $_GET['p'];
+  }
+  $cantidadRegistros = 50;
+  $Reg_Ignorados = $pagina * $cantidadRegistros;
+
   if($queryVal == 2) {
     // if (isset($_SESSION['filtro_price'])) {
     $valMin = $_SESSION['filtro_price'][0]['min'];
@@ -465,61 +472,35 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
       $accesorio = '___________';
     }
 
-    // $sql = "SELECT " .
-    // "art.ID_ARTICLES, ".
-    // "art.NAME_ART, " .
-    // "art.PRICE, " .
-    // "art.URL_IMAGE, " .
-    // "art.Description, ".
-    // "br.NAME_BRAND ".
-    // "FROM articles art " .
-    // "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-    // "where art.STATUS = 1 AND ".
-    // "art.ID_CATEGORY = 1 AND ".
-    // "art.ID_SUB_CATEGORY = 1 AND ".
-    // "art.BARCODE like '$material' AND ".
-    // "art.BARCODE like '$accesorio' AND ".
-    // "art.PRICE BETWEEN $valMin AND $valMax ".
-    // "ORDER BY art.PRICE";
-
-    $sql="SELECT TOP 50 ".
-    "i.CVE_ART, ".
-    "i.DESCR as Nombre, ".
-    "i.COSTO_PROM, ".
-    "i.CVE_IMAGEN, ".
-    "i.DESCR as Descripcion ".
-    "FROM INVE13 i ".
-    "WHERE i.CVE_ART LIKE '$material' AND ".
-    "i.CVE_ART LIKE '$accesorio' AND ".
-    "i.COSTO_PROM BETWEEN $valMin AND $valMax AND ".
-    "i.STATUS = 'A' ".
-    "ORDER BY i.COSTO_PROM";
-
+    $sql="SELECT
+    CVE_ART,
+    DESCR as Nombre,
+    COSTO_PROM,
+    CVE_IMAGEN,
+    DESCR as Descripcion
+    FROM INVE13 i
+    WHERE CVE_ART LIKE '$material' AND
+    CVE_ART  LIKE '$accesorio' AND
+    COSTO_PROM BETWEEN $valMin AND $valMax AND
+    STATUS = 'A'
+    ORDER BY COSTO_PROM
+    OFFSET $Reg_Ignorados ROWS
+    FETCH NEXT  $cantidadRegistros ROWS ONLY";
   }
   else {
-    // $sql = "SELECT " .
-    // "art.ID_ARTICLES, ".
-    // "art.NAME_ART, " .
-    // "art.PRICE, " .
-    // "art.URL_IMAGE, " .
-    // "art.Description, ".
-    // "br.NAME_BRAND ".
-    // "FROM articles art " .
-    // "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-    // "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1";
 
+    $sql="SELECT
+    CVE_ART,
+    DESCR as Nombre,
+    COSTO_PROM,
+    CVE_IMAGEN,
+    DESCR as Descripcion
+    FROM INVE13
+    ORDER BY CVE_ART
+    OFFSET $Reg_Ignorados ROWS
+    FETCH NEXT  $cantidadRegistros ROWS ONLY";
 
-    $sql="SELECT TOP 50 ".
-    "i.CVE_ART, ".
-    "i.DESCR as Nombre, ".
-    "i.COSTO_PROM, ".
-    "i.CVE_IMAGEN, ".
-    "i.DESCR as Descripcion ".
-    "FROM INVE13 i ".
-
-    "WHERE i.STATUS = 'A'";
   }
-
   // print_r($sql);
   $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
   if (0 !== sqlsrv_num_rows($res)){
@@ -828,6 +809,13 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
             <?php
             require_once "php/Conexion.php";
             $con = conexion();
+            $pagina = 0;
+            if (isset($_GET['p'])) {
+              $pagina = $_GET['p'];
+            }
+            $cantidadRegistros = 50;
+            $Reg_Ignorados = $pagina * $cantidadRegistros;
+
             if($queryVal == 2) {
               // if (isset($_SESSION['filtro_price'])) {
               $valMin = $_SESSION['filtro_price'][0]['min'];
@@ -846,58 +834,34 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                 $accesorio = '___________';
               }
 
-              // $sql = "SELECT " .
-              // "art.ID_ARTICLES, ".
-              // "art.NAME_ART, " .
-              // "art.PRICE, " .
-              // "art.URL_IMAGE, " .
-              // "art.Description, ".
-              // "br.NAME_BRAND ".
-              // "FROM articles art " .
-              // "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-              // "where art.STATUS = 1 AND ".
-              // "art.ID_CATEGORY = 1 AND ".
-              // "art.ID_SUB_CATEGORY = 1 AND ".
-              // "art.BARCODE like '$material' AND ".
-              // "art.BARCODE like '$accesorio' AND ".
-              // "art.PRICE BETWEEN $valMin AND $valMax ".
-              // "ORDER BY art.PRICE";
-
-              $sql="SELECT TOP 50".
-              "i.CVE_ART, ".
-              "i.DESCR as Nombre, ".
-              "i.COSTO_PROM, ".
-              "i.CVE_IMAGEN, ".
-              "i.DESCR as Descripcion ".
-              "FROM INVE13 i ".
-              "WHERE i.CVE_ART LIKE '$material' AND ".
-              "i.CVE_ART  LIKE '$accesorio' AND ".
-              "i.COSTO_PROM BETWEEN $valMin AND $valMax AND ".
-              "i.STATUS = 'A' ".
-              "ORDER BY i.COSTO_PROM";
-
+              $sql="SELECT
+              CVE_ART,
+              DESCR as Nombre,
+              COSTO_PROM,
+              CVE_IMAGEN,
+              DESCR as Descripcion
+              FROM INVE13 i
+              WHERE CVE_ART LIKE '$material' AND
+              CVE_ART  LIKE '$accesorio' AND
+              COSTO_PROM BETWEEN $valMin AND $valMax AND
+              STATUS = 'A'
+              ORDER BY COSTO_PROM
+              OFFSET $Reg_Ignorados ROWS
+              FETCH NEXT  $cantidadRegistros ROWS ONLY";
             }
             else {
-              // $sql = "SELECT " .
-              // "art.ID_ARTICLES, ".
-              // "art.NAME_ART, " .
-              // "art.PRICE, " .
-              // "art.URL_IMAGE, " .
-              // "art.Description, ".
-              // "br.NAME_BRAND ".
-              // "FROM articles art " .
-              // "INNER JOIN brand br ON art.ID_BRAND = br.ID_BRAND ".
-              // "where art.STATUS = 1 AND ID_CATEGORY = 1 AND ID_SUB_CATEGORY = 1";
 
+              $sql="SELECT
+              CVE_ART,
+              DESCR as Nombre,
+              COSTO_PROM,
+              CVE_IMAGEN,
+              DESCR as Descripcion
+              FROM INVE13
+              ORDER BY CVE_ART
+              OFFSET $Reg_Ignorados ROWS
+              FETCH NEXT  $cantidadRegistros ROWS ONLY";
 
-              $sql="SELECT TOP 50 ".
-              "i.CVE_ART, ".
-              "i.DESCR as Nombre, ".
-              "i.COSTO_PROM, ".
-              "i.CVE_IMAGEN, ".
-              "i.DESCR as Descripcion ".
-              "FROM INVE13 i ".
-              "WHERE i.STATUS = 'A'";
             }
             $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
             if (0 !== sqlsrv_num_rows($res)){
@@ -927,8 +891,82 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               sqlsrv_close($con);
             }
             ?>
+
             <div>
             </div>
+          </div>
+        </div>
+        <div class="shop_pagination_area wow fadeInUp" data-wow-delay="1.1s">
+
+          <nav aria-label="Page navigation">
+            <!-- <ul class="pagination pagination-sm"> -->
+            <ul class="pagination">
+              <?php
+              $i=0;
+              $paginaADD=$pagina;
+              require_once "php/Conexion.php";
+              $con = conexion();
+              $pagina = 0;
+              if (isset($_GET['p'])) {
+                $pagina = $_GET['p'];
+              }
+              $cantidadRegistros = 10;
+              $Reg_Ignorados = $pagina * $cantidadRegistros;
+
+              $sql="SELECT 0
+              FROM INVE13
+              WHERE STATUS = 'A'
+              ORDER BY CVE_ART
+              OFFSET $Reg_Ignorados ROWS
+              FETCH NEXT  $cantidadRegistros ROWS ONLY";
+              ?>
+              <li><a href="joyas-h.php?p=<?php echo $pagina-1?>">«</a></li>
+              <?php
+              $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+              if (0 !== sqlsrv_num_rows($res)){
+                while ($category = sqlsrv_fetch_array($res)) {
+                  ?>
+                  <li><a href="joyas-h.php?p=<?php
+                  if($pagina <= 9){
+                    echo $i;
+                  }else{
+                    echo $paginaADD;
+                  }
+                  ?>">
+                  <?php
+                  if($pagina <= 9){
+                    echo $i+1;
+                  }
+                  else{
+                    echo $paginaADD;
+                  }
+                  ?>
+                </a></li>
+                  <?php
+                  $i++;
+                  $paginaADD++;
+                }
+
+                ?>
+                <li><a href="joyas-h.php?p=<?php echo $pagina+1?>">»</a></li>
+                <?php
+                sqlsrv_close($con);
+              } ?>
+            </ul>
+          </nav>
+        </div>
+        <div class="row">
+          <div class="col-md-3">
+            <!-- <a>Pagina: </a> -->
+          </div>
+          <div class="col-md-3">
+            <!-- <a>Pagina: </a> -->
+          </div>
+          <div class="col-md-3">
+            <!-- <a>Pagina: </a> -->
+          </div>
+          <div class="col-md-3">
+            <a><strong>Pagina: <?php echo $pagina+1 ?></strong> </a>
           </div>
         </div>
       </div>
@@ -1174,97 +1212,97 @@ $(document).ready(function(){
       }
     });
 
-  $('#btnBusPrecio').click(function(){
-    query=0;
-    minval = parseInt($('#minVal').val());
-    maxval = parseInt($('#maxVal').val());
-    material = 1;
-    accesorio = 1;
-    if (minval != 0 && maxval != 0) {
-      query = 2;
-    }
-    if (minval > maxval) {
-      alert('El monto mínimo no puede ser mayor que el monto máximo.')
-    }
-    if (minval < maxval && maxval > minval ) {
-      filtros(minval,maxval,material,accesorio,query);
-    }
+    $('#btnBusPrecio').click(function(){
+      query=0;
+      minval = parseInt($('#minVal').val());
+      maxval = parseInt($('#maxVal').val());
+      material = 1;
+      accesorio = 1;
+      if (minval != 0 && maxval != 0) {
+        query = 2;
+      }
+      if (minval > maxval) {
+        alert('El monto mínimo no puede ser mayor que el monto máximo.')
+      }
+      if (minval < maxval && maxval > minval ) {
+        filtros(minval,maxval,material,accesorio,query);
+      }
+    });
+
+    $('#btnLimpiarPriceFilter').click(function(){
+      vaciar=1;
+      limpiarPriceFilter(vaciar);
+    });
+
+    $('#btnBusMaterial').click(function(){
+      minval = 0;
+      maxval = 100000;
+      material = $("#cbmMaterial option:selected").val();
+      accesorio = 1;
+      query = 0;
+
+      if(material == 0){
+        alert("Debe seleccionar un material...");
+      }else{
+        query = 2;
+        filtros(minval,maxval,material,accesorio,query);
+      }
+    });
+
+    $('#btnBusAcs').click(function(){
+      query = 0;
+
+      minval = 0;
+      maxval = 100000;
+      material = 1;
+      accesorio = $('#cbmAccesorio option:selected').val();
+      if(accesorio == 0){
+        alert("Debe seleccionar un accesorio...");
+      }else{
+        query = 2;
+        filtros(minval,maxval,material,accesorio,query);
+      }
+
+    });
+
+    // Enter de inicio de sesion
+    var input = document.getElementById("txt_Pass");
+    input.addEventListener("keyup", function(event) {
+      // Number 13 is the "Enter" key on the keyboard
+      if (event.keyCode === 13) {
+        // Cancel the default action, if needed
+        event.preventDefault();
+        // Trigger the button element with a click
+        document.getElementById("btnEntrar").click();
+      }
+    });
+
   });
 
-  $('#btnLimpiarPriceFilter').click(function(){
-    vaciar=1;
-    limpiarPriceFilter(vaciar);
-  });
-
-  $('#btnBusMaterial').click(function(){
-    minval = 0;
-    maxval = 100000;
-    material = $("#cbmMaterial option:selected").val();
-    accesorio = 1;
-    query = 0;
-
-    if(material == 0){
-      alert("Debe seleccionar un material...");
-    }else{
-      query = 2;
-      filtros(minval,maxval,material,accesorio,query);
-    }
-  });
-
-  $('#btnBusAcs').click(function(){
-    query = 0;
-
-    minval = 0;
-    maxval = 100000;
-    material = 1;
-    accesorio = $('#cbmAccesorio option:selected').val();
-    if(accesorio == 0){
-      alert("Debe seleccionar un accesorio...");
-    }else{
-      query = 2;
-      filtros(minval,maxval,material,accesorio,query);
-    }
-
-  });
-
-  // Enter de inicio de sesion
-  var input = document.getElementById("txt_Pass");
-  input.addEventListener("keyup", function(event) {
-    // Number 13 is the "Enter" key on the keyboard
-    if (event.keyCode === 13) {
-      // Cancel the default action, if needed
-      event.preventDefault();
-      // Trigger the button element with a click
-      document.getElementById("btnEntrar").click();
-    }
-  });
-
-});
-
-function mayus(e) {
+  function mayus(e) {
     e.value = e.value.toUpperCase();
-}
-function minus(e) {
+  }
+  function minus(e) {
     e.value = e.value.toLowerCase();
-}
+  }
 
-function validar_email( email )
-{
-  var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-  return regex.test(email) ? true : false;
-}
+  function validar_email( email )
+  {
+    var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return regex.test(email) ? true : false;
+  }
 
-var slider = document.getElementById("myRangeMin");
-var sliderMax = document.getElementById("myRangeMax");
-// $('#minVal').val(slider.value);
-// $('#maxVal').val(sliderMax.value);
+  var slider = document.getElementById("myRangeMin");
+  var sliderMax = document.getElementById("myRangeMax");
+  // $('#minVal').val(slider.value);
+  // $('#maxVal').val(sliderMax.value);
 
-slider.oninput = function() {
-  $('#minVal').val(slider.value);
-}
-sliderMax.oninput = function() {
-  $('#maxVal').val(sliderMax.value);
-}
+  slider.oninput = function() {
+    $('#minVal').val(slider.value);
+  }
+  sliderMax.oninput = function() {
+    $('#maxVal').val(sliderMax.value);
+  }
 
 
 </script>
