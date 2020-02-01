@@ -920,7 +920,8 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               OFFSET $Reg_Ignorados ROWS
               FETCH NEXT  $cantidadRegistros ROWS ONLY";
               ?>
-              <li><a href="joyas-h.php?p=<?php echo $pagina-1?>">«</a></li>
+              <!-- <li><a href="joyas-h.php?p=<?php echo $pagina-1?>">«</a></li> -->
+              <li><a href="joyas-h.php?p=0">«</a></li>
               <?php
               $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
               if (0 !== sqlsrv_num_rows($res)){
@@ -940,8 +941,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                   else{
                     echo $paginaADD;
                   }
-                  ?>
-                </a></li>
+                  ?>  </a></li>
                   <?php
                   $i++;
                   $paginaADD++;
