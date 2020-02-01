@@ -421,7 +421,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
                       ?>
                       <tr>
                         <td class="cart_product_img d-flex align-items-center">
-                          <a href="#"><img src="<?php echo $arti['CVE_IMAGEN'] ?>" alt="Product"></a>
+                          <a href="#"><img src="img/product-img/<?php echo $arti['CVE_IMAGEN'] ?>.jpg" alt="Product"></a>
                           <h6 id="h6Nombre<?php echo $id ?>"><?php echo $arti['DESCR'] ?></h6>
                         </td>
                         <td class="price">$<?php echo number_format($arti['COSTO_PROM'],2) ?></span></td>
