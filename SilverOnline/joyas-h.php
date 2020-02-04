@@ -45,11 +45,11 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     foreach($ID_ARTICLES as $key => $item){
 
       $id = $item['id'];
-      $sql = "SELECT COSTO_PROM FROM INVE13 where CVE_ART='$id'";
+      $sql = "SELECT ULT_COSTO FROM INVE13 where CVE_ART='$id'";
       $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
       if (0 !== sqlsrv_num_rows($res)){
         while ($fila = sqlsrv_fetch_array($res)) {
-          $TotalxArtGlobal += $fila['COSTO_PROM'] * $item['cantidad'];
+          $TotalxArtGlobal += $fila['ULT_COSTO'] * $item['cantidad'];
         }
       }
     }
@@ -471,32 +471,32 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     if ($accesorio == 1) {
       $accesorio = '___________';
     }
-
     $sql="SELECT
-    CVE_ART,
+    I.CVE_ART,
     DESCR as Nombre,
-    COSTO_PROM,
-    CVE_IMAGEN,
+    I.ULT_COSTO,
+    I.CVE_IMAGEN,
     DESCR as Descripcion
-    FROM INVE13 i
-    WHERE CVE_ART LIKE '$material' AND
-    CVE_ART  LIKE '$accesorio' AND
-    COSTO_PROM BETWEEN $valMin AND $valMax AND
-    STATUS = 'A'
-    ORDER BY COSTO_PROM
+    FROM INVE13 I
+    LEFT JOIN MULT13 M ON M.CVE_ART = I.CVE_ART
+    WHERE I.EXIST > 0 AND
+    I.CVE_ART LIKE '$material' AND
+    I.CVE_ART  LIKE '$accesorio' AND
+    I.ULT_COSTO BETWEEN $valMin AND $valMax
+    ORDER BY I.ULT_COSTO
     OFFSET $Reg_Ignorados ROWS
     FETCH NEXT  $cantidadRegistros ROWS ONLY";
   }
   else {
 
-    $sql="SELECT
-    CVE_ART,
+    $sql="SELECT I.CVE_ART,
     DESCR as Nombre,
-    COSTO_PROM,
-    CVE_IMAGEN,
+    I.ULT_COSTO,
+    I.CVE_IMAGEN,
     DESCR as Descripcion
-    FROM INVE13
-    ORDER BY CVE_ART
+    FROM INVE13 I
+    LEFT JOIN MULT13 M ON M.CVE_ART = I.CVE_ART
+    WHERE I.EXIST > 0 ORDER BY I.CVE_ART
     OFFSET $Reg_Ignorados ROWS
     FETCH NEXT  $cantidadRegistros ROWS ONLY";
 
@@ -535,7 +535,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                           <i class="fa fa-star" aria-hidden="true"></i>
                           <i class="fa fa-star" aria-hidden="true"></i>
                         </div>
-                        <h5 class="price">$<?php echo number_format($category['COSTO_PROM'],2) ?> <span>$624</span></h5>
+                        <h5 class="price">$<?php echo number_format($category['ULT_COSTO'],2) ?> <span>$624</span></h5>
                         <p>Marca: SILVER</p>
                         <p><?php echo $category['Descripcion'] ?></p>
                       </div>
@@ -550,7 +550,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                         </div>
                         <input type="hidden" name="ID" id="txtid<?php echo $category['CVE_ART'] ?>" value="<?php echo $category['CVE_ART'] ?>">
                         <input type="hidden" name="NOMBRE" id="txtnombre<?php echo $category['CVE_ART'] ?>" value="<?php echo $category['Nombre'] ?>">
-                        <input type="hidden" name="PRECIO" id="txtprecio<?php echo $category['CVE_ART'] ?>" value="<?php echo $category['COSTO_PROM'] ?>">
+                        <input type="hidden" name="PRECIO" id="txtprecio<?php echo $category['CVE_ART'] ?>" value="<?php echo $category['ULT_COSTO'] ?>">
                         <input type="hidden" name="URL" id="txturl<?php echo $category['CVE_ART'] ?>" value="<?php echo $category['CVE_IMAGEN'] ?>">
                         <button type="button" class="btn cart-submit" id="btnSendPost<?php echo $category['CVE_ART'] ?>"> + CARRITO</button>
                         <script type="text/javascript">
@@ -833,32 +833,32 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               if ($accesorio == 1) {
                 $accesorio = '___________';
               }
-
               $sql="SELECT
-              CVE_ART,
+              I.CVE_ART,
               DESCR as Nombre,
-              COSTO_PROM,
-              CVE_IMAGEN,
+              I.ULT_COSTO,
+              I.CVE_IMAGEN,
               DESCR as Descripcion
-              FROM INVE13 i
-              WHERE CVE_ART LIKE '$material' AND
-              CVE_ART  LIKE '$accesorio' AND
-              COSTO_PROM BETWEEN $valMin AND $valMax AND
-              STATUS = 'A'
-              ORDER BY COSTO_PROM
+              FROM INVE13 I
+              LEFT JOIN MULT13 M ON M.CVE_ART = I.CVE_ART
+              WHERE I.EXIST > 0 AND
+              I.CVE_ART LIKE '$material' AND
+              I.CVE_ART  LIKE '$accesorio' AND
+              I.ULT_COSTO BETWEEN $valMin AND $valMax
+              ORDER BY I.ULT_COSTO
               OFFSET $Reg_Ignorados ROWS
               FETCH NEXT  $cantidadRegistros ROWS ONLY";
             }
             else {
-
-              $sql="SELECT
-              CVE_ART,
+              $sql="SELECT I.CVE_ART,
               DESCR as Nombre,
-              COSTO_PROM,
-              CVE_IMAGEN,
+              I.ULT_COSTO,
+              I.CVE_IMAGEN,
               DESCR as Descripcion
-              FROM INVE13
-              ORDER BY CVE_ART
+              FROM INVE13 I
+              LEFT JOIN MULT13 M ON M.CVE_ART = I.CVE_ART
+              WHERE I.EXIST > 0
+              ORDER BY I.CVE_ART
               OFFSET $Reg_Ignorados ROWS
               FETCH NEXT  $cantidadRegistros ROWS ONLY";
 
@@ -880,7 +880,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                   </div>
                   <!-- Product Description -->
                   <div class="product-description">
-                    <h4 class="product-price">$<?php echo number_format($category['COSTO_PROM'],2) ; ?></h4>
+                    <h4 class="product-price">$<?php echo number_format($category['ULT_COSTO'],2) ; ?></h4>
                     <p><?php echo $category['Nombre'] ?></p>
                     <!-- Add to Cart -->
                     <!-- <a href="#" class="add-to-cart-btn">ADD TO CART</a> -->
@@ -921,13 +921,13 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               FETCH NEXT  $cantidadRegistros ROWS ONLY";
               ?>
               <!-- <li><a href="joyas-h.php?p=<?php echo $pagina-1?>">«</a></li> -->
-              <li><a href="joyas-h.php?p=0">«</a></li>
+              <li><a href="joyas-m.php?p=0">«</a></li>
               <?php
               $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
               if (0 !== sqlsrv_num_rows($res)){
                 while ($category = sqlsrv_fetch_array($res)) {
                   ?>
-                  <li><a href="joyas-h.php?p=<?php
+                  <li><a href="joyas-m.php?p=<?php
                   if($pagina <= 9){
                     echo $i;
                   }else{
@@ -948,7 +948,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                 }
 
                 ?>
-                <li><a href="joyas-h.php?p=<?php echo $pagina+1?>">»</a></li>
+                <li><a href="joyas-m.php?p=<?php echo $pagina+1?>">»</a></li>
                 <?php
                 sqlsrv_close($con);
               } ?>

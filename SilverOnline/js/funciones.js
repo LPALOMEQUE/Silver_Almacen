@@ -1,5 +1,4 @@
 function ModDatosUsuarios(nombre,nombre_recibe,calle,numCalle,cp,ciudad,estado,cel,email){
-  debugger;
   cadena = "NOMBRE=" +nombre +
   "&NOMBRE_RECIBE=" +nombre_recibe +
   "&CALLE=" + calle +
@@ -15,7 +14,6 @@ function ModDatosUsuarios(nombre,nombre_recibe,calle,numCalle,cp,ciudad,estado,c
     url: "php/modUsuarios.php",
     data:cadena,
     success:function(result){
-      debugger;
       if(result==1){
 
         alert("Se actualizarón los datos de forma correcta...");
@@ -59,7 +57,6 @@ function envioDatosEmail(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
 }
 
 function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,nombre_Recibe,apellidoP_Recibe,apellidoM_Recibe,email,pass,roll){
-  debugger;
   cadena = "NOMBRE=" +nombre +
   "&apellidoP=" + apellidoP +
   "&apellidoM=" +apellidoM +
@@ -82,7 +79,6 @@ function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
     url: "php/agregarUsuarios.php",
     data:cadena,
     success:function(result){
-      debugger;
       if(result==1){
 
         alert("Se registro el usuario de forma correcta...");
@@ -112,7 +108,6 @@ function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
 }
 
 function loginValidaCostoEnv(email, pass){
-  debugger;
   cadena = "EMAIL=" + email + "&PASS=" + pass;
 
   $.ajax({
@@ -120,7 +115,6 @@ function loginValidaCostoEnv(email, pass){
     url: "php/valUser.php",
     data:cadena,
     success:function(result){
-      debugger;
       if(result==1){
 
         alert("Inicio de sesión correcto, ya puede continuar comprando...");
@@ -197,7 +191,6 @@ function AddCart(id, nombre, precio, url, cantidad){
 }
 
 function filtros(minval, maxval, material,accesorio, query){
-  debugger;
   cadena = 'MinVal=' + minval +
   '&MaxVal=' + maxval +
   '&Material=' + material +
@@ -209,13 +202,11 @@ function filtros(minval, maxval, material,accesorio, query){
     url: "joyas-h.php",
     data: cadena,
     success: function(result){
-      debugger;
       location.href ="joyas-h.php";
     }
   });
 }
 function filtrosMujer(minval, maxval, material,accesorio, query){
-  debugger;
   cadena = 'MinVal=' + minval +
   '&MaxVal=' + maxval +
   '&Material=' + material +
@@ -227,7 +218,6 @@ function filtrosMujer(minval, maxval, material,accesorio, query){
     url: "joyas-m.php",
     data: cadena,
     success: function(result){
-      debugger;
       location.href ="joyas-m.php";
     }
   });
