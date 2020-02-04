@@ -473,13 +473,12 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     }
     $sql="SELECT
     I.CVE_ART,
-    DESCR as Nombre,
+    I.DESCR as Nombre,
     I.ULT_COSTO,
     I.CVE_IMAGEN,
-    DESCR as Descripcion
-    FROM INVE13 I
-    LEFT JOIN MULT13 M ON M.CVE_ART = I.CVE_ART
-    WHERE I.EXIST > 0 AND
+    I.DESCR as Descripcion FROM MULT13 M
+    INNER JOIN INVE13 I ON I.CVE_ART = M.CVE_ART
+    WHERE M.EXIST > 0 AND
     I.CVE_ART LIKE '$material' AND
     I.CVE_ART  LIKE '$accesorio' AND
     I.ULT_COSTO BETWEEN $valMin AND $valMax
@@ -489,14 +488,14 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
   }
   else {
 
-    $sql="SELECT I.CVE_ART,
-    DESCR as Nombre,
+    $sql="SELECT
+    I.CVE_ART,
+    I.DESCR as Nombre,
     I.ULT_COSTO,
     I.CVE_IMAGEN,
-    DESCR as Descripcion
-    FROM INVE13 I
-    LEFT JOIN MULT13 M ON M.CVE_ART = I.CVE_ART
-    WHERE I.EXIST > 0 ORDER BY I.CVE_ART
+    I.DESCR as Descripcion FROM MULT13 M
+    INNER JOIN INVE13 I ON I.CVE_ART = M.CVE_ART
+    WHERE M.EXIST > 0 ORDER BY I.CVE_ART
     OFFSET $Reg_Ignorados ROWS
     FETCH NEXT  $cantidadRegistros ROWS ONLY";
 
@@ -835,13 +834,12 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               }
               $sql="SELECT
               I.CVE_ART,
-              DESCR as Nombre,
+              I.DESCR as Nombre,
               I.ULT_COSTO,
               I.CVE_IMAGEN,
-              DESCR as Descripcion
-              FROM INVE13 I
-              LEFT JOIN MULT13 M ON M.CVE_ART = I.CVE_ART
-              WHERE I.EXIST > 0 AND
+              I.DESCR as Descripcion FROM MULT13 M
+              INNER JOIN INVE13 I ON I.CVE_ART = M.CVE_ART
+              WHERE M.EXIST > 0 AND
               I.CVE_ART LIKE '$material' AND
               I.CVE_ART  LIKE '$accesorio' AND
               I.ULT_COSTO BETWEEN $valMin AND $valMax
@@ -850,15 +848,15 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               FETCH NEXT  $cantidadRegistros ROWS ONLY";
             }
             else {
-              $sql="SELECT I.CVE_ART,
-              DESCR as Nombre,
+
+              $sql="SELECT
+              I.CVE_ART,
+              I.DESCR as Nombre,
               I.ULT_COSTO,
               I.CVE_IMAGEN,
-              DESCR as Descripcion
-              FROM INVE13 I
-              LEFT JOIN MULT13 M ON M.CVE_ART = I.CVE_ART
-              WHERE I.EXIST > 0
-              ORDER BY I.CVE_ART
+              I.DESCR as Descripcion FROM MULT13 M
+              INNER JOIN INVE13 I ON I.CVE_ART = M.CVE_ART
+              WHERE M.EXIST > 0 ORDER BY I.CVE_ART
               OFFSET $Reg_Ignorados ROWS
               FETCH NEXT  $cantidadRegistros ROWS ONLY";
 
@@ -921,13 +919,13 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               FETCH NEXT  $cantidadRegistros ROWS ONLY";
               ?>
               <!-- <li><a href="joyas-h.php?p=<?php echo $pagina-1?>">«</a></li> -->
-              <li><a href="joyas-m.php?p=0">«</a></li>
+              <li><a href="joyas-h.php?p=0">«</a></li>
               <?php
               $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
               if (0 !== sqlsrv_num_rows($res)){
                 while ($category = sqlsrv_fetch_array($res)) {
                   ?>
-                  <li><a href="joyas-m.php?p=<?php
+                  <li><a href="joyas-h.php?p=<?php
                   if($pagina <= 9){
                     echo $i;
                   }else{
@@ -948,7 +946,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                 }
 
                 ?>
-                <li><a href="joyas-m.php?p=<?php echo $pagina+1?>">»</a></li>
+                <li><a href="joyas-h.php?p=<?php echo $pagina+1?>">»</a></li>
                 <?php
                 sqlsrv_close($con);
               } ?>
