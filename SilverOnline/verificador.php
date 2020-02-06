@@ -231,7 +231,6 @@ if ($state == 'approved') {
 
   $dataHTML .= '<br/><br/>
   <table style="width:100%">
-
   <tr>
   <td width="52%"><h3>Artículo</h3></td>
   <td width="15%"><h3>P.U.</h3></td>
@@ -249,7 +248,6 @@ if ($state == 'approved') {
       while ($arti = sqlsrv_fetch_array($res)) {
       $TotalxArt = $arti['COSTO_PROM'] * $item['cantidad'];
       $dataHTML .= '
-
       <tr>
       <td width="52%">'.$arti['Nombre'] .'</td>
       <td width="15%">$'. number_format($arti['COSTO_PROM'],2) .'</td>
@@ -261,7 +259,6 @@ if ($state == 'approved') {
   }
 }
   $dataHTML .= '
-
   <tr>
   <td width="52%"> </td>
   <td width="15%"> </td>
@@ -271,7 +268,6 @@ if ($state == 'approved') {
   ';
 
   $dataHTML .= '
-
   <tr>
   <td width="52%"></td>
   <td width="15%"></td>
@@ -296,12 +292,12 @@ if ($state == 'approved') {
   <td width="15%"><b><i>TOTAL</i></b></td>
   <td width="18%"><b><i>$'. number_format($vtaTotal,2) .'</i></b></td>
   </tr>
-
   ';
 $dataHTML .='</table>';
 
-
-  $mpdf -> WriteHTML($dataHTML);
+  $html = mb_convert_encoding($dataHTML, 'UTF-8', 'UTF-8');
+  $mpdf -> WriteHTML($html);
+  // $mpdf -> WriteHTML($dataHTML);
 
   //output
   $pdf = $mpdf -> Output('','S');
@@ -341,7 +337,7 @@ function sendEmail($pdf, $sendData){
     $mail->Host       = 'smtp.gmail.com';                    //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
     $mail->Username   = 'gerenciageneral@evolutionsilver.com';                     // SMTP username
-    $mail->Password   = '*******';                               // SMTP password
+    $mail->Password   = '**********';                               // SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
     $mail->SMTPSecure = 'tls';
     $mail->Port  = 587;                                    // TCP port to connect to
