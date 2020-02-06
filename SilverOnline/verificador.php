@@ -26,10 +26,9 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 }
 
 //Imprimimos datos globales del carrito
-require_once "php/Conexion.php";
-$con = conexion();
 if (isset($_SESSION['ID_ARTICLES'])) {
-
+  require_once "php/Conexion.php";
+  $con = conexion();
   foreach($ID_ARTICLES as $key => $item){
 
     $id = $item['id'];
@@ -85,6 +84,7 @@ if (0 !== sqlsrv_num_rows($res)){
       $cel = $user['TELEFONO'];
     }
   }
+  sqlsrv_close($con);
 // endRegion carrito_compra
 
 $emailUser = $_GET['EMAIL'];
@@ -239,6 +239,8 @@ if ($state == 'approved') {
   </tr>
   ';
 
+  require_once "php/Conexion.php";
+  $con = conexion();
   foreach ($ID_ARTICLES as $key => $item) {
     $id = $item['id'];
     $sql = "SELECT DESCR as Nombre, COSTO_PROM FROM INVE13 where CVE_ART='$id'";
@@ -258,6 +260,8 @@ if ($state == 'approved') {
     }
   }
 }
+sqlsrv_close($con);
+
   $dataHTML .= '
   <tr>
   <td width="52%"> </td>
@@ -310,6 +314,7 @@ $dataHTML .='</table>';
 
   sendEmail($pdf, $sendData);
 
+
   echo "
 
   <script type='text/javascript'>
@@ -337,7 +342,7 @@ function sendEmail($pdf, $sendData){
     $mail->Host       = 'smtp.gmail.com';                    //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
     $mail->Username   = 'gerenciageneral@evolutionsilver.com';                     // SMTP username
-    $mail->Password   = '**********';                               // SMTP password
+    $mail->Password   = '*******';                               // SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
     $mail->SMTPSecure = 'tls';
     $mail->Port  = 587;                                    // TCP port to connect to
