@@ -67,7 +67,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
     foreach($ID_ARTICLES as $key => $item){
 
       $id = $item['id'];
-      $sql = "SELECT COSTO_PROM FROM INVE13 where CVE_ART='$id'";
+      $sql = "SELECT COSTO_PROM FROM INVE01 where CVE_ART='$id'";
       $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
       if (0 !== sqlsrv_num_rows($res)){
         while ($fila = sqlsrv_fetch_array($res)) {
@@ -409,7 +409,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
               if (isset($_SESSION['ID_ARTICLES'])) {
                 foreach ($ID_ARTICLES as $key => $item) {
                   $id= $item['id'];
-                  $sql = "SELECT DESCR,CVE_IMAGEN,COSTO_PROM FROM INVE13 where CVE_ART='$id'";
+                  $sql = "SELECT DESCR,CVE_IMAGEN,COSTO_PROM FROM INVE01 where CVE_ART='$id'";
 
                   $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
                   if (0 !== sqlsrv_num_rows($res)){

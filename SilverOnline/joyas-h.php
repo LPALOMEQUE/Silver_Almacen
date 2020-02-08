@@ -7,7 +7,7 @@ $key = 1;
 $valMin =1;
 $valMax = 1;
 $queryVal=0;
-
+$bd = 01;
 if (isset($_POST['VaciarFilterP'])) {
   unset($_SESSION['filtro_price']);
 }
@@ -45,7 +45,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     foreach($ID_ARTICLES as $key => $item){
 
       $id = $item['id'];
-      $sql = "SELECT ULT_COSTO FROM INVE13 where CVE_ART='$id'";
+      $sql = "SELECT ULT_COSTO FROM INVE01 where CVE_ART='$id'";
       $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
       if (0 !== sqlsrv_num_rows($res)){
         while ($fila = sqlsrv_fetch_array($res)) {
@@ -476,8 +476,8 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     I.DESCR as Nombre,
     I.ULT_COSTO,
     I.CVE_IMAGEN,
-    I.DESCR as Descripcion FROM MULT13 M
-    INNER JOIN INVE13 I ON I.CVE_ART = M.CVE_ART
+    I.DESCR as Descripcion FROM MULT01 M
+    INNER JOIN INVE '$bd' I ON I.CVE_ART = M.CVE_ART
     WHERE M.EXIST > 0 AND
     I.CVE_ART LIKE '$material' AND
     I.CVE_ART  LIKE '$accesorio' AND
@@ -493,8 +493,8 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     I.DESCR as Nombre,
     I.ULT_COSTO,
     I.CVE_IMAGEN,
-    I.DESCR as Descripcion FROM MULT13 M
-    INNER JOIN INVE13 I ON I.CVE_ART = M.CVE_ART
+    I.DESCR as Descripcion FROM MULT01 M
+    INNER JOIN INVE01 I ON I.CVE_ART = M.CVE_ART
     WHERE M.EXIST > 0 ORDER BY I.CVE_ART
     OFFSET $Reg_Ignorados ROWS
     FETCH NEXT  $cantidadRegistros ROWS ONLY";
@@ -837,8 +837,8 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               I.DESCR as Nombre,
               I.ULT_COSTO,
               I.CVE_IMAGEN,
-              I.DESCR as Descripcion FROM MULT13 M
-              INNER JOIN INVE13 I ON I.CVE_ART = M.CVE_ART
+              I.DESCR as Descripcion FROM MULT01 M
+              INNER JOIN INVE01 I ON I.CVE_ART = M.CVE_ART
               WHERE M.EXIST > 0 AND
               I.CVE_ART LIKE '$material' AND
               I.CVE_ART  LIKE '$accesorio' AND
@@ -854,8 +854,8 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               I.DESCR as Nombre,
               I.ULT_COSTO,
               I.CVE_IMAGEN,
-              I.DESCR as Descripcion FROM MULT13 M
-              INNER JOIN INVE13 I ON I.CVE_ART = M.CVE_ART
+              I.DESCR as Descripcion FROM MULT01 M
+              INNER JOIN INVE01 I ON I.CVE_ART = M.CVE_ART
               WHERE M.EXIST > 0 ORDER BY I.CVE_ART
               OFFSET $Reg_Ignorados ROWS
               FETCH NEXT  $cantidadRegistros ROWS ONLY";
@@ -912,7 +912,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               $Reg_Ignorados = $pagina * $cantidadRegistros;
 
               $sql="SELECT 0
-              FROM INVE13
+              FROM INVE01
               WHERE STATUS = 'A'
               ORDER BY CVE_ART
               OFFSET $Reg_Ignorados ROWS

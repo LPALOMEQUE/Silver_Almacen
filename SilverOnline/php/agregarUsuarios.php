@@ -22,7 +22,7 @@ require_once "Conexion.php";
 $con = conexion();
 
 // $id = $item['id'];
-$sql = "SELECT TOP 1 CLAVE  FROM CLIE13 WHERE CLAVE LIKE 'WEB-%' ORDER BY CLAVE DESC";
+$sql = "SELECT TOP 1 CLAVE  FROM CLIE01 WHERE CLAVE LIKE 'WEB-%' ORDER BY CLAVE DESC";
 $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 if (0 !== sqlsrv_num_rows($res)){
 
@@ -48,7 +48,7 @@ else {
 
 require_once "Conexion.php";
 $con = conexion();
-$sql2=" INSERT INTO CLIE13
+$sql2=" INSERT INTO CLIE01
 (CLAVE,
   STATUS,
   NOMBRE,

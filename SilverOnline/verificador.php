@@ -32,12 +32,12 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   foreach($ID_ARTICLES as $key => $item){
 
     $id = $item['id'];
-    $sql = "SELECT COSTO_PROM FROM INVE13 where CVE_ART='$id'";
+    $sql = "SELECT COSTO_PROM FROM INVE01 where CVE_ART='$id'";
     $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
     if (0 !== sqlsrv_num_rows($res)){
       while ($arti = sqlsrv_fetch_array($res)) {
         $TotalxArtGlobal += $arti['COSTO_PROM'] * $item['cantidad'];
-      $vtaTotal = $TotalxArtGlobal + $_COOKIE['express'];
+        $vtaTotal = $TotalxArtGlobal + $_COOKIE['express'];
       }
     }
   }
@@ -66,25 +66,25 @@ CODIGO,
 LOCALIDAD,
 ESTADO,
 TELEFONO
-FROM CLIE13
+FROM CLIE01
 WHERE CLAVE='$ID' AND CRUZAMIENTOS_ENVIO='$MAIL'";
 
 $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 if (0 !== sqlsrv_num_rows($res)){
   while ($user = sqlsrv_fetch_array($res)) {
     $email = $user['CORREO'];
-      $nombre = $user['NOMBRE'];
-      $nombreRecibe = $user['NOMBRE_RECIBE'];
-      // $apellidoM = $user[4];
-      $calle = $user['CALLE'];
-      $numCalle = $user['NUMEXT'];
-      $cp = $user['CODIGO'];
-      $ciudad = $user['LOCALIDAD'];
-      $estado = $user['ESTADO'];
-      $cel = $user['TELEFONO'];
-    }
+    $nombre = $user['NOMBRE'];
+    $nombreRecibe = $user['NOMBRE_RECIBE'];
+    // $apellidoM = $user[4];
+    $calle = $user['CALLE'];
+    $numCalle = $user['NUMEXT'];
+    $cp = $user['CODIGO'];
+    $ciudad = $user['LOCALIDAD'];
+    $estado = $user['ESTADO'];
+    $cel = $user['TELEFONO'];
   }
-  sqlsrv_close($con);
+}
+sqlsrv_close($con);
 // endRegion carrito_compra
 
 $emailUser = $_GET['EMAIL'];
@@ -243,24 +243,24 @@ if ($state == 'approved') {
   $con = conexion();
   foreach ($ID_ARTICLES as $key => $item) {
     $id = $item['id'];
-    $sql = "SELECT DESCR as Nombre, COSTO_PROM FROM INVE13 where CVE_ART='$id'";
+    $sql = "SELECT DESCR as Nombre, COSTO_PROM FROM INVE01 where CVE_ART='$id'";
 
     $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
     if (0 !== sqlsrv_num_rows($res)){
       while ($arti = sqlsrv_fetch_array($res)) {
-      $TotalxArt = $arti['COSTO_PROM'] * $item['cantidad'];
-      $dataHTML .= '
-      <tr>
-      <td width="52%">'.$arti['Nombre'] .'</td>
-      <td width="15%">$'. number_format($arti['COSTO_PROM'],2) .'</td>
-      <td width="15%">'.$item['cantidad'] .'</td>
-      <td width="18%">$'. number_format($TotalxArt,2) .'</td>
-      </tr>
-      ';
+        $TotalxArt = $arti['COSTO_PROM'] * $item['cantidad'];
+        $dataHTML .= '
+        <tr>
+        <td width="52%">'.$arti['Nombre'] .'</td>
+        <td width="15%">$'. number_format($arti['COSTO_PROM'],2) .'</td>
+        <td width="15%">'.$item['cantidad'] .'</td>
+        <td width="18%">$'. number_format($TotalxArt,2) .'</td>
+        </tr>
+        ';
+      }
     }
   }
-}
-sqlsrv_close($con);
+  sqlsrv_close($con);
 
   $dataHTML .= '
   <tr>
@@ -297,7 +297,7 @@ sqlsrv_close($con);
   <td width="18%"><b><i>$'. number_format($vtaTotal,2) .'</i></b></td>
   </tr>
   ';
-$dataHTML .='</table>';
+  $dataHTML .='</table>';
 
   $html = mb_convert_encoding($dataHTML, 'UTF-8', 'UTF-8');
   $mpdf -> WriteHTML($html);
@@ -314,13 +314,153 @@ $dataHTML .='</table>';
 
   sendEmail($pdf, $sendData);
 
+  // OBTENEMOS LOS DATOS NECESARIOS DEL ARTICULO
+  require_once "php/Conexion.php";
+  $con = conexion();
+  $i=1;
+  if (isset($_SESSION['ID_ARTICLES'])) {
+    foreach ($ID_ARTICLES as $key => $item) {
+      $id= $item['id'];
+      $sql = "SELECT CVE_ART,COSTO_PROM FROM INVE01 where CVE_ART='$id'";
+
+      $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+      if (0 !== sqlsrv_num_rows($res)){
+        while ($arti = sqlsrv_fetch_array($res)) {
+          ECHO $CVE_DOC = 'CHR'.$idventa;
+          echo "----";
+          $PRECIO_ART = $arti['COSTO_PROM'];
+          $CANTIDAD_ART = $item['cantidad'];
+          $TotalxArt = $arti['COSTO_PROM'] * $item['cantidad'];
+          // $fecha = date (dd/mm/YYYY);
+          $CVE_ART = $arti['CVE_ART'];
+
+          // INICIO --->      SAVE_PAR_FACTR13(STEP_1)
+          $sql2 = "IF NOT EXISTS (SELECT CVE_DOC FROM PAR_FACTR01
+          WHERE CVE_DOC = '$CVE_DOC' AND NUM_PAR = $i)
+
+          INSERT INTO PAR_FACTR01
+          (CVE_DOC,
+          NUM_PAR,
+          CVE_ART,
+          CANT,
+          PXS,
+          PREC,
+          COST,
+          IMPU1,
+          IMPU2,
+          IMPU3, IMPU4,
+          IMP1APLA,
+          IMP2APLA,
+          IMP3APLA,
+          IMP4APLA,
+          TOTIMP1,
+          TOTIMP2,
+          TOTIMP3,
+          TOTIMP4,
+          DESC1,
+          DESC2,
+          DESC3,
+          COMI,
+          APAR,
+          ACT_INV,
+          NUM_ALM,
+          POLIT_APLI,
+          TIP_CAM,
+          UNI_VENTA,
+          TIPO_PROD,
+          CVE_OBS,
+          REG_SERIE,
+          E_LTPD,
+          TIPO_ELEM,
+          NUM_MOV,
+          TOT_PARTIDA,
+          IMPRIMIR)
+          VALUES
+          ('$CVE_DOC',--CVE_DOC
+          $i, --NUM_PAR
+          '$CVE_ART', -- CVE_ART
+          '$CANTIDAD_ART', --CANT
+          0, --PXS
+          '$PRECIO_ART', --PREC			ES EL PRECIO UNITARIO DEL ART SIN MUKTIPLICAR POR SU CANTIDAD
+          '$PRECIO_ART', --COST			ES EL PRECIO UNITARIO DEL ART SIN MUKTIPLICAR POR SU CANTIDAD
+          '0', --IMPU1
+          '0', --IMPU2
+          '0', --IMPU3
+          '0', --IMPU4
+          '4', --IMP1APLA
+          '4', --IMP2APLA
+          '4', --IMP3APLA
+          '0', --IMP4APLA
+          '0', --TOTIMP1
+          '0', --TOTIMP2
+          '0', --TOTIMP3
+          '0', --TOTIMP4
+          '0', --DESC1
+          '0', --DESC2
+          '0', --DESC3
+          '0', --COMI
+          '0', --APAR
+          'S', --ACT_INV
+          '1', --NUM_ALM
+          '', --POLIT_APLI
+          '1', --TIP_CAM
+          'pz', --UNI_VENTA
+          'P', --TIPO_PROD
+          '0', --CVE_OBS
+          '0', --REG_SERIE
+          '0', --E_LTPD
+          'N', --TIPO_ELEM
+          (SELECT ISNULL(MAX(NUM_MOV),0) + 1 FROM MINVE01), --NUM_MOV (SELECT ISNULL(MAX(NUM_MOV),0) + 1 FROM MINVE13)
+          '$TotalxArt', --TOT_PARTIDA   ES LA CANTIDA DEL ARTICULO POR SU PRECIO   ----IMPORTANTE ESTO ES POR CADA ART QUE SE ENCUENTRE
+          'S')";
+
+          $res2 =  sqlsrv_query($con, $sql2, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+
+
+          $sql3 = "UPDATE INVE01 SET EXIST = ISNULL(EXIST,0) - $CANTIDAD_ART --el 1 es la cantidad vendida
+                    , FCH_ULTVTA = GETDATE(),--día actual
+                    VTAS_ANL_C = ISNULL(VTAS_ANL_C,0) + $CANTIDAD_ART, -- el 1 es la cantidad vendida
+                    VTAS_ANL_M = ISNULL(VTAS_ANL_M,0) + $TotalxArt -- total de cantidad por articulo
+                    WHERE CVE_ART = '$CVE_ART' -- ALI000036OLes la clave del artículo";
+
+                    $res3 =  sqlsrv_query($con, $sql3, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+
+
+          $i++;
+
+          // FIN --->      SAVE_PAR_FACTR13(STEP_1)---------------------------------------------------------------------------------------------------------------------------------------
+        }
+      }
+    }
+    sqlsrv_close($con);
+  }
+
+
+  // INICIO --->       UPDATE_INVE13(STEP_2)
+  // require_once "php/Conexion.php";
+  // $con = conexion();
+  // $sql = "UPDATE INVE13 SET EXIST = ISNULL(EXIST,0) - $CANTIDAD_ART --el 1 es la cantidad vendida
+  //                     , FCH_ULTVTA = '04/02/2020',--día actual
+  //                     VTAS_ANL_C = ISNULL(VTAS_ANL_C,0) + $CANTIDAD_ART, -- el 1 es la cantidad vendida
+  //                     VTAS_ANL_M = ISNULL(VTAS_ANL_M,0) + 115 --el 115 es el total de la venta
+  //                     WHERE CVE_ART = '$CVE_ART' -- ALI000036OLes la clave del artículo";
+  //
+  //   $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+  //   if (0 !== sqlsrv_num_rows($res)){
+  //     echo "1";
+  //     sqlsrv_close($con);
+  //   }else{
+  //     echo "2";
+  //     sqlsrv_close($con);
+  //   }
+
+  // FIN --->       UPDATE_INVE13(STEP_2)
+
 
   echo "
-
   <script type='text/javascript'>
-  window.location= 'index.php?vaciar=1';
+  // window.location= 'index.php?vaciar=1';
   alert('Pago aprobado');
-
   </script>";
 }
 
@@ -342,7 +482,7 @@ function sendEmail($pdf, $sendData){
     $mail->Host       = 'smtp.gmail.com';                    //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
     $mail->Username   = 'gerenciageneral@evolutionsilver.com';                     // SMTP username
-    $mail->Password   = '*******';                               // SMTP password
+    $mail->Password   = 'Balbucerito2016';                               // SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
     $mail->SMTPSecure = 'tls';
     $mail->Port  = 587;                                    // TCP port to connect to
@@ -395,7 +535,7 @@ function sendEmail($pdf, $sendData){
   <script src="librerias/alertify/alertify.js"></script>
 </head>
 <body>
-  <?php echo $dataHTML ?>
+  <!-- <?php echo $dataHTML ?> -->
 
 </body>
 </html>
