@@ -463,7 +463,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                             transactions:
                             [
                               {
-                                amount: {total: '<?php echo $vtaTotal; ?>', currency: 'MXN'},
+                                amount: {total: '<?php echo number_format($vtaTotal,2); ?>', currency: 'MXN'},
                                 description: 'Compra de artículos a Silver Evolution:$<?php echo number_format($vtaTotal,2);?>'
                               }
                             ]
