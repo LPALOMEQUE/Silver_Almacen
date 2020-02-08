@@ -476,9 +476,11 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     I.DESCR as Nombre,
     I.ULT_COSTO,
     I.CVE_IMAGEN,
-    I.DESCR as Descripcion FROM MULT01 M
-    INNER JOIN INVE '$bd' I ON I.CVE_ART = M.CVE_ART
-    WHERE M.EXIST > 0 AND
+    I.DESCR as Descripcion
+    FROM INVE01 I
+    LEFT JOIN MULT01 M ON M.CVE_ART = I.CVE_ART
+    WHERE I.EXIST > 0 AND
+    M.CVE_ALM = 1 AND
     I.CVE_ART LIKE '$material' AND
     I.CVE_ART  LIKE '$accesorio' AND
     I.ULT_COSTO BETWEEN $valMin AND $valMax
@@ -493,9 +495,12 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     I.DESCR as Nombre,
     I.ULT_COSTO,
     I.CVE_IMAGEN,
-    I.DESCR as Descripcion FROM MULT01 M
-    INNER JOIN INVE01 I ON I.CVE_ART = M.CVE_ART
-    WHERE M.EXIST > 0 ORDER BY I.CVE_ART
+    I.DESCR as Descripcion
+    FROM INVE01 I
+    LEFT JOIN MULT01 M ON M.CVE_ART = I.CVE_ART
+    WHERE I.EXIST > 0 AND
+    M.CVE_ALM = 1
+    ORDER BY I.CVE_ART
     OFFSET $Reg_Ignorados ROWS
     FETCH NEXT  $cantidadRegistros ROWS ONLY";
 
@@ -837,9 +842,11 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               I.DESCR as Nombre,
               I.ULT_COSTO,
               I.CVE_IMAGEN,
-              I.DESCR as Descripcion FROM MULT01 M
-              INNER JOIN INVE01 I ON I.CVE_ART = M.CVE_ART
-              WHERE M.EXIST > 0 AND
+              I.DESCR as Descripcion
+              FROM INVE01 I
+              LEFT JOIN MULT01 M ON M.CVE_ART = I.CVE_ART
+              WHERE I.EXIST > 0 AND
+              M.CVE_ALM = 1 AND
               I.CVE_ART LIKE '$material' AND
               I.CVE_ART  LIKE '$accesorio' AND
               I.ULT_COSTO BETWEEN $valMin AND $valMax
@@ -854,9 +861,12 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               I.DESCR as Nombre,
               I.ULT_COSTO,
               I.CVE_IMAGEN,
-              I.DESCR as Descripcion FROM MULT01 M
-              INNER JOIN INVE01 I ON I.CVE_ART = M.CVE_ART
-              WHERE M.EXIST > 0 ORDER BY I.CVE_ART
+              I.DESCR as Descripcion
+              FROM INVE01 I
+              LEFT JOIN MULT01 M ON M.CVE_ART = I.CVE_ART
+              WHERE I.EXIST > 0 AND
+              M.CVE_ALM = 1
+              ORDER BY I.CVE_ART
               OFFSET $Reg_Ignorados ROWS
               FETCH NEXT  $cantidadRegistros ROWS ONLY";
 
