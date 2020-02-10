@@ -3,6 +3,12 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 require_once __DIR__ . '/vendor/autoload.php';
 
+setlocale(LC_ALL,"es_ES");
+$anio = date("Y");
+$mes = date("m");
+$dia = date("d");
+
+$fecha_php =$anio . $mes . $dia;
 // region carrito_compra
 
 session_start();
@@ -14,7 +20,8 @@ $TotalxArtGlobal = 0;
 $costoEnvio = 0;
 $totalP =0;
 $vtaTotal = 0;
-
+$ID = '';
+$BD = '01';
 if (isset($_POST['VACIAR_LOGIN'])) {
   unset($_SESSION['ID_USER']);
   unset($_SESSION['Email']);
@@ -314,6 +321,18 @@ if ($state == 'approved') {
 
   sendEmail($pdf, $sendData);
 
+  // require_once "php/Conexion.php";
+  // $con = conexion();
+  // $sql = "SELECT CLAVE FROM CLIE01 where CLAVE='$ID'";
+  //
+  //   $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+  //   if (0 !== sqlsrv_num_rows($res)){
+  //     while ($user = sqlsrv_fetch_array($res)) {
+  //
+  //
+  //     }
+  // }
+
   // OBTENEMOS LOS DATOS NECESARIOS DEL ARTICULO
   require_once "php/Conexion.php";
   $con = conexion();
@@ -321,12 +340,16 @@ if ($state == 'approved') {
   if (isset($_SESSION['ID_ARTICLES'])) {
     foreach ($ID_ARTICLES as $key => $item) {
       $id= $item['id'];
-      $sql = "SELECT CVE_ART,COSTO_PROM FROM INVE01 where CVE_ART='$id'";
+      $sql = "SELECT CVE_ART,COSTO_PROM FROM INVE" .$BD. " where CVE_ART='$id'";
 
       $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
       if (0 !== sqlsrv_num_rows($res)){
         while ($arti = sqlsrv_fetch_array($res)) {
-          ECHO $CVE_DOC = 'CHR'.$idventa;
+          ECHO $CVE_DOC = 'WEB'.$idventa;
+          echo "----";
+          echo $ID;
+          echo "----";
+          echo $fecha_php;
           echo "----";
           $PRECIO_ART = $arti['COSTO_PROM'];
           $CANTIDAD_ART = $item['cantidad'];
@@ -334,11 +357,11 @@ if ($state == 'approved') {
           // $fecha = date (dd/mm/YYYY);
           $CVE_ART = $arti['CVE_ART'];
 
-          // INICIO --->      SAVE_PAR_FACTR13(STEP_1)
-          $sql2 = "IF NOT EXISTS (SELECT CVE_DOC FROM PAR_FACTR01
+          // // PASO 1
+          $sql2 = "IF NOT EXISTS (SELECT CVE_DOC FROM PAR_FACTR" .$BD. "
           WHERE CVE_DOC = '$CVE_DOC' AND NUM_PAR = $i)
 
-          INSERT INTO PAR_FACTR01
+          INSERT INTO PAR_FACTR" .$BD. "
           (CVE_DOC,
           NUM_PAR,
           CVE_ART,
@@ -410,51 +433,372 @@ if ($state == 'approved') {
           '0', --REG_SERIE
           '0', --E_LTPD
           'N', --TIPO_ELEM
-          (SELECT ISNULL(MAX(NUM_MOV),0) + 1 FROM MINVE01), --NUM_MOV (SELECT ISNULL(MAX(NUM_MOV),0) + 1 FROM MINVE13)
+          (SELECT ISNULL(MAX(NUM_MOV),0) + 1 FROM MINVE" .$BD. "), --NUM_MOV (SELECT ISNULL(MAX(NUM_MOV),0) + 1 FROM MINVE)
           '$TotalxArt', --TOT_PARTIDA   ES LA CANTIDA DEL ARTICULO POR SU PRECIO   ----IMPORTANTE ESTO ES POR CADA ART QUE SE ENCUENTRE
           'S')";
 
           $res2 =  sqlsrv_query($con, $sql2, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 
+          // PASO 2
+          $sql3 = "UPDATE INVE" .$BD. " SET EXIST = ISNULL(EXIST,0) - $CANTIDAD_ART --el 1 es la cantidad vendida
+          , FCH_ULTVTA = '$fecha_php',--día actual
+          VTAS_ANL_C = ISNULL(VTAS_ANL_C,0) + $CANTIDAD_ART, -- el 1 es la cantidad vendida
+          VTAS_ANL_M = ISNULL(VTAS_ANL_M,0) + $TotalxArt -- total de cantidad por articulo
+          WHERE CVE_ART = '$CVE_ART' -- ALI000036OLes la clave del artículo";
 
-          $sql3 = "UPDATE INVE01 SET EXIST = ISNULL(EXIST,0) - $CANTIDAD_ART --el 1 es la cantidad vendida
-                    , FCH_ULTVTA = GETDATE(),--día actual
-                    VTAS_ANL_C = ISNULL(VTAS_ANL_C,0) + $CANTIDAD_ART, -- el 1 es la cantidad vendida
-                    VTAS_ANL_M = ISNULL(VTAS_ANL_M,0) + $TotalxArt -- total de cantidad por articulo
-                    WHERE CVE_ART = '$CVE_ART' -- ALI000036OLes la clave del artículo";
+          $res3 =  sqlsrv_query($con, $sql3, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 
-                    $res3 =  sqlsrv_query($con, $sql3, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+          // PASO 3
+          $sql4 = "UPDATE MULT" .$BD. " SET EXIST = ISNULL(EXIST,0) - $CANTIDAD_ART --CANTIDAD DEL ART VENDIDO
+          WHERE CVE_ART = '$CVE_ART' --CLAVE DELA ART
+          AND CVE_ALM = 1 -- NUMERO DEL ALMACEN";
+
+          $res4 =  sqlsrv_query($con, $sql4, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+
+          // PASO 4
+          $CadenaMinve = "SELECT EXIST FROM MULT" .$BD. " WHERE
+          CVE_ART = '$CVE_ART' --CLAVE DEL ART
+          AND CVE_ALM = 1 -- NUM DE ALMACEN ";
+
+          // PASO 5
+          $sql6 = "INSERT INTO MINVE" .$BD. "
+          (CVE_ART,
+          ALMACEN,
+          NUM_MOV,
+          CVE_CPTO,
+          FECHA_DOCU,
+          TIPO_DOC,
+          REFER,
+          CLAVE_CLPV,
+          VEND,
+          CANT,
+          CANT_COST,
+          PRECIO,
+          COSTO,
+          AFEC_COI,
+          REG_SERIE,
+          UNI_VENTA,
+          E_LTPD,
+          EXISTENCIA,
+          TIPO_PROD,
+          FACTOR_CON,
+          FECHAELAB,
+          CVE_FOLIO,
+          SIGNO,
+          COSTEADO,
+          COSTO_PROM_INI,
+          COSTO_PROM_FIN,
+          DESDE_INVE,
+          MOV_ENLAZADO)
+          VALUES
+          ('$CVE_ART',--CVE_ART
+          '1',--ALMACEN
+          (SELECT ISNULL(MAX(NUM_MOV),0) + 1 FROM MINVE" .$BD. "),--(SELECT ISNULL(MAX(NUM_MOV),0) + 1 FROM MINVE01) NUM_MOV
+          '61',--CVE_CPTO				---VALOR FIJO
+          '$fecha_php',--FECHA_DOCU
+          'R',--TIPO_DOC				---VALOR FIJO
+          '$CVE_DOC',--REFER
+          '$ID',--CLAVE_CLPV  ESTA ES LA CLAVE DEL CLIENTE
+          '1',--VEND
+          '$CANTIDAD_ART',--CANT
+          '0',--CANT_COST
+          '$PRECIO_ART',--PRECIO
+          '$PRECIO_ART',--COSTO
+          'N',--AFEC_COI				---VALOR FIJO
+          '1',--REG_SERIE				---VALOR FIJO
+          'pz',--UNI_VENTA
+          '0',--E_LTPD				---VALOR FIJO
+          (SELECT EXIST FROM MULT" .$BD. " WHERE CVE_ART = '$CVE_ART' AND CVE_ALM = 1),-- SELECT EXIST FROM MULT13 WHERE CVE_ART = 'ALI000036OL' AND CVE_ALM = 1     ...EXISTENCIA
+          'P',--TIPO_PROD				---VALOR FIJO
+          '1',--FACTOR_CON			---VALOR FIJO
+          '$fecha_php',--FECHAELAB
+          (SELECT ISNULL(ULT_CVE,1) FROM TBLCONTROL" .$BD. " WHERE ID_TABLA = 32), --(SELECT ISNULL(ULT_CVE,1) FROM TBLCONTROL13 WHERE ID_TABLA = 32),
+          '-1',--SIGNO				---VALOR FIJO
+          'S',--COSTEADO				---VALOR FIJO
+          '$PRECIO_ART',--COSTO_PROM_INI
+          '$PRECIO_ART',--COSTO_PROM_FIN
+          'N',--DESDE_INVE			---VALOR FIJO
+          '0')--MOV_ENLAZADO			---VALOR FIJO";
+
+          $res6 =  sqlsrv_query($con, $sql6, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+
+          // PASO 6
+          $sql7 = "UPDATE TBLCONTROL" .$BD. " SET ULT_CVE = (SELECT ISNULL(MAX(NUM_MOV),0) FROM MINVE" .$BD. ")
+          WHERE ID_TABLA = 44";
+
+          $res7 =  sqlsrv_query($con, $sql7, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+
+          $sql8 = "UPDATE TBLCONTROL" .$BD. " SET ULT_CVE = ISNULL(ULT_CVE,0) + 1
+          WHERE ID_TABLA = 32";
+
+          $res8 =  sqlsrv_query($con, $sql8, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+
+
+
 
 
           $i++;
 
-          // FIN --->      SAVE_PAR_FACTR13(STEP_1)---------------------------------------------------------------------------------------------------------------------------------------
         }
       }
     }
+
+    // PASO 7
+
+    $sql = "SELECT FOLIO FROM FACTR" .$BD. " where SERIE = 'WEB'";
+
+    $res9 =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+    if (0 !== sqlsrv_num_rows($res9)){
+      while ($f = sqlsrv_fetch_array($res9)) {
+        $folio = $f['FOLIO'] + 1;
+      }
+    }
+    else{
+      $folio = 1;
+
+    }
+
+    $sql10 = "IF NOT EXISTS (SELECT CVE_DOC FROM FACTR" .$BD. "
+    WHERE CVE_DOC = '$CVE_DOC')
+
+    INSERT INTO FACTR" .$BD. "
+    (CVE_CLPV,	--*
+    CVE_PEDI,	--*
+    FECHA_DOC,	--*
+    FECHA_ENT,	--*
+    FECHA_VEN,	--*
+    IMP_TOT1,	--*
+    IMP_TOT2,	--*
+    DES_FIN,	--*
+    COM_TOT,	--*
+    ACT_COI,	--*
+    NUM_MONED,	--*
+    TIPCAMB,	--*
+    IMP_TOT3,	--*
+    IMP_TOT4,	--*
+    PRIMERPAGO, --*
+    RFC,		--*
+    AUTORIZA,	--*
+    FOLIO,		--*
+    SERIE,		--*
+    AUTOANIO,	--*
+    ESCFD,		--*
+    NUM_ALMA,	--*
+    ACT_CXC,	--*
+    TIP_DOC,	--*
+    CVE_DOC,	--*
+    CAN_TOT,	--*
+    CVE_VEND,	--*
+    FECHA_CANCELA, --*
+    DES_TOT,	--*
+    ENLAZADO,	--*
+    NUM_PAGOS,	--*
+    DAT_ENVIO,	--*
+    CONTADO,	--*
+    DAT_MOSTR,	--*
+    CVE_BITA,	--*
+    BLOQ,		--*
+    FECHAELAB,	--*
+    CTLPOL,		--*
+    CVE_OBS,	--*
+    STATUS,
+    TIP_DOC_E,
+    FORMAENVIO,
+    DES_FIN_PORC,
+    DES_TOT_PORC,
+    IMPORTE,
+    COM_TOT_PORC,
+    METODODEPAGO,
+    NUMCTAPAGO,
+    TIP_DOC_ANT,
+    DOC_ANT,
+    CONDICION)
+    VALUES
+    ('$ID',--CVE_CLPV
+    '',-- CVE_PEDI		---VALOR FIJO
+    '$fecha_php',--FECHA_DOC
+    '$fecha_php',--FECHA_ENT
+    '$fecha_php',--FECHA_VEN
+    '0',--IMP_TOT1		---VALOR FIJO ---------------------PREGUNTAR
+    '0',--IMP_TOT2		---VALOR FIJO ---------------------PREGUNTAR
+    '0',--DES_FIN		---VALOR FIJO
+    '0',--COM_TOT		---VALOR FIJO
+    'N',--ACT_COI		---VALOR FIJO
+    '1',--NUM_MONED		---VALOR FIJO
+    '1',--TIPCAMB		---VALOR FIJO
+    '0',--IMP_TOT3		---VALOR FIJO ---------------------PREGUNTAR
+    '0',--IMP_TOT4		---VALOR FIJO ---------------------PREGUNTAR
+    '0',--PRIMERPAGO
+    'RFC', --RFC
+    '0',--AUTORIZA		---VALOR FIJO ---------------------PREGUNTAR	QUE ES?
+    '$folio',--FOLIO
+    'WEB',--SERIE
+    '',--AUTOANIO		---VALOR FIJO
+    'N',--ESCFD			---VALOR FIJO
+    '1',--NUM_ALMA		---VALOR FIJO
+    'N',--ACT_CXC		---VALOR FIJO
+    'R',--TIP_DOC		---VALOR FIJO
+    '$CVE_DOC',--CVE_DOC
+    '$TotalxArtGlobal',--CAN_TOT CANTIDAD TOTAL DE VENTA
+    '1',--CVE_VEND		---VALOR FIJO
+    NULL,--FECHA_CANCELA
+    '0',--DES_TOT		---VALOR FIJO ---------------------PREGUNTAR
+    'O',--ENLAZADO
+    '1',--NUM_PAGOS		---VALOR FIJO
+    '0',--DAT_ENVIO		---VALOR FIJO
+    'S',--CONTADO		---VALOR FIJO
+    '0',--DAT_MOSTR		---VALOR FIJO
+    '0',--CVE_BITA		---VALOR FIJO
+    'N',--BLOQ			---VALOR FIJO
+    GETDATE(), --DIA ACTUAL
+    '0',--CTLPOL		---VALOR FIJO
+    '0',--CVE_OBS		---VALOR FIJO
+    'E',--Status		---VALOR FIJO
+    'O',--TIP_DOC_E		---VALOR FIJO
+    'I',--FORMAENVIO	---VALOR FIJO
+    '0',--DES_FIN_PORC	---VALOR FIJO
+    '0',--DES_TOT_PORC	---VALOR FIJO
+    '$TotalxArtGlobal',--Importe		CANTIDAD TOTAL DE VENTA
+    '0',--COM_TOT_PORC	---VALOR FIJO
+    '$ID',--METODODEPAGO ACA SE LE PASARA LA CLAVE DEL CLIENTE (WEB-01)
+    '$nombre',--NUMCTAPAGO				ACA IRA EL NOMBRE DE LA PERSONA QUE COMPRARA
+    '',--TIP_DOC_ANT	---VALOR FIJO
+    '',--DOC_ANT		---VALOR FIJO
+    'VENTA DIRECTA')--CONDICION		---VALOR FIJO
+    ";
+
+    $res10 =  sqlsrv_query($con, $sql10, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+
+    // PASO 8
+    $sql11 = "INSERT INTO BITA" .$BD. "
+    (CVE_BITA,
+    CVE_CLIE,
+    CVE_CAMPANIA,
+    CVE_ACTIVIDAD,
+    FECHAHORA,
+    CVE_USUARIO,
+    OBSERVACIONES,
+    STATUS,
+    NOM_USUARIO)
+    Values
+    (ISNULL((SELECT MAX(CVE_BITA) + 1 FROM BITA" .$BD. "),1),--CVE_BITA
+    '$ID',--CVE_CLIE
+    'VENTA SILVER_ONLINE',--CVE_CAMPANIA	--VALOR FIJO
+    '11',--CVE_ACTIVIDAD					--VALOR FIJO
+    GETDATE(),--FECHAHORA					--VALOR FIJO
+    'admin',--CVE_USUARIO					--VALOR FIJO
+    'FACTR: $CVE_DOC   $$TotalxArtGlobal',--OBSERVACIONES  FOLIO DE VENTA(PAYPAL) Y MONTO TOTAL
+    'F',--STATUS							--VALOR FIJO
+    'WEB')--NOM_USUARIO";
+
+    $res11 =  sqlsrv_query($con, $sql11, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+
+    // PASO 9
+    $sql12 = "UPDATE AFACT" .$BD. "
+    SET RVTA_COM = ISNULL(RVTA_COM,0) + $TotalxArtGlobal, --CAN_TOT        EL 160 ES LA CANTIDAD TOTAL DE VENTA
+    RDESCTO = ISNULL(RDESCTO,0) + 0--DES_TOT                  EL 0 ES EL DESCUENTO
+    WHERE CVE_AFACT = $mes	--OBTENEMOS EL NUMERO DEL MES";
+
+    $res12 =  sqlsrv_query($con, $sql12, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+
+    // PASO 10
+    //
+    //     $sql13 = "UPDATE FOLIOSF" .$BD. "
+    // SET ULT_DOC = $idventa--REMISION LA 524
+    // WHERE TIP_DOC = 'R' AND
+    // SERIE = 'WEB'";
+    //
+    //     $res13 =  sqlsrv_query($con, $sql13, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+
+    // PASO 11
+    $sql14 = "INSERT INTO CUEN_M" .$BD. "
+    (CVE_CLIE,
+    REFER,
+    NUM_CPTO,
+    NUM_CARGO,
+    CVE_OBS,
+    NO_FACTURA,
+    DOCTO,
+    IMPORTE,
+    FECHA_APLI,
+    FECHA_VENC,
+    AFEC_COI,
+    STRCVEVEND,
+    NUM_MONED,
+    TCAMBIO,
+    IMPMON_EXT,
+    FECHAELAB,
+    TIPO_MOV,
+    CVE_BITA,
+    SIGNO,
+    USUARIO,
+    ENTREGADA,
+    FECHA_ENTREGA,
+    STATUS,
+    REF_SIST,
+    CVE_AUT,
+    BENEFICIARIO,
+    NUMCTAPAGO_ORIGEN)
+    VALUES
+    ('$ID',--CVE_CLIE
+    '$CVE_DOC',--REFER
+    '24',--NUM_CPTO					--VALOR FIJO
+    '1',--NUM_CARGO					--VALOR FIJO
+    '0',--CVE_OBS					--VALOR FIJO
+    '$CVE_DOC',--NO_FACTURA
+    '$CVE_DOC',--DOCTO
+    '$TotalxArtGlobal',--IMPORTE										CANTIDAD TOTAL DE VENTA
+    '$fecha_php',--FECHA_APLI
+    '$fecha_php',--FECHA_VENC
+    'N',--AFEC_COI					--VALOR FIJO
+    '1',--STRCVEVEND				--VALOR FIJO
+    '1',--NUM_MONED					--VALOR FIJO
+    '1',--TCAMBIO		--VALOR FIJO
+    '$TotalxArtGlobal',--IMPMON_EXT									CANTIDAD TOTAL DE VENTA
+    GETDATE(),--FECHAELAB
+    'C',--TIPO_MOV					--VALOR FIJO
+    '0',--CVE_BITA					--VALOR FIJO
+    '1',--SIGNO						--VALOR FIJO
+    '0',--USUARI0					--VALOR FIJO
+    'S',--ENTREGADA
+    '$fecha_php',--FECHA_ENTREGA
+    'A',--STATUS					--VALOR FIJO
+    'R',--REF_SIST					--VALOR FIJO
+    '0',--CVE_AUT					--VALOR FIJO
+    '$nombre',--BENEFICIARIO				NOMBRE DEL CLIENTE
+    '$ID')--NUMCTAPAGO_ORIGEN						ES LA CLAVE DEL CLIENTE";
+
+    $res14 =  sqlsrv_query($con, $sql14, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+
+
+    // PASO 12
+
+    $sql15 = "SELECT TOP 1
+    ISNULL(NUM_CPTO, 0) as ID_MOV
+    FROM CUEN_M" .$BD. "
+    WHERE REFER = '$CVE_DOC' AND CVE_CLIE = '$ID'";
+
+    $res15 =  sqlsrv_query($con, $sql15, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+    if (0 !== sqlsrv_num_rows($res9)){
+      while ($CUEN_M = sqlsrv_fetch_array($res9)) {
+        $ID_MOV = $CUEN_M['ID_MOV'];
+      }
+    }
+
+
+    $sql16 = "SELECT ISNULL(MAX(NO_PARTIDA),0) + 1 AS NO_PAR
+    FROM CUEN_DET" .$BD. "
+    WHERE REFER = '$CVE_DOC'";
+
+    $res16 =  sqlsrv_query($con, $sql16, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+
+
+
+
+
+
     sqlsrv_close($con);
   }
-
-
-  // INICIO --->       UPDATE_INVE13(STEP_2)
-  // require_once "php/Conexion.php";
-  // $con = conexion();
-  // $sql = "UPDATE INVE13 SET EXIST = ISNULL(EXIST,0) - $CANTIDAD_ART --el 1 es la cantidad vendida
-  //                     , FCH_ULTVTA = '04/02/2020',--día actual
-  //                     VTAS_ANL_C = ISNULL(VTAS_ANL_C,0) + $CANTIDAD_ART, -- el 1 es la cantidad vendida
-  //                     VTAS_ANL_M = ISNULL(VTAS_ANL_M,0) + 115 --el 115 es el total de la venta
-  //                     WHERE CVE_ART = '$CVE_ART' -- ALI000036OLes la clave del artículo";
-  //
-  //   $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
-  //   if (0 !== sqlsrv_num_rows($res)){
-  //     echo "1";
-  //     sqlsrv_close($con);
-  //   }else{
-  //     echo "2";
-  //     sqlsrv_close($con);
-  //   }
-
-  // FIN --->       UPDATE_INVE13(STEP_2)
 
 
   echo "
