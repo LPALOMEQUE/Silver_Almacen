@@ -174,9 +174,9 @@ function login(email, pass){
   });
 }
 
-function AddCart(id, nombre, precio, url, cantidad){
+function AddCart(id, cantidad){
 
-  cadena = "ID=" + id + "&NOMBRE=" + nombre + "&PRECIO=" + precio + "&URL=" + url + "&CANTIDAD=" + cantidad;
+  cadena = "ID=" + id  + "&CANTIDAD=" + cantidad;
 
   $.ajax({
     type:"POST",

@@ -899,7 +899,7 @@ function sendEmail($pdf, $sendData){
     $mail->Port  = 587;                                    // TCP port to connect to
 
     //Recipients
-    $mail->setFrom('fernando18092105@icloud.com');
+    $mail->setFrom('fernando18092105@gmail.com');
     // $mail->addAddress('gerenciageneral@evolutionsilver.com');     // Add a recipient
     $mail->addAddress($sendData['EMAIL']);               // Name is optional
     // $mail->addReplyTo('gerenciageneral@evolutionsilver.com', 'Information');

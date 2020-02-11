@@ -7,7 +7,7 @@ $key = 1;
 $valMin =1;
 $valMax = 1;
 $queryVal=0;
-
+$BD = '01';
 if (isset($_POST['VaciarFilterP'])) {
   unset($_SESSION['filtro_price']);
 }
@@ -45,7 +45,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     foreach($ID_ARTICLES as $key => $item){
 
       $id = $item['id'];
-      $sql = "SELECT ULT_COSTO FROM INVE13 where CVE_ART='$id'";
+      $sql = "SELECT ULT_COSTO FROM INVE" .$BD. " where CVE_ART='$id'";
       $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
       if (0 !== sqlsrv_num_rows($res)){
         while ($fila = sqlsrv_fetch_array($res)) {
@@ -59,7 +59,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
   $p =   $key+1;
 
   // anydando articulos al carrito
-  if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) {
+  if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
     $ultimaPos = count($_SESSION['ID_ARTICLES']);
     $_SESSION['ID_ARTICLES'][$p]=
     array(
@@ -476,9 +476,11 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     I.DESCR as Nombre,
     I.ULT_COSTO,
     I.CVE_IMAGEN,
-    I.DESCR as Descripcion FROM MULT13 M
-    INNER JOIN INVE13 I ON I.CVE_ART = M.CVE_ART
-    WHERE M.EXIST > 0 AND
+    I.DESCR as Descripcion
+    FROM INVE" .$BD. " I
+    LEFT JOIN MULT01 M ON M.CVE_ART = I.CVE_ART
+    WHERE I.EXIST > 0 AND
+    M.CVE_ALM = 1 AND
     I.CVE_ART LIKE '$material' AND
     I.CVE_ART  LIKE '$accesorio' AND
     I.ULT_COSTO BETWEEN $valMin AND $valMax
@@ -493,9 +495,12 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     I.DESCR as Nombre,
     I.ULT_COSTO,
     I.CVE_IMAGEN,
-    I.DESCR as Descripcion FROM MULT13 M
-    INNER JOIN INVE13 I ON I.CVE_ART = M.CVE_ART
-    WHERE M.EXIST > 0 ORDER BY I.CVE_ART
+    I.DESCR as Descripcion
+    FROM INVE" .$BD. " I
+    LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
+    WHERE I.EXIST > 0 AND
+    M.CVE_ALM = 1
+    ORDER BY I.CVE_ART
     OFFSET $Reg_Ignorados ROWS
     FETCH NEXT  $cantidadRegistros ROWS ONLY";
 
@@ -547,26 +552,34 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                           <button type="button" class="qty-minus" id="btnMas<?php echo $category['CVE_ART'] ?>">+</button>
 
                         </div>
-                        <input type="hidden" name="ID" id="txtid<?php echo $category['CVE_ART'] ?>" value="<?php echo $category['CVE_ART'] ?>">
-                        <input type="hidden" name="NOMBRE" id="txtnombre<?php echo $category['CVE_ART'] ?>" value="<?php echo $category['Nombre'] ?>">
-                        <input type="hidden" name="PRECIO" id="txtprecio<?php echo $category['CVE_ART'] ?>" value="<?php echo $category['ULT_COSTO'] ?>">
-                        <input type="hidden" name="URL" id="txturl<?php echo $category['CVE_ART'] ?>" value="<?php echo $category['CVE_IMAGEN'] ?>">
+
                         <button type="button" class="btn cart-submit" id="btnSendPost<?php echo $category['CVE_ART'] ?>"> + CARRITO</button>
                         <script type="text/javascript">
                         $(document).ready(function(){
                           $('#btnSendPost<?php echo $category['CVE_ART'] ?>').click(function(){
 
-                            id= $('#txtid<?php echo $category['CVE_ART'] ?>').val();
-                            nombre= $('#txtnombre<?php echo $category['CVE_ART'] ?>').val();
-                            precio= $('#txtprecio<?php echo $category['CVE_ART'] ?>').val();
-                            url= $('#txturl<?php echo $category['CVE_ART'] ?>').val();
+                            id= "<?php echo $category['CVE_ART'] ?>";
                             cantidad= $('#qty<?php echo $category['CVE_ART'] ?>').val();
 
-                            AddCart(id,
-                              nombre,
-                              precio,
-                              url,
-                              cantidad);
+                            <?php
+
+                              $sql2 = "SELECT EXIST FROM INVE" .$BD. " where CVE_ART='" .$category['CVE_ART']."' ";
+                              $res2 =  sqlsrv_query($con, $sql2, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+                              if (0 !== sqlsrv_num_rows($res)){
+                                while ($arti2 = sqlsrv_fetch_array($res2)) {
+                                  $EXISTENCIA =  $arti2['EXIST'];
+                                }
+                              }
+
+                             ?>
+                             debugger;
+                             if (cantidad <= <?php echo $EXISTENCIA ?>) {
+                               AddCart(id,
+                                 cantidad);
+                             }
+                            else {
+                              alert("No hay stock disponible, solo puede agregar la cantidad maxima de: " + <?php echo $EXISTENCIA ?>)
+                            }
 
                             });
                             $('#btnMenos<?php echo $category['CVE_ART'] ?>').click(function(){
@@ -837,9 +850,11 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               I.DESCR as Nombre,
               I.ULT_COSTO,
               I.CVE_IMAGEN,
-              I.DESCR as Descripcion FROM MULT13 M
-              INNER JOIN INVE13 I ON I.CVE_ART = M.CVE_ART
-              WHERE M.EXIST > 0 AND
+              I.DESCR as Descripcion
+              FROM INVE" .$BD. " I
+              LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
+              WHERE I.EXIST > 0 AND
+              M.CVE_ALM = 1 AND
               I.CVE_ART LIKE '$material' AND
               I.CVE_ART  LIKE '$accesorio' AND
               I.ULT_COSTO BETWEEN $valMin AND $valMax
@@ -854,9 +869,12 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               I.DESCR as Nombre,
               I.ULT_COSTO,
               I.CVE_IMAGEN,
-              I.DESCR as Descripcion FROM MULT13 M
-              INNER JOIN INVE13 I ON I.CVE_ART = M.CVE_ART
-              WHERE M.EXIST > 0 ORDER BY I.CVE_ART
+              I.DESCR as Descripcion
+              FROM INVE" .$BD. " I
+              LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
+              WHERE I.EXIST > 0 AND
+              M.CVE_ALM = 1
+              ORDER BY I.CVE_ART
               OFFSET $Reg_Ignorados ROWS
               FETCH NEXT  $cantidadRegistros ROWS ONLY";
 
@@ -912,8 +930,8 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               $Reg_Ignorados = $pagina * $cantidadRegistros;
 
               $sql="SELECT 0
-              FROM INVE13
-              WHERE STATUS = 'A'
+              FROM INVE" .$BD. "
+              WHERE EXIST > 0
               ORDER BY CVE_ART
               OFFSET $Reg_Ignorados ROWS
               FETCH NEXT  $cantidadRegistros ROWS ONLY";
@@ -1229,7 +1247,7 @@ $(document).ready(function(){
 
     $('#btnLimpiarPriceFilter').click(function(){
       vaciar=1;
-      limpiarPriceFilter(vaciar);
+      limpiarPriceFilterM(vaciar);
     });
 
     $('#btnBusMaterial').click(function(){
