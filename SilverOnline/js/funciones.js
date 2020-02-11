@@ -136,7 +136,8 @@ function loginValidaCostoEnv(email, pass){
         }else{
           alert('Debe seleccionar un metodo de envío.');
         }
-        location.reload();
+        // location.reload();
+        location.href ="checkout.php";
       }
       else{
         alert("Usuario o contraseña incorrectos...");

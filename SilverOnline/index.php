@@ -9,6 +9,7 @@ $bagNumber = 0;
 $TotalxArtGlobal = 0;
 $cantidad = 0;
 $key = 1;
+$BD = '01';
 
 if (isset($_SESSION['ID_ARTICLES'])) {
   $bagNumber = count($_SESSION['ID_ARTICLES']);
@@ -37,7 +38,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   foreach($ID_ARTICLES as $key => $item){
 
     $id = $item['id'];
-    $sql = "SELECT COSTO_PROM FROM INVE13 where CVE_ART='$id'";
+    $sql = "SELECT COSTO_PROM FROM INVE" .$BD. " where CVE_ART='$id'";
     $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
     if (0 !== sqlsrv_num_rows($res)){
       while ($fila = sqlsrv_fetch_array($res)) {

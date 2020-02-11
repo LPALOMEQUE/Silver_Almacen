@@ -17,7 +17,7 @@ $email = $_POST['EMAIL'];
 $ID = $_SESSION['ID_USER'];
 $MAIL = $_SESSION['Email'];
 
-$sql = "UPDATE CLIE13 SET NOMBRE='$nombre',
+$sql = "UPDATE CLIE01 SET NOMBRE='$nombre',
 ADDENDAF='$nombre_recibe',
 CALLE='$calle',
 NUMEXT=$numCalle,

@@ -22,6 +22,8 @@ $totalP =0;
 $vtaTotal = 0;
 $ID = '';
 $BD = '01';
+$ID_MOV = 0;
+
 if (isset($_POST['VACIAR_LOGIN'])) {
   unset($_SESSION['ID_USER']);
   unset($_SESSION['Email']);
@@ -39,7 +41,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   foreach($ID_ARTICLES as $key => $item){
 
     $id = $item['id'];
-    $sql = "SELECT COSTO_PROM FROM INVE01 where CVE_ART='$id'";
+    $sql = "SELECT COSTO_PROM FROM INVE" .$BD. " where CVE_ART='$id'";
     $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
     if (0 !== sqlsrv_num_rows($res)){
       while ($arti = sqlsrv_fetch_array($res)) {
@@ -73,7 +75,7 @@ CODIGO,
 LOCALIDAD,
 ESTADO,
 TELEFONO
-FROM CLIE01
+FROM CLIE" .$BD. "
 WHERE CLAVE='$ID' AND CRUZAMIENTOS_ENVIO='$MAIL'";
 
 $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
@@ -250,7 +252,7 @@ if ($state == 'approved') {
   $con = conexion();
   foreach ($ID_ARTICLES as $key => $item) {
     $id = $item['id'];
-    $sql = "SELECT DESCR as Nombre, COSTO_PROM FROM INVE01 where CVE_ART='$id'";
+    $sql = "SELECT DESCR as Nombre, COSTO_PROM FROM INVE" .$BD. " where CVE_ART='$id'";
 
     $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
     if (0 !== sqlsrv_num_rows($res)){
@@ -318,20 +320,6 @@ if ($state == 'approved') {
     'EMAIL' => $emailUser,
     'idVenta' => $idventa
   ];
-
-  sendEmail($pdf, $sendData);
-
-  // require_once "php/Conexion.php";
-  // $con = conexion();
-  // $sql = "SELECT CLAVE FROM CLIE01 where CLAVE='$ID'";
-  //
-  //   $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
-  //   if (0 !== sqlsrv_num_rows($res)){
-  //     while ($user = sqlsrv_fetch_array($res)) {
-  //
-  //
-  //     }
-  // }
 
   // OBTENEMOS LOS DATOS NECESARIOS DEL ARTICULO
   require_once "php/Conexion.php";
@@ -792,18 +780,97 @@ if ($state == 'approved') {
 
     $res16 =  sqlsrv_query($con, $sql16, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 
+    // PASO 13
+
+    $sql17 = "IF NOT EXISTS (SELECT REFER FROM
+    CUEN_DET" .$BD. "
+    WHERE REFER = '$CVE_DOC' AND
+    CVE_CLIE = '$ID' AND
+    ID_MOV = $ID_MOV AND -- EL ID_MOV ES EL QUE SALE DEL QUERY DE ARRIBA (STEP_12)
+    NUM_CPTO = 10 AND -- VALOR FIJO
+    NO_PARTIDA = 1) --CECHAR EN EL CODIGO SI EL NO_PARTIDA ES 1 SEMPRE O CAMBI EN OTRO CICLO
+
+    INSERT INTO CUEN_DET" .$BD. "
+    (CVE_CLIE,
+    REFER,
+    ID_MOV,
+    NUM_CPTO,
+    NUM_CARGO,
+    CVE_OBS,
+    NO_FACTURA,
+    DOCTO,
+    IMPORTE,
+    FECHA_APLI,
+    FECHA_VENC,
+    AFEC_COI,
+    STRCVEVEND,
+    NUM_MONED,
+    TCAMBIO,
+    IMPMON_EXT,
+    FECHAELAB,
+    CTLPOL,
+    CVE_FOLIO,
+    TIPO_MOV,
+    SIGNO,
+    CVE_AUT,
+    USUARIO,
+    NO_PARTIDA,
+    REF_SIST,
+    BENEFICIARIO,
+    NUMCTAPAGO_ORIGEN)
+    VALUES
+    ('$ID',--CVE_CLIE
+    '$CVE_DOC',--REFER				FOLIO DE VENTA
+    ISNULL((SELECT TOP 1 ISNULL(NUM_CPTO,0) FROM CUEN_M" .$BD. " WHERE REFER = '$CVE_DOC' AND CVE_CLIE = '$ID'),25),
+    '10',--NUM_CPTO					--VALOR FIJO
+    '1',--NUM_CARGO					--VALOR FIJO
+    '0',--CVE_OBS					--VALOR FIJO
+    '$CVE_DOC',--NO_FACTURA
+    '$CVE_DOC',--DOCTO
+    '$TotalxArtGlobal',--fIMPORTE							MONTO TOTAL DE VENTA
+    '$fecha_php',--FECHA_APLI
+    '$fecha_php',--FECHA_VENC
+    'N',--AFEC_COI					--VALOR FIJO
+    '1',--STRCVEVEND				--VALOR FIJO
+    '1',--NUM_MONED					--VALOR FIJO
+    '1',--TCAMBIO					--VALOR FIJO
+    '$TotalxArtGlobal',--IMPMON_EXT								CANTIDAD TOTAL DE VENTA
+    GETDATE(),--FECHAELAB
+    '0',--CTLPOL					--VALOR FIJO
+    '',--CVE_FOLIO					--VALOR FIJO
+    'A',--TIPO_MOV					--VALOR FIJO
+    '-1',--SIGNO					--VALOR FIJO
+    '0',--CVE_AUT					--VALOR FIJO
+    '0',--USUARIO					--VALOR FIJO
+    '1',--NO_PARTIDA								HAY QUE REVISAR SI ESTE VALOR ES FIJO O DEPENDE EN VDD DE LAS PARTIDAS QUE TIENE LA VENTA
+    'R',--REF_SIST					--VALOR FIJO
+    '$nombre',--BENEFICIARIO			NOMBRE DEL CLIENTE
+    '$ID')--NUMCTAPAGO_ORIGEN					CLAVE DEL CLIENT";
+
+    $res17 =  sqlsrv_query($con, $sql17, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 
 
+    // PASO 14
 
+    $sql18 = "UPDATE CLIE" .$BD. "
+    SET
+    SALDO = ISNULL(SALDO,0) + $TotalxArtGlobal,--316 ES LA CANTIDd TOTAL DE LA VENTA QUE SE ESTA HACIENDO
+    ULT_VENTAD = '$CVE_DOC', --FOLIO DE VENTA QUE SERA EL DE PAYPAL
+    ULT_COMPM = '$TotalxArtGlobal',--316 ES LA CANTIDd TOTAL DE LA VENTA QUE SE ESTA HACIENDO
+    FCH_ULTCOM = '$fecha_php',
+    VENTAS = ISNULL(VENTAS,0) + $TotalxArtGlobal--316 ES LA CANTIDd TOTAL DE LA VENTA QUE SE ESTA HACIENDO
+    WHERE CLAVE = '$ID'--CLAVE DEL CLIENTE";
+
+    $res18 =  sqlsrv_query($con, $sql18, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 
 
     sqlsrv_close($con);
   }
 
-
+  sendEmail($pdf, $sendData);
   echo "
   <script type='text/javascript'>
-  // window.location= 'index.php?vaciar=1';
+  window.location= 'index.php?vaciar=1';
   alert('Pago aprobado');
   </script>";
 }
@@ -825,14 +892,14 @@ function sendEmail($pdf, $sendData){
     $mail->isSMTP();                                            // Send using SMTP
     $mail->Host       = 'smtp.gmail.com';                    //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-    $mail->Username   = 'gerenciageneral@evolutionsilver.com';                     // SMTP username
-    $mail->Password   = 'Balbucerito2016';                               // SMTP password
+    $mail->Username   = 'fernando18092105@gmail.com';                     // SMTP username  gerenciageneral@evolutionsilver.com
+    $mail->Password   = '************';                               // SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
     $mail->SMTPSecure = 'tls';
     $mail->Port  = 587;                                    // TCP port to connect to
 
     //Recipients
-    $mail->setFrom('gerenciageneral@evolutionsilver.com');
+    $mail->setFrom('fernando18092105@icloud.com');
     // $mail->addAddress('gerenciageneral@evolutionsilver.com');     // Add a recipient
     $mail->addAddress($sendData['EMAIL']);               // Name is optional
     // $mail->addReplyTo('gerenciageneral@evolutionsilver.com', 'Information');

@@ -11,7 +11,7 @@ $cantidad = 0;
 $totalP =0;
 $vtaTotal = 0;
 $costoEnvio = 0;
-
+$BD = '01';
 
 // formulario
 $nombre = '';
@@ -27,7 +27,7 @@ $email = '';
 $paymentToken = '';
 $paymentID = '';
 
-if (!isset($_SESSION["ID_USER"])) {
+if (!isset($_SESSION["ID_USER"]) || !isset($_COOKIE['express'])) {
   header('Location: index.php');
 }
 if (isset($_SESSION['ID_ARTICLES'])) {
@@ -61,7 +61,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   foreach($ID_ARTICLES as $key => $item){
 
     $id = $item['id'];
-    $sql = "SELECT COSTO_PROM FROM INVE01 where CVE_ART='$id'";
+    $sql = "SELECT COSTO_PROM FROM INVE" .$BD. " where CVE_ART='$id'";
     $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
     if (0 !== sqlsrv_num_rows($res)){
       while ($arti = sqlsrv_fetch_array($res)) {
@@ -320,7 +320,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
             LOCALIDAD,
             ESTADO,
             TELEFONO
-            FROM CLIE01
+            FROM CLIE" .$BD. "
             WHERE CLAVE='$ID' AND CRUZAMIENTOS_ENVIO='$MAIL'";
 
             $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
@@ -402,7 +402,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
             if (isset($_SESSION['ID_ARTICLES'])) {
             foreach ($ID_ARTICLES as $key => $item) {
               $id= $item['id'];
-              $sql = "SELECT DESCR as Nombre,COSTO_PROM FROM INVE01 where CVE_ART='$id'";
+              $sql = "SELECT DESCR as Nombre,COSTO_PROM FROM INVE" .$BD. " where CVE_ART='$id'";
 
               $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
               if (0 !== sqlsrv_num_rows($res)){
@@ -444,6 +444,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                       <script src="https://www.paypalobjects.com/api/checkout.js"></script>
                       <script>
                       paypal.Button.render({
+
                         env: 'sandbox',
                         style:{
 
