@@ -409,13 +409,12 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
               if (isset($_SESSION['ID_ARTICLES'])) {
                 foreach ($ID_ARTICLES as $key => $item) {
                   $id= $item['id'];
-                  $sql = "SELECT DESCR,CVE_IMAGEN,COSTO_PROM FROM INVE01 where CVE_ART='$id'";
+                  $sql = "SELECT EXIST,DESCR,CVE_IMAGEN,COSTO_PROM FROM INVE01 where CVE_ART='$id'";
 
                   $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
                   if (0 !== sqlsrv_num_rows($res)){
                     while ($arti = sqlsrv_fetch_array($res)) {
-
-
+                      $EXISTENCIA = $arti['EXIST'];
                       $TotalxArt = $arti['COSTO_PROM'] * $item['cantidad'];
 
                       ?>
@@ -461,9 +460,17 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
                             id = '<?php echo $id ?>';
                             cantidad=$('#qty<?php echo $id ?>').val();
                             posicion = <?php echo $key ?>;
-                            cartModPrice(id,
-                              cantidad,
-                              posicion);
+
+                            debugger;
+                            if (cantidad <= <?php echo $EXISTENCIA ?>) {
+                              cartModPrice(id,
+                                cantidad,
+                                posicion);
+                              }
+                              else {
+                                alert("No hay stock disponible, solo puede agregar la cantidad maxima de: " + <?php echo $EXISTENCIA ?>);
+                                valor.value --;
+                              }
 
                             });
 
@@ -488,9 +495,16 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
                                 id = '<?php echo $id ?>';
                                 cantidad=$('#qty<?php echo $id ?>').val();
                                 posicion = <?php echo $key ?>;
-                                cartModPrice(id,
-                                  cantidad,
-                                  posicion);
+                                if (cantidad <= <?php echo $EXISTENCIA ?>) {
+                                  cartModPrice(id,
+                                    cantidad,
+                                    posicion);
+                                  }
+                                  else {
+                                    alert("No hay stock disponible, solo puede agregar la cantidad maxima de: " + <?php echo $EXISTENCIA ?>);
+                                    valor.value = "<?php echo $item['cantidad'] ?>";
+                                  }
+
                                 }
                               });
                             });
@@ -499,6 +513,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
                           }
                         }
                       }
+                      sqlsrv_close($con);
                     }
                     ?>
                   </tbody>
@@ -775,7 +790,29 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
         <?php }
       }
       ?>
+      // Enter de inicio de sesion
+      var input = document.getElementById("txt_Pass");
+      input.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnEntrar").click();
+        }
+      });
 
+      // Enter de inicio de sesion
+      var input = document.getElementById("txt_PassVal");
+      input.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnEntrarVal").click();
+        }
+      });
     });
 
     </script>

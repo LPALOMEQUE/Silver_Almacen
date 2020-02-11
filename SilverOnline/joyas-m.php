@@ -472,6 +472,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
       $accesorio = '___________';
     }
     $sql="SELECT
+    I.EXIST,
     I.CVE_ART,
     I.DESCR as Nombre,
     I.ULT_COSTO,
@@ -491,6 +492,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
   else {
 
     $sql="SELECT
+    I.EXIST,
     I.CVE_ART,
     I.DESCR as Nombre,
     I.ULT_COSTO,
@@ -509,6 +511,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
   $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
   if (0 !== sqlsrv_num_rows($res)){
     while ($category = sqlsrv_fetch_array($res)) {
+      $EXISTENCIA = $category['EXIST'];
       ?>
       <!-- ****** Quick View Modal Area Start ****** -->
       <div class="modal fade" id="quickview<?php echo $category['CVE_ART'] ?>" tabindex="-1" role="dialog" aria-labelledby="quickview" aria-hidden="true">
@@ -542,6 +545,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                         <h5 class="price">$<?php echo number_format($category['ULT_COSTO'],2) ?> <span>$624</span></h5>
                         <p>Marca: SILVER</p>
                         <p><?php echo $category['Descripcion'] ?></p>
+                        <p style="color: #ff084e;"><strong>STOCK DISPONIBLE: <?php echo $category['EXIST'] ?></strong></p>
                       </div>
                       <div class="row">
                         <!-- Add to Cart Form -->
@@ -561,17 +565,6 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                             id= "<?php echo $category['CVE_ART'] ?>";
                             cantidad= $('#qty<?php echo $category['CVE_ART'] ?>').val();
 
-                            <?php
-
-                              $sql2 = "SELECT EXIST FROM INVE" .$BD. " where CVE_ART='" .$category['CVE_ART']."' ";
-                              $res2 =  sqlsrv_query($con, $sql2, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
-                              if (0 !== sqlsrv_num_rows($res)){
-                                while ($arti2 = sqlsrv_fetch_array($res2)) {
-                                  $EXISTENCIA =  $arti2['EXIST'];
-                                }
-                              }
-
-                             ?>
                              debugger;
                              if (cantidad <= <?php echo $EXISTENCIA ?>) {
                                AddCart(id,
@@ -846,6 +839,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                 $accesorio = '___________';
               }
               $sql="SELECT
+              I.EXIST,
               I.CVE_ART,
               I.DESCR as Nombre,
               I.ULT_COSTO,
@@ -865,6 +859,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
             else {
 
               $sql="SELECT
+              I.EXIST,
               I.CVE_ART,
               I.DESCR as Nombre,
               I.ULT_COSTO,
@@ -889,7 +884,8 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                 <div class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.2s">
                   <!-- Product Image -->
                   <div class="product-img">
-                    <img src="img/product-img/<?php echo $category['CVE_IMAGEN'] ?>.jpg" alt="">
+                    <h6 class="title" style="color: #ff084e;">STOCK DIPONBLE: <?php echo $category['EXIST'] ?></h6>
+                    <img src="img/product-img/<?php echo $category['CVE_IMAGEN'] ?>.JPG" alt="">
                     <div class="product-quicview">
                       <a href="#" data-toggle="modal" data-target="#quickview<?php echo $category['CVE_ART'] ?>"><i class="ti-plus"></i></a>
                     </div>

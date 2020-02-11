@@ -186,6 +186,7 @@ function AddCart(id, cantidad){
 
       $('#quickview' + id ).hide();
       location.reload();
+
     }
 
   });

@@ -1046,6 +1046,7 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
 <script type="text/javascript">
 
 $(document).ready(function(){
+
   var validaImg =0;
   var nameArticulo ="";
   $('#btnGuardar').click(function(){
@@ -1272,6 +1273,18 @@ $(document).ready(function(){
           }
         });
       });
+
+      // Enter de inicio de sesion
+      var input = document.getElementById("txt_Pass");
+      input.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnEntrar").click();
+        }
+      });
     });
 
     $('#btnLogOut').click(function(){
@@ -1306,10 +1319,10 @@ $(document).ready(function(){
     //   }
     // }
     function mayus(e) {
-        e.value = e.value.toUpperCase();
+      e.value = e.value.toUpperCase();
     }
     function minus(e) {
-        e.value = e.value.toLowerCase();
+      e.value = e.value.toLowerCase();
     }
     function validar_email( email )
     {
