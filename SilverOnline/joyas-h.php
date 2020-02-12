@@ -568,10 +568,15 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                              if (cantidad <= <?php echo $EXISTENCIA ?>) {
                                AddCart(id,
                                  cantidad);
+
+
+                                 // $('#btnShowquickview <?php echo $category['CVE_ART'] ?>').disable();
+                                 // document.getElementById("btnSendPost<?php echo $category['CVE_ART'] ?>").disabled = true;
                              }
                             else {
                               alert("No hay stock disponible, solo puede agregar la cantidad maxima de: " + <?php echo $EXISTENCIA ?>)
                             }
+
 
                             });
                             $('#btnMenos<?php echo $category['CVE_ART'] ?>').click(function(){
@@ -884,9 +889,9 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                   <!-- Product Image -->
                   <div class="product-img">
                     <h6 class="title" style="color: #ff084e;">STOCK DIPONBLE: <?php echo $category['EXIST'] ?></h6>
-                    <img src="img/product-img/<?php echo $category['CVE_IMAGEN'] ?>.JPG" alt="">
+                    <img src="img/product-img/product-1.JPG" alt="">
                     <div class="product-quicview">
-                      <a href="#" data-toggle="modal" data-target="#quickview<?php echo $category['CVE_ART'] ?>"><i class="ti-plus"></i></a>
+                      <a href="#" id="btnShowquickview<?php echo $category['CVE_ART'] ?>" data-toggle="modal" data-target="#quickview<?php echo $category['CVE_ART'] ?>"><i class="ti-plus"></i></a>
                     </div>
                   </div>
                   <!-- Product Description -->
@@ -1079,6 +1084,21 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
 <script type="text/javascript">
 
 $(document).ready(function(){
+
+<?php
+if (isset($ID_ARTICLES)) {
+  foreach($ID_ARTICLES as $key => $item){
+
+?>
+document.getElementById("btnSendPost<?php echo $item['id'] ?>").disabled = true;
+
+
+  <?php
+  }
+}
+
+ ?>
+
 
   $('#btnEntrar').click(function(){
     email= $('#txt_Email').val();
