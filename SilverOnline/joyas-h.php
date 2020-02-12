@@ -566,18 +566,13 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                             id= "<?php echo $category['CVE_ART'] ?>";
                             cantidad= $('#qty<?php echo $category['CVE_ART'] ?>').val();
 
-                             if (cantidad <= <?php echo $EXISTENCIA ?>) {
-                               AddCart(id,
-                                 cantidad);
-
-
-                                 // $('#btnShowquickview <?php echo $category['CVE_ART'] ?>').disable();
-                                 // document.getElementById("btnSendPost<?php echo $category['CVE_ART'] ?>").disabled = true;
-                             }
-                            else {
-                              alert("No hay stock disponible, solo puede agregar la cantidad maxima de: " + <?php echo $EXISTENCIA ?>)
-                            }
-
+                            if (cantidad <= <?php echo $EXISTENCIA ?>) {
+                              AddCart(id,
+                                cantidad);
+                              }
+                              else {
+                                alert("No hay stock disponible, solo puede agregar la cantidad maxima de: " + <?php echo $EXISTENCIA ?>)
+                              }
 
                             });
                             $('#btnMenos<?php echo $category['CVE_ART'] ?>').click(function(){
@@ -1086,20 +1081,16 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
 
 $(document).ready(function(){
 
-<?php
-if (isset($ID_ARTICLES)) {
-  foreach($ID_ARTICLES as $key => $item){
-
-?>
-document.getElementById("btnSendPost<?php echo $item['id'] ?>").disabled = true;
-
-
   <?php
+  if (isset($ID_ARTICLES)) {
+    foreach($ID_ARTICLES as $key => $item){
+      ?>
+      $('#btnSendPost<?php echo $item['id'] ?>').attr("disabled",true);
+      $('#qty<?php echo $id ?>').attr("disabled",true);
+      <?php
+    }
   }
-}
-
- ?>
-
+  ?>
 
   $('#btnEntrar').click(function(){
     email= $('#txt_Email').val();
