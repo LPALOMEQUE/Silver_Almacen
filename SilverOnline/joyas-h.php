@@ -1,6 +1,6 @@
 <?php
 session_start();
-// PRUEBA COMENTARIO
+
 $bagNumber = 0;
 $TotalxArtGlobal = 0;
 $cantidad = 0;
