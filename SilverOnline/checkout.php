@@ -66,7 +66,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
     if (0 !== sqlsrv_num_rows($res)){
       while ($arti = sqlsrv_fetch_array($res)) {
         $TotalxArtGlobal += $arti['COSTO_PROM'] * $item['cantidad'];
-      $vtaTotal = $TotalxArtGlobal + $_COOKIE['express'];
+        $vtaTotal = $TotalxArtGlobal + $_COOKIE['express'];
       }
     }
   }
@@ -327,18 +327,18 @@ if (isset($_SESSION['ID_ARTICLES'])) {
             if (0 !== sqlsrv_num_rows($res)){
               while ($user = sqlsrv_fetch_array($res)) {
                 $email = $user['CORREO'];
-                  $nombre = $user['NOMBRE'];
-                  $nombreRecibe = $user['NOMBRE_RECIBE'];
-                  // $apellidoM = $user[4];
-                  $calle = $user['CALLE'];
-                  $numCalle = $user['NUMEXT'];
-                  $cp = $user['CODIGO'];
-                  $ciudad = $user['LOCALIDAD'];
-                  $estado = $user['ESTADO'];
-                  $cel = $user['TELEFONO'];
-              ?>
-              <div class="row">
-                <div class="col-md-12 mb-3">
+                $nombre = $user['NOMBRE'];
+                $nombreRecibe = $user['NOMBRE_RECIBE'];
+                // $apellidoM = $user[4];
+                $calle = $user['CALLE'];
+                $numCalle = $user['NUMEXT'];
+                $cp = $user['CODIGO'];
+                $ciudad = $user['LOCALIDAD'];
+                $estado = $user['ESTADO'];
+                $cel = $user['TELEFONO'];
+                ?>
+                <div class="row">
+                  <div class="col-md-12 mb-3">
                     <label for="txtName">Nombre del Vendedor<span>*</span></label>
                     <input type="text" onkeyup="mayus(this);" class="form-control" id="txtName" value="<?php echo $nombre ?>" readonly required>
                   </div>
@@ -380,26 +380,26 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                 </div>
               <?php }
             } ?>
-            </div>
-            <button type="button" class="btn karl-checkout-btn" id="btnActualizarDatos">Actualizar</button>
-          </form>
-        </div>
-      </div>
-
-      <div class="col-12 col-md-6 col-lg-5 ml-lg-auto">
-        <div class="order-details-confirmation">
-
-          <div class="cart-page-heading">
-            <h5>Tu orden</h5>
-            <p>Detalles</p>
           </div>
+          <button type="button" class="btn karl-checkout-btn" id="btnActualizarDatos">Actualizar</button>
+        </form>
+      </div>
+    </div>
 
-          <ul class="order-details-form mb-4">
-            <li><span>Artículos</span> <span>Total</span></li>
-            <?php
-            require_once "php/Conexion.php";
-            $con = conexion();
-            if (isset($_SESSION['ID_ARTICLES'])) {
+    <div class="col-12 col-md-6 col-lg-5 ml-lg-auto">
+      <div class="order-details-confirmation">
+
+        <div class="cart-page-heading">
+          <h5>Tu orden</h5>
+          <p>Detalles</p>
+        </div>
+
+        <ul class="order-details-form mb-4">
+          <li><span>Artículos</span> <span>Total</span></li>
+          <?php
+          require_once "php/Conexion.php";
+          $con = conexion();
+          if (isset($_SESSION['ID_ARTICLES'])) {
             foreach ($ID_ARTICLES as $key => $item) {
               $id= $item['id'];
               $sql = "SELECT DESCR as Nombre,COSTO_PROM FROM INVE" .$BD. " where CVE_ART='$id'";
@@ -409,101 +409,110 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                 while ($arti = sqlsrv_fetch_array($res)) {
 
 
-                $TotalxArt = $arti['COSTO_PROM'] * $item['cantidad'];
-                ?>
-                <li><span><?php echo $arti['Nombre'] ?></span> <span>$<?php echo number_format($TotalxArt,2) ?></span></li>
+                  $TotalxArt = $arti['COSTO_PROM'] * $item['cantidad'];
+                  ?>
+                  <li><span><?php echo $arti['Nombre'] ?></span> <span>$<?php echo number_format($TotalxArt,2) ?></span></li>
 
-              <?php }
-            }
+                <?php }
+              }
             }
           }?>
-            <li><strong><span>Subtotal</span></strong> <strong><span>$<?php echo number_format($TotalxArtGlobal,2) ?></span></span></li>
-              <li><strong><span>Envio</span></span></strong> <strong><span>$<?php
-              if (isset($_COOKIE['express'])) {
-                echo number_format($_COOKIE['express'],2);
-              }else {
-                echo $snf='0.00';
-              }
-              ?></span></span></li>
-              <li><strong><span>Total</span></span></strong> <strong><span>$<?php echo number_format($vtaTotal,2) ?></span></span></li>
-              </ul>
+          <li><strong><span>Subtotal</span></strong> <strong><span>$<?php echo number_format($TotalxArtGlobal,2) ?></span></span></li>
+            <li><strong><span>Envio</span></span></strong> <strong><span>$<?php
+            if (isset($_COOKIE['express'])) {
+              echo number_format($_COOKIE['express'],2);
+            }else {
+              echo $snf='0.00';
+            }
+            ?></span></span></li>
+            <li><strong><span>Total</span></span></strong> <strong><span>$<?php echo number_format($vtaTotal,2) ?></span></span></li>
+            </ul>
 
 
-              <div id="accordion" role="tablist" class="mb-4">
-                <div class="card">
-                  <div class="card-header" role="tab" id="headingOne">
-                    <h6 class="mb-0">
-                      <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i class="fa fa-circle-o mr-3"></i>Paypal</a>
-                    </h6>
-                  </div>
+            <div id="accordion" role="tablist" class="mb-4">
+              <div class="card">
+                <div class="card-header" role="tab" id="headingOne">
+                  <h6 class="mb-0">
+                    <a data-toggle="collapse" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne"><i class="fa fa-circle-o mr-3"></i>Paypal</a>
+                  </h6>
+                </div>
 
-                  <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
-                    <div class="card-body">
-                      <div id="paypal-button-container"></div>
-                      <div id="paypal-button"></div>
-                      <script src="https://www.paypalobjects.com/api/checkout.js"></script>
-                      <script>
-                      paypal.Button.render({
+                <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+                  <div class="card-body">
+                    <div id="paypal-button-container"></div>
+                    <div id="paypal-button"></div>
+                    <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+                    <script>
+                    paypal.Button.render({
 
-                        env: 'sandbox',
-                        style:{
+                      env: 'sandbox',
+                      style:{
 
-                          label: 'checkout',
-                          size: 'responsive',
-                          shape: 'pill',
-                          color: 'gold'
+                        label: 'checkout',
+                        size: 'responsive',
+                        shape: 'pill',
+                        color: 'gold'
 
-                        },
-                        client: {
-                          sandbox: 'AQfqqbzkFvxShrOBEbcFqOB6uDjVlaFgIwpW2JEErSGMSQe1cCzMMHdhA6jYXqhnYGVzSsmI3BGYQF9G',
-                          production: 'AWkFACdq0h4aeDpN-yfYhlk4FxnpGYbLmX6rcVA5qo3N2ErxCp3GrPyQ1sWIwCR2EH6UubCHJfNnH84I'
+                      },
+                      client: {
+                        sandbox: 'AQfqqbzkFvxShrOBEbcFqOB6uDjVlaFgIwpW2JEErSGMSQe1cCzMMHdhA6jYXqhnYGVzSsmI3BGYQF9G',
+                        production: 'AWkFACdq0h4aeDpN-yfYhlk4FxnpGYbLmX6rcVA5qo3N2ErxCp3GrPyQ1sWIwCR2EH6UubCHJfNnH84I'
 
-                        },
-                        payment: function (data, actions) {
-                          return actions.payment.create({
-                            transactions:
-                            [
-                              {
-                                amount: {total: '<?php echo number_format($vtaTotal,2); ?>', currency: 'MXN'},
-                                description: 'Compra de artículos a Silver Evolution:$<?php echo number_format($vtaTotal,2);?>'
-                              }
-                            ]
-                          });
-                        },
-                        onAuthorize: function (data, actions) {
-                          return actions.payment.execute().then(function () {
-                            // console.log(data);
-                            window.location="verificador.php?paymentToken="+ data.paymentToken +
-                            "&paymentID=" + data.paymentID +
-                            "&EMAIL=" + '<?php echo $email ?>';
-                          });
-                        }
-                      }, '#paypal-button-container');
-                      </script>
+                      },
+                      payment: function (data, actions) {
+                        return actions.payment.create({
+                          transactions:
+                          [
+                            {
+                              amount: {total: '<?php echo number_format($vtaTotal,2); ?>', currency: 'MXN'},
+                              description: 'Compra de artículos a Silver Evolution:$<?php echo number_format($vtaTotal,2);?>'
+                            }
+                          ]
+                        });
+                      },
+                      onAuthorize: function (data, actions) {
+                        return actions.payment.execute().then(function () {
+                          // console.log(data);
+                          window.location="verificador.php?paymentToken="+ data.paymentToken +
+                          "&paymentID=" + data.paymentID +
+                          "&EMAIL=" + '<?php echo $email ?>';
+                        });
+                      }
+                    }, '#paypal-button-container');
+                    </script>
 
-                    </div>
                   </div>
                 </div>
-                <!-- <div class="card">
-                <div class="card-header" role="tab" id="headingTwo">
-                <h6 class="mb-0">
-                <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-circle-o mr-3"></i>cash on delievery</a>
-              </h6>
-            </div>
-            <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
-            <div class="card-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo quis in veritatis officia inventore, tempore provident dignissimos.</p>
-          </div>
-        </div>
-      </div> -->
+              </div>
 
+              <div class="<?php
+              if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
+                echo 'inline';
+              }else {
+                echo 'none';
+              } ?>">
+              <div class="card">
+                <div class="card-header" role="tab" id="headingTwo">
+                  <h6 class="mb-0">
+                    <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-circle-o mr-3"></i>Consigna</a>
+                  </h6>
+                </div>
+
+              <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
+                <div class="card-body">
+                  <button type="button" class="btn karl-checkout-btn" id="btnConsigna">Pedir</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- <a href="#" class="btn karl-checkout-btn">Place Order</a> -->
+      </div>
     </div>
 
-    <!-- <a href="#" class="btn karl-checkout-btn">Place Order</a> -->
   </div>
-</div>
-
-</div>
 </div>
 </div>
 <!-- ****** Checkout Area End ****** -->
@@ -705,9 +714,9 @@ $(document).ready(function(){
 
 });
 function mayus(e) {
-    e.value = e.value.toUpperCase();
+  e.value = e.value.toUpperCase();
 }
 function minus(e) {
-    e.value = e.value.toLowerCase();
+  e.value = e.value.toLowerCase();
 }
 </script>
