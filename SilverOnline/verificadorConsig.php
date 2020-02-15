@@ -631,7 +631,95 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 
   $res8 =  sqlsrv_query($con, $sql8, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 
+
+  // PASO 7
+
+  $sql9 = "UPDATE AFACT" .$BD. " SET
+  PVTA_COM = ISNULL(PVTA_COM,0) + $TotalxArtGlobal, --CAN_TOT        EL 159 ES LA CANTIDAD TOTAL DE VENTA
+  PDESCTO = ISNULL(PDESCTO,0) + 0 --DES_TOT                  EL 0 ES EL DESCUENTO
+  WHERE CVE_AFACT = $mes --OBTENEMOS EL NUMERO DEL MES";
+
+  $res9=  sqlsrv_query($con, $sql9, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+
+  // paso 8
+
+  $sql10 = "INSERT INTO CUEN_M" .$BD. "
+  (CVE_CLIE,
+  REFER,
+  NUM_CPTO,
+  NUM_CARGO,
+  CVE_OBS,
+  NO_FACTURA,
+  DOCTO,
+  IMPORTE,
+  FECHA_APLI,
+  FECHA_VENC,
+  AFEC_COI,
+  STRCVEVEND,
+  NUM_MONED,
+  TCAMBIO,
+  IMPMON_EXT,
+  FECHAELAB,
+  TIPO_MOV,
+  CVE_BITA,
+  SIGNO,
+  USUARIO,
+  ENTREGADA,
+  FECHA_ENTREGA,
+  STATUS,
+  REF_SIST,
+  CVE_AUT,
+  BENEFICIARIO,
+  NUMCTAPAGO_ORIGEN)
+  VALUES
+  ('$ID',--_CVE_CLIE
+  '$CVE_DOC',--REFER
+  '25',--NUM_CPTO									--VALOR FIJO
+  '1',											--VALOR FIJO
+  '0',--CVE_OBS									--VALOR FIJO
+  '$CVE_DOC',--NO_FACTURA
+  '$CVE_DOC',--DOCTO VARIABLE
+  '$TotalxArtGlobal',--IMPORTE			variable
+  '$fecha_php',--FECHA_APLI
+  '$fecha_php',--FECHA_VENC
+  'N',--AFEC_COI									--VALOR FIJO
+  '1',--STRCVEVEND								--VALOR FIJO
+  '1',--NUM_MONED									--VALOR FIJO
+  '1',--TCAMBIO									--VALOR FIJO
+  '$TotalxArtGlobal',--IMPMON_EXT variable   CANTIDAD TOTAL DE VENTA
+  GETDATE(),--FECHAELAB
+  'C',--TIPO_MOV									--VALOR FIJO
+  '0',--CVE_BITA									--VALOR FIJO
+  '1',--SIGNO										--VALOR FIJO
+  '0',--USUARI0									--VALOR FIJO
+  'S',--ENTREGADA									--VALOR FIJO
+  '$fecha_php',--FECHA_ENTREGA
+  'A',											--VALOR FIJO
+  'P',--REF_SIST									--VALOR FIJO
+  '0',--CVE_AUT									--VALOR FIJO
+  '$nombre',--BENEFICIARIO		NOMBRE DEL CLIENTE
+  '$ID')--NUMCTAPAGO_ORIGEN						ES LA CLAVE DEL CLIENTE";
+
+  $res10=  sqlsrv_query($con, $sql10, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+
+
+  // PASO 9
+
+  $sql11 = "UPDATE CLIE" .$BD. " SET
+  SALDO = ISNULL(SALDO,0) + $TotalxArtGlobal, --EL 15557 ES LA VENTA TOTAL GLOBAL
+  ULT_VENTAD = '$CVE_DOC', -- ES EL CVE_DOC
+  ULT_COMPM = '$TotalxArtGlobal',--EL 15557 ES LA VENTA TOTAL GLOBAL
+  FCH_ULTCOM = '$fecha_php',
+  VENTAS = ISNULL(VENTAS,0) + $TotalxArtGlobal --EL 15557 ES LA VENTA TOTAL GLOBAL
+  WHERE
+  CLAVE = '$ID' --ES LA CLAVE DEL CLIENTE";
+
+  $res11 =  sqlsrv_query($con, $sql11, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+
+
 }
+
+
 
 // sendEmail($pdf, $sendData);
 echo "
