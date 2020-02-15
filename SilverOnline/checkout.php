@@ -635,6 +635,21 @@ $(document).ready(function(){
     );
   });
 
+
+
+
+$('#btnConsigna').click(function(){
+debugger;
+<?php if (isset($_SESSION["ID_USER"]) && isset($_SESSION['Email'])){ ?>
+
+location.href = 'verificadorConsig.php'
+
+<?php } ?>
+});
+
+
+
+
   $('#btnActualizarDatos').click(function(){
 
     nombre = $('#txtName').val();
