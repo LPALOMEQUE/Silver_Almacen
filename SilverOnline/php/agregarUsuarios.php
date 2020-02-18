@@ -224,7 +224,7 @@ $sql2=" INSERT INTO CLIE01
     0,
     -- getdate()
     0,
-    ' ',
+    '$CVE_VEND',
     0,
     ' ',
     0,
