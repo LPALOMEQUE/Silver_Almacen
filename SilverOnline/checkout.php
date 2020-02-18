@@ -39,6 +39,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 if (isset($_POST['VACIAR_LOGIN'])) {
   unset($_SESSION['ID_USER']);
   unset($_SESSION['Email']);
+  unset($_SESSION['status']);
 }
 
 //Vaciamos el carrito
@@ -430,6 +431,12 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 
 
             <div id="accordion" role="tablist" class="mb-4">
+              <div class="<?php
+              if (isset($_SESSION["status"]) && $_SESSION["status"] == 'COMUN') {
+                echo 'inline';
+              }else {
+                echo 'none';
+              } ?>">
               <div class="card">
                 <div class="card-header" role="tab" id="headingOne">
                   <h6 class="mb-0">
@@ -484,7 +491,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                   </div>
                 </div>
               </div>
-
+            </div>
               <div class="<?php
               if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
                 echo 'inline';

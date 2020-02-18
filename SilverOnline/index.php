@@ -11,6 +11,17 @@ $cantidad = 0;
 $key = 1;
 $BD = '01';
 
+// PRECIO CON DESCUENTO (SUPER PRECIO)
+$ID_PRECIO = 2;
+
+// FILTRADO POR PRECIO DEPENDIENDO DEL TIPO DE USUARIO
+if(isset($_SESSION['status'])){
+  if($_SESSION["status"] == 'ADMIN'){
+    // PRECIO NORMAL
+    $ID_PRECIO = 1;
+  }
+}
+
 if (isset($_SESSION['ID_ARTICLES'])) {
   $bagNumber = count($_SESSION['ID_ARTICLES']);
   $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
@@ -28,6 +39,7 @@ if(isset($_GET['vaciar'])) {
 if (isset($_POST['VACIAR_LOGIN'])) {
   unset($_SESSION['ID_USER']);
   unset($_SESSION['Email']);
+  unset($_SESSION['status']);
 }
 
 //Imprimiendo datos globales del carrito
@@ -38,11 +50,14 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   foreach($ID_ARTICLES as $key => $item){
 
     $id = $item['id'];
-    $sql = "SELECT COSTO_PROM FROM INVE" .$BD. " where CVE_ART='$id'";
+    $sql = "SELECT PRECIO AS ULT_COSTO FROM PRECIO_X_PROD" .$BD. " WHERE CVE_ART = '$id' AND  CVE_PRECIO = $ID_PRECIO";
+
     $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
     if (0 !== sqlsrv_num_rows($res)){
       while ($fila = sqlsrv_fetch_array($res)) {
-        $TotalxArtGlobal += $fila['COSTO_PROM'] * $item['cantidad'];
+
+        $precioNormal = $fila['ULT_COSTO'];
+        $TotalxArtGlobal += $precioNormal * $item['cantidad'];
       }
     }
   }
@@ -183,7 +198,7 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
         echo $mostrar = 'inline';
       } ?>">
       <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
-      <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</button>
+      <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</button>
     </div>
   </div>
   <div class="col-md-2">
@@ -321,249 +336,342 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
                     <a class="dropdown-item" href="#">Ropa</a>
                   </div>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</a></li>
-                <!-- <div class="<?php
-                if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
-                  echo $category = 'inline';
+
+
+                <div class="<?php
+                if (isset($_SESSION["Email"])) {
+                  echo $ocultar = 'none';
                 }else {
-                  echo $category = 'none';
-                } ?>">
-                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalArticulos">Add Articulos</a></li>
+                  echo $mostrar = 'inline';
+                } ?> ">
+                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</a></li>
+              </div>
 
-              </div> -->
-            </ul>
-          </div>
-        </nav>
+              <div class="<?php
+              if (isset($_SESSION["Email"])) {
+                echo $mostrar = 'inline';
+              }else {
+                echo $ocultar = 'none';
+              } ?> ">
+              <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroCliente">Registrar Cliente</a></li>
+            </div>
+
+            <!-- <div class="<?php
+            if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
+            echo $category = 'inline';
+          }else {
+          echo $category = 'none';
+        } ?>">
+        <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalArticulos">Add Articulos</a></li>
+
+      </div> -->
+    </ul>
+  </div>
+</nav>
+</div>
+
+<!-- Modal para registro de Clientes -->
+<div class="modal fade" id="ModalRegistroCliente" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroCliente" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalRegistroCliente">Registro de Cliente</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
-
-      <!-- Modal para registro de Usuarios -->
-      <div class="modal fade" id="ModalRegistroUsuarios" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroUsuarios" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="ModalRegistroUsuarios">Registro de Usuario...</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label for="txtNombre">Nombre(s)</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtApellidoP">Apellido Paterno</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtApellidoM">Apellido Materno</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM" value="" required>
-                </div>
-              </div>
-              <h6>Datos de envío...</h6>
-
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label for="txtCalle">Calle</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCalle" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtNumCalle">Núm(#)</label>
-                  <input type="number" class="form-control" id="txtNumCalle" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtCp">C.P.</label>
-                  <input type="number" class="form-control" id="txtCp" value="" required>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-4" "mb-3">
-                  <label for="txtCiudad">Ciudad</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudad" value="" required>
-                </div>
-                <div class="col-md-4" "mb-3">
-                  <label for="txtEstado">Estado</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstado" value="" required>
-                </div>
-                <div class="col-md-4" "mb-3">
-                  <label for="txtCel">Celular</label>
-                  <input type="number" class="form-control" id="txtCel" value="" required>
-                </div>
-              </div>
-              <br/>
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label for="txtNombre">Nombre(s) quien recibe</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre_Recibe" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtApellidoP">Apellido P. Quien recibe</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP_Recibe" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtApellidoM">Apellido M. Quien recibe</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM_Recibe" value="" required>
-                </div>
-              </div>
-              <br/>
-              <h6>Datos de cuenta...</h6>
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="txtEmail">E-MaiL</label>
-                  <input type="email" onkeyup="minus(this);" class="form-control" id="txtEmail" value="" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="txtPass">Contraseña</label>
-                  <input type="password" class="form-control" id="txtPass" value="" required>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12 mb-3">
-                  <label id="lbRoll" for="cbmRoll">Roll</label>
-                  <select id="cbmRoll"  class="form-control" name="state">
-                    <option value="0">Selecciona...</option>
-                    ...
-                    <option value="ADMIN">ADMINISTRADOR</option>
-                    ...
-                    <option value="COMUN">COMÚN</option>form-control
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-              <button type="button" class="btn btn-primary" id="btnGuardar">Registrarse</button>
-            </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="txtNombreC">Nombre(s)</label>
+            <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombreC" value="" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="txtApellidoPC">Apellido Paterno</label>
+            <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoPC" value="" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="txtApellidoMC">Apellido Materno</label>
+            <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoMC" value="" required>
           </div>
         </div>
-      </div>
+        <h6>Datos de dirección...</h6>
 
-      <!-- Modal para registro de Articulos -->
-      <div class="modal fade bd-example-modal-lg" id="ModalArticulos" tabindex="-1" role="dialog" aria-labelledby="ModalArticulos" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="ModalArticulos">Registro de Artículos...</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label for="txtNameArt">Nombre</label>
-                  <input type="text" class="form-control" id="txtNameArt" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtDescArt">Descripción</label>
-                  <input type="text" class="form-control" id="txtDescArt" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtBarCode">Codigo de barra</label>
-                  <input type="text" class="form-control" id="txtBarCode" value="" required>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label for="txtModelo">Modelo</label>
-                  <input type="text" class="form-control" id="txtModelo" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label id="lblcbmMarca" for="cbmMarca">Marca</label>
-                  <select class="form-control" id="cbmMarca" name="marca">
-                    <option value="0">Selecciona...</option>
-                    <?php
-                    require_once "php/Conexion.php";
-                    $con = conexion();
-
-                    $sql = "SELECT ID_BRAND, NAME_BRAND FROM brand";
-
-                    $result = mysqli_query($con,$sql);
-                    while($marca = mysqli_fetch_row($result)){
-
-                      echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
-                    }
-                    ?>
-                  </select>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtPrecio">Precio</label>
-                  <input type="number" class="form-control" id="txtPrecio" value="0" required>
-                </div>
-
-              </div>
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label id="lbcategoria" for="cbmCategoria">Categoría</label>
-                  <select id="cbmCategoria"  class="form-control" name="state">
-                    <option value="0">Selecciona...</option>
-                    <?php
-                    require_once "php/Conexion.php";
-                    $con = conexion();
-
-                    $sql = "SELECT ID_CATEGORY, NAME_CAT FROM categories";
-
-                    $result = mysqli_query($con,$sql);
-                    while($marca = mysqli_fetch_row($result)){
-
-                      echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
-                    }
-                    ?>
-                  </select>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label id="lbSubcategoria" for="cbmSubcategoria">Subcategoría</label>
-                  <select id="cbmSubcategoria"  class="form-control" name="state">
-                    <option value="0">Selecciona...</option>
-                    <?php
-                    require_once "php/Conexion.php";
-                    $con = conexion();
-
-                    $sql = "SELECT ID_SUB_CATEGORY, NAME_SUB_CAT FROM sub_categories";
-
-                    $result = mysqli_query($con,$sql);
-                    while($marca = mysqli_fetch_row($result)){
-
-                      echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
-                    }
-                    ?>
-                  </select>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label id="lbStatus" for="cbmStatus">Estatus</label>
-                  <select id="cbmStatus"  class="form-control" name="state">
-                    <option value="2">Selecciona...</option>
-                    ...
-                    <option value="1">Activo</option>
-                    ...
-                    <option value="0">Inactivo</option>form-control
-                  </select>
-                </div>
-
-              </div>
-              <div class="row">
-                <div class="col-md-12 mb-12">
-                  <label for="txtNameIMG">Carga de Img</label>
-                  <input id="sortpicture" type="file" class="form-control" name="sortpic" />
-                  <button id="upload" class="form-control">Upload</button>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-              <button type="button" class="btn btn-primary" id="btnGuardarArt">Guardar</button>
-            </div>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="txtCalleC">Calle</label>
+            <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCalleC" value="" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="txtNumCalleC">Núm(#)</label>
+            <input type="number" class="form-control" id="txtNumCalleC" value="" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="txtCpC">C.P.</label>
+            <input type="number" class="form-control" id="txtCpC" value="" required>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-4" "mb-3">
+            <label for="txtCiudadC">Ciudad</label>
+            <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudadC" value="" required>
+          </div>
+          <div class="col-md-4" "mb-3">
+            <label for="txtEstadoC">Estado</label>
+            <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstadoC" value="" required>
+          </div>
+          <div class="col-md-4" "mb-3">
+            <label for="txtCelC">Celular</label>
+            <input type="number" class="form-control" id="txtCelC" value="" required>
+          </div>
+        </div>
+        <br/>
+        <br/>
+        <h6>Datos de cuenta...</h6>
+        <div class="row">
+          <div class="col-md-12 mb-12">
+            <label for="txtEmailC">E-MaiL</label>
+            <input type="email" onkeyup="minus(this);" class="form-control" id="txtEmailC" value="" required>
+          </div>
+
+        </div>
       </div>
-      <!-- Help Line -->
-      <div class="help-line">
-        <a href="tel:921 119 77 85"><i class="ti-headphone-alt"></i> 921 119 77 85</a>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" id="btnGuardarC">Registrarse</button>
       </div>
     </div>
   </div>
+</div>
+
+<!-- Modal para registro de Usuarios -->
+<div class="modal fade" id="ModalRegistroUsuarios" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroUsuarios" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalRegistroUsuarios">Registro de Usuario...</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="txtNombre">Nombre(s)</label>
+            <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre" value="" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="txtApellidoP">Apellido Paterno</label>
+            <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP" value="" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="txtApellidoM">Apellido Materno</label>
+            <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM" value="" required>
+          </div>
+        </div>
+        <h6>Datos de envío...</h6>
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="txtCalle">Calle</label>
+            <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCalle" value="" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="txtNumCalle">Núm(#)</label>
+            <input type="number" class="form-control" id="txtNumCalle" value="" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="txtCp">C.P.</label>
+            <input type="number" class="form-control" id="txtCp" value="" required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4" "mb-3">
+            <label for="txtCiudad">Ciudad</label>
+            <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudad" value="" required>
+          </div>
+          <div class="col-md-4" "mb-3">
+            <label for="txtEstado">Estado</label>
+            <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstado" value="" required>
+          </div>
+          <div class="col-md-4" "mb-3">
+            <label for="txtCel">Celular</label>
+            <input type="number" class="form-control" id="txtCel" value="" required>
+          </div>
+        </div>
+        <br/>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="txtNombre">Nombre(s) quien recibe</label>
+            <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre_Recibe" value="" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="txtApellidoP">Apellido P. Quien recibe</label>
+            <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP_Recibe" value="" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="txtApellidoM">Apellido M. Quien recibe</label>
+            <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM_Recibe" value="" required>
+          </div>
+        </div>
+        <br/>
+        <h6>Datos de cuenta...</h6>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="txtEmail">E-MaiL</label>
+            <input type="email" onkeyup="minus(this);" class="form-control" id="txtEmail" value="" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label for="txtPass">Contraseña</label>
+            <input type="password" class="form-control" id="txtPass" value="" required>
+          </div>
+        </div>
+        <!-- <div class="row">
+        <div class="col-md-12 mb-3">
+        <label id="lbRoll" for="cbmRoll">Roll</label>
+        <select id="cbmRoll"  class="form-control" name="state">
+        <option value="0">Selecciona...</option>
+        ...
+        <option value="ADMIN">ADMINISTRADOR</option>
+        ...
+        <option value="COMUN">COMÚN</option>form-control
+      </select>
+    </div>
+  </div> -->
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+  <button type="button" class="btn btn-primary" id="btnGuardar">Registrarse</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Modal para registro de Articulos -->
+<div class="modal fade bd-example-modal-lg" id="ModalArticulos" tabindex="-1" role="dialog" aria-labelledby="ModalArticulos" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalArticulos">Registro de Artículos...</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="txtNameArt">Nombre</label>
+            <input type="text" class="form-control" id="txtNameArt" value="" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="txtDescArt">Descripción</label>
+            <input type="text" class="form-control" id="txtDescArt" value="" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="txtBarCode">Codigo de barra</label>
+            <input type="text" class="form-control" id="txtBarCode" value="" required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="txtModelo">Modelo</label>
+            <input type="text" class="form-control" id="txtModelo" value="" required>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label id="lblcbmMarca" for="cbmMarca">Marca</label>
+            <select class="form-control" id="cbmMarca" name="marca">
+              <option value="0">Selecciona...</option>
+              <?php
+              require_once "php/Conexion.php";
+              $con = conexion();
+
+              $sql = "SELECT ID_BRAND, NAME_BRAND FROM brand";
+
+              $result = mysqli_query($con,$sql);
+              while($marca = mysqli_fetch_row($result)){
+
+                echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
+              }
+              ?>
+            </select>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="txtPrecio">Precio</label>
+            <input type="number" class="form-control" id="txtPrecio" value="0" required>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label id="lbcategoria" for="cbmCategoria">Categoría</label>
+            <select id="cbmCategoria"  class="form-control" name="state">
+              <option value="0">Selecciona...</option>
+              <?php
+              require_once "php/Conexion.php";
+              $con = conexion();
+
+              $sql = "SELECT ID_CATEGORY, NAME_CAT FROM categories";
+
+              $result = mysqli_query($con,$sql);
+              while($marca = mysqli_fetch_row($result)){
+
+                echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
+              }
+              ?>
+            </select>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label id="lbSubcategoria" for="cbmSubcategoria">Subcategoría</label>
+            <select id="cbmSubcategoria"  class="form-control" name="state">
+              <option value="0">Selecciona...</option>
+              <?php
+              require_once "php/Conexion.php";
+              $con = conexion();
+
+              $sql = "SELECT ID_SUB_CATEGORY, NAME_SUB_CAT FROM sub_categories";
+
+              $result = mysqli_query($con,$sql);
+              while($marca = mysqli_fetch_row($result)){
+
+                echo '<option value="'.$marca[0].'">'.$marca[1].'</option>';
+              }
+              ?>
+            </select>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label id="lbStatus" for="cbmStatus">Estatus</label>
+            <select id="cbmStatus"  class="form-control" name="state">
+              <option value="2">Selecciona...</option>
+              ...
+              <option value="1">Activo</option>
+              ...
+              <option value="0">Inactivo</option>form-control
+            </select>
+          </div>
+
+        </div>
+        <div class="row">
+          <div class="col-md-12 mb-12">
+            <label for="txtNameIMG">Carga de Img</label>
+            <input id="sortpicture" type="file" class="form-control" name="sortpic" />
+            <button id="upload" class="form-control">Upload</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" id="btnGuardarArt">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Help Line -->
+<div class="help-line">
+  <a href="tel:921 119 77 85"><i class="ti-headphone-alt"></i> 921 119 77 85</a>
+</div>
+</div>
+</div>
 </div>
 </div>
 </header>
@@ -624,19 +732,19 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
 
     <!-- Single Slide Start -->
     <!-- <div class="single_slide height-800 bg-img background-overlay" style="background-image: url(img/bg-img/bg-2.jpg);">
-      <div class="container h-100">
-        <div class="row h-100 align-items-center">
-          <div class="col-12">
-            <div class="welcome_slide_text">
-              <h6 data-animation="fadeInDown" data-delay="0" data-duration="500ms">* Only today we offer free shipping</h6>
-              <h2 data-animation="bounceInDown" data-delay="500ms" data-duration="500ms">Women Fashion</h2>
-              <a href="#" class="btn karl-btn" data-animation="fadeInRightBig" data-delay="1s" data-duration="500ms">Check Collection</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
+    <div class="container h-100">
+    <div class="row h-100 align-items-center">
+    <div class="col-12">
+    <div class="welcome_slide_text">
+    <h6 data-animation="fadeInDown" data-delay="0" data-duration="500ms">* Only today we offer free shipping</h6>
+    <h2 data-animation="bounceInDown" data-delay="500ms" data-duration="500ms">Women Fashion</h2>
+    <a href="#" class="btn karl-btn" data-animation="fadeInRightBig" data-delay="1s" data-duration="500ms">Check Collection</a>
   </div>
+</div>
+</div>
+</div>
+</div> -->
+</div>
 </section>
 <!-- ****** Welcome Slides Area End ****** -->
 
@@ -898,8 +1006,6 @@ $(document).ready(function(){
   var validaImg =0;
   var nameArticulo ="";
   $('#btnGuardar').click(function(){
-
-
     nombre = $('#txtNombre').val();
     apellidoP = $('#txtApellidoP').val();
     apellidoM = $('#txtApellidoM').val();
@@ -923,7 +1029,9 @@ $(document).ready(function(){
       email = 1;
     }
     pass= $('#txtPass').val();
-    roll = $("#cbmRoll option:selected").val();
+
+
+    roll = 'COMUN';
 
     if(nombre == ""){
 
@@ -1018,163 +1126,278 @@ $(document).ready(function(){
       }
     });
 
-    $('#btnGuardarArt').click(function(){
-
-      nomArt= $('#txtNameArt').val();
-      descArt= $('#txtDescArt').val();
-      barCode = $('#txtBarCode').val();
-      modelArt = $('#txtModelo').val();
-      marcaArt = $("#cbmMarca option:selected").val();
-      precioArt = $('#txtPrecio').val();
-      categoria = $("#cbmCategoria option:selected").val();
-      subCatego = $("#cbmSubcategoria option:selected").val();
-      statusArt = $("#cbmStatus option:selected").val();
-      nombreImg = $('#txtNameIMG').val();
 
 
-      if(nomArt == ""){
+    $('#btnGuardarC').click(function(){
+      debugger;
+      nombre = $('#txtNombreC').val();
+      apellidoP = $('#txtApellidoPC').val();
+      apellidoM = $('#txtApellidoMC').val();
+      calle = $('#txtCalleC').val();
+      numCalle = $('#txtNumCalleC').val();
+      cp = $('#txtCpC').val();
+      ciudad = $('#txtCiudadC').val();
+      estado = $('#txtEstadoC').val();
+      cel = $('#txtCelC').val();
+      nombre_Recibe = ' ';
+      apellidoP_Recibe = ' ';
+      apellidoM_Recibe = ' ';
+      email= $('#txtEmailC').val();
 
-        alert("Debe ingresar el nombre del artículo...");
+      if(validar_email( email ))
+      {
       }
-      if(descArt == ""){
-
-        alert("Debe ingresar la descripción del artículo...");
+      else
+      {
+        alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+        email = 1;
       }
-      if(barCode == ""){
+      pass= 'Silver2020';
 
-        alert("Debe ingresar el codigo de barra del artículo...");
+
+      roll = 'COMUN';
+
+      if(nombre == ""){
+
+        alert("Debe ingresar un nombrel...");
+      }
+      if(apellidoP == ""){
+
+        alert("Debe ingresar un apellido paterno...");
+      }if(apellidoM == ""){
+
+        alert("Debe ingresar un apellido Materno...");
+      }
+      if(calle == ""){
+
+        alert("Debe ingresar una calle...");
+      }if(numCalle == ""){
+
+        alert("Debe ingresar un número de la hubicación...");
+      }
+      if(cp == ""){
+
+        alert("Debe ingresar un código postal...");
+      }if(ciudad == ""){
+
+        alert("Debe ingresar una ciudad...");
+      }
+      if(estado == ""){
+
+        alert("Debe ingresar un estado...");
+      }
+      if(cel == ""){
+
+        alert("Debe ingresar un número de contacto...");
       }
 
-      if (txtBarCode.value.length != 11) {
-        alert('El codigo de barra es incorrecto ya que tiene una longitud de ' + txtBarCode.value.length + ' y debe contener 11 caracteres...');
-        txtBarCode.focus();
+      if (txtCelC.value.length != 10) {
+        alert('El número celular es incorrecto ya que tiene ' + txtCelC.value.length + ' caracteres y debe contener 10...');
+        txtCelC.focus();
       }
-
-      if(modelArt == ""){
-
-        alert("Debe ingresar el modelo del artículo...");
-      }
-      if(marcaArt == 0){
-
-        alert("Debe seleccionar una marca...");
-      }
-      if(precioArt == "" && precioArt !=0){
-
-        alert("Debe ingresar el precio del artículo...");
-      }
-      if(categoria == 0){
-
-        alert("Debe seleccionar una categoría...");
-      }
-      if(subCatego == 0){
-
-        alert("Debe seleccionar una subcategoría...");
-      }
-      if(statusArt == 2){
-
-        alert("Debe seleccionar un estatus del artículo...");
-      }
-
-      if (validaImg == 0) {
-
-        alert("Debe cargar la imagen del artículo...");
-      }
-
-      if (nomArt != "" && descArt != "" && barCode != "" && txtBarCode.value.length == 11 && modelArt != "" && precioArt != "" && precioArt != 0 && nameArticulo != "" && marcaArt !=0 && statusArt !=2 && validaImg != 0){
-        guardarArt(nomArt,
-          descArt,
-          barCode,
-          modelArt,
-          marcaArt,
-          precioArt,
-          categoria,
-          subCatego,
-          statusArt,
-          nameArticulo);
-          validaImg=0;
-          nameArticulo = "";
-        }
-
-      });
-      $('#upload').on('click', function() {
-
-        var file_data = $('#sortpicture').prop('files')[0];
-        var form_data = new FormData();
-        form_data.append('file', file_data);
-        $.ajax({
-          url: 'cargaIMG.php', // point to server-side PHP script
-          dataType: 'text',  // what to expect back from the PHP script, if anything
-          cache: false,
-          contentType: false,
-          processData: false,
-          data: form_data,
-          type: 'post',
-          success: function(result){
-            if (result != "") {
-              validaImg =1;
-              nameArticulo = result;
-              document.getElementById("sortpicture").value = "";
-            }else{
-              validaImg=0;
-              document.getElementById("sortpicture").value = "";
-            }
-          }
-        });
-      });
-
-      // Enter de inicio de sesion
-      var input = document.getElementById("txt_Pass");
-      input.addEventListener("keyup", function(event) {
-        // Number 13 is the "Enter" key on the keyboard
-        if (event.keyCode === 13) {
-          // Cancel the default action, if needed
-          event.preventDefault();
-          // Trigger the button element with a click
-          document.getElementById("btnEntrar").click();
-        }
-      });
-    });
-
-    $('#btnLogOut').click(function(){
-      vaciar = 1;
-
-      logOut(vaciar);
-    });
-
-    $('#btnEntrar').click(function(){
-
-      email= $('#txt_Email').val();
-      pass= $('#txt_Pass').val();
 
       if(email == ""){
 
         alert("Debe ingresar un E-mail...");
       }
-      if(pass == ""){
 
-        alert("Debe ingresar una contraseña...");
-      }
-      if(email != "" && pass != ""){
-        login(email, pass);
-      }
-    });
+      if(nombre != "" &&
+      apellidoP != "" &&
+      apellidoM != "" &&
+      calle != "" &&
+      numCalle != "" &&
+      cp != "" &&
+      ciudad != "" &&
+      estado != "" &&
+      cel != "" &&
+      txtCelC.value.length == 10  && email != "" && email !=1){
+        agregarUsuarios(nombre,
+          apellidoP,
+          apellidoM,
+          calle,
+          numCalle,
+          cp,ciudad,
+          estado,
+          cel,
+          nombre_Recibe,
+          apellidoP_Recibe,
+          apellidoM_Recibe,
+          email,
+          pass,
+          roll);
+        }
+      });
 
-    //   function ValidarBarCode(barcode) {
-    //   if (barcode.value.length = 11) {
-    //     alert("Escriba su número completo");
-    //     barcode.focus();
-    //     barcode.select();
-    //   }
-    // }
-    function mayus(e) {
-      e.value = e.value.toUpperCase();
-    }
-    function minus(e) {
-      e.value = e.value.toLowerCase();
-    }
-    function validar_email( email )
-    {
-      var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-      return regex.test(email) ? true : false;
-    }
-    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+      $('#btnGuardarArt').click(function(){
+
+        nomArt= $('#txtNameArt').val();
+        descArt= $('#txtDescArt').val();
+        barCode = $('#txtBarCode').val();
+        modelArt = $('#txtModelo').val();
+        marcaArt = $("#cbmMarca option:selected").val();
+        precioArt = $('#txtPrecio').val();
+        categoria = $("#cbmCategoria option:selected").val();
+        subCatego = $("#cbmSubcategoria option:selected").val();
+        statusArt = $("#cbmStatus option:selected").val();
+        nombreImg = $('#txtNameIMG').val();
+
+
+        if(nomArt == ""){
+
+          alert("Debe ingresar el nombre del artículo...");
+        }
+        if(descArt == ""){
+
+          alert("Debe ingresar la descripción del artículo...");
+        }
+        if(barCode == ""){
+
+          alert("Debe ingresar el codigo de barra del artículo...");
+        }
+
+        if (txtBarCode.value.length != 11) {
+          alert('El codigo de barra es incorrecto ya que tiene una longitud de ' + txtBarCode.value.length + ' y debe contener 11 caracteres...');
+          txtBarCode.focus();
+        }
+
+        if(modelArt == ""){
+
+          alert("Debe ingresar el modelo del artículo...");
+        }
+        if(marcaArt == 0){
+
+          alert("Debe seleccionar una marca...");
+        }
+        if(precioArt == "" && precioArt !=0){
+
+          alert("Debe ingresar el precio del artículo...");
+        }
+        if(categoria == 0){
+
+          alert("Debe seleccionar una categoría...");
+        }
+        if(subCatego == 0){
+
+          alert("Debe seleccionar una subcategoría...");
+        }
+        if(statusArt == 2){
+
+          alert("Debe seleccionar un estatus del artículo...");
+        }
+
+        if (validaImg == 0) {
+
+          alert("Debe cargar la imagen del artículo...");
+        }
+
+        if (nomArt != "" && descArt != "" && barCode != "" && txtBarCode.value.length == 11 && modelArt != "" && precioArt != "" && precioArt != 0 && nameArticulo != "" && marcaArt !=0 && statusArt !=2 && validaImg != 0){
+          guardarArt(nomArt,
+            descArt,
+            barCode,
+            modelArt,
+            marcaArt,
+            precioArt,
+            categoria,
+            subCatego,
+            statusArt,
+            nameArticulo);
+            validaImg=0;
+            nameArticulo = "";
+          }
+
+        });
+        $('#upload').on('click', function() {
+
+          var file_data = $('#sortpicture').prop('files')[0];
+          var form_data = new FormData();
+          form_data.append('file', file_data);
+          $.ajax({
+            url: 'cargaIMG.php', // point to server-side PHP script
+            dataType: 'text',  // what to expect back from the PHP script, if anything
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            type: 'post',
+            success: function(result){
+              if (result != "") {
+                validaImg =1;
+                nameArticulo = result;
+                document.getElementById("sortpicture").value = "";
+              }else{
+                validaImg=0;
+                document.getElementById("sortpicture").value = "";
+              }
+            }
+          });
+        });
+
+        // Enter de inicio de sesion
+        var input = document.getElementById("txt_Pass");
+        input.addEventListener("keyup", function(event) {
+          // Number 13 is the "Enter" key on the keyboard
+          if (event.keyCode === 13) {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("btnEntrar").click();
+          }
+        });
+      });
+
+      $('#btnLogOut').click(function(){
+        vaciar = 1;
+
+        logOut(vaciar);
+      });
+
+      $('#btnEntrar').click(function(){
+
+        email= $('#txt_Email').val();
+        pass= $('#txt_Pass').val();
+
+        if(email == ""){
+
+          alert("Debe ingresar un E-mail...");
+        }
+        if(pass == ""){
+
+          alert("Debe ingresar una contraseña...");
+        }
+        if(email != "" && pass != ""){
+          login(email, pass);
+        }
+      });
+
+      //   function ValidarBarCode(barcode) {
+      //   if (barcode.value.length = 11) {
+      //     alert("Escriba su número completo");
+      //     barcode.focus();
+      //     barcode.select();
+      //   }
+      // }
+      function mayus(e) {
+        e.value = e.value.toUpperCase();
+      }
+      function minus(e) {
+        e.value = e.value.toLowerCase();
+      }
+      function validar_email( email )
+      {
+        var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email) ? true : false;
+      }
+      </script>

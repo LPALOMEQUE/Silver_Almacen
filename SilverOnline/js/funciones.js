@@ -57,6 +57,7 @@ function envioDatosEmail(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
 }
 
 function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,nombre_Recibe,apellidoP_Recibe,apellidoM_Recibe,email,pass,roll){
+  debugger;
   cadena = "NOMBRE=" +nombre +
   "&apellidoP=" + apellidoP +
   "&apellidoM=" +apellidoM +
@@ -79,24 +80,41 @@ function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
     url: "php/agregarUsuarios.php",
     data:cadena,
     success:function(result){
+      debugger;
       if(result==1){
 
         alert("Se registro el usuario de forma correcta...");
+        location.reload();
+        // CONTROLES USUARIO
+        // $('#txtNombre').val('');
+        // $('#txtApellidoP').val('');
+        // $('#txtApellidoM').val('');
+        // $('#txtCalle').val('');
+        // $('#txtNumCalle').val('');
+        // $('#txtCp').val('');
+        // $('#txtCiudad').val('');
+        // $('#txtEstado').val('');
+        // $('#txtCel').val('');
+        // $('#txtEmail').val('');
+        // $('#txtPass').val('');
+        // $("#cbmRoll option[value=0]").attr("selected",true);
 
-        $('#txtNombre').val('');
-        $('#txtApellidoP').val('');
-        $('#txtApellidoM').val('');
-        $('#txtCalle').val('');
-        $('#txtNumCalle').val('');
-        $('#txtCp').val('');
-        $('#txtCiudad').val('');
-        $('#txtEstado').val('');
-        $('#txtCel').val('');
-        $('#txtEmail').val('');
-        $('#txtPass').val('');
-        $("#cbmRoll option[value=0]").attr("selected",true);
-
-        $('#ModalRegistroUsuarios').hide();
+        // CONTROLES CLIENTE
+        // $('#txtNombreC').val('');
+        // $('#txtApellidoPC').val('');
+        // $('#txtApellidoMC').val('');
+        // $('#txtCalleC').val('');
+        // $('#txtNumCalleC').val('');
+        // $('#txtCpC').val('');
+        // $('#txtCiudadC').val('');
+        // $('#txtEstadoC').val('');
+        // $('#txtCelC').val('');
+        // $('#txtEmailC').val('');
+        // $('#txtPass').val('');
+        // // $("#cbmRoll option[value=0]").attr("selected",true);
+        //
+        // $('#ModalRegistroUsuarios').hide();
+        // $('#ModalRegistroCliente').hide();
       }
       else{
         alert("Error...");
@@ -150,7 +168,6 @@ function loginValidaCostoEnv(email, pass){
 
 function login(email, pass){
   cadena = "EMAIL=" + email + "&PASS=" + pass;
-
   $.ajax({
     type:"POST",
     url: "php/valUser.php",

@@ -9,6 +9,19 @@ $valMin =1;
 $valMax = 1;
 $queryVal=0;
 $BD = '01';
+
+// PRECIO CON DESCUENTO (SUPER PRECIO)
+$ID_PRECIO = 2;
+
+// FILTRADO POR PRECIO DEPENDIENDO DEL TIPO DE USUARIO
+if(isset($_SESSION['status'])){
+  if($_SESSION["status"] == 'ADMIN'){
+    // PRECIO NORMAL
+    $ID_PRECIO = 1;
+  }
+}
+
+
 if (isset($_POST['VaciarFilterP'])) {
   unset($_SESSION['filtro_price']);
 }
@@ -36,6 +49,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
   if (isset($_POST['VACIAR_LOGIN'])) {
     unset($_SESSION['ID_USER']);
     unset($_SESSION['Email']);
+    unset($_SESSION['status']);
   }
 
   //Imprimiendo datos globales del carrito
@@ -46,11 +60,14 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     foreach($ID_ARTICLES as $key => $item){
 
       $id = $item['id'];
-      $sql = "SELECT ULT_COSTO FROM INVE" .$BD. " where CVE_ART='$id'";
+      $sql = "SELECT PRECIO AS ULT_COSTO FROM PRECIO_X_PROD" .$BD. " WHERE CVE_ART = '$id' AND  CVE_PRECIO = $ID_PRECIO";
+
       $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
       if (0 !== sqlsrv_num_rows($res)){
         while ($fila = sqlsrv_fetch_array($res)) {
-          $TotalxArtGlobal += $fila['ULT_COSTO'] * $item['cantidad'];
+
+          $precioNormal = $fila['ULT_COSTO'];
+          $TotalxArtGlobal += $precioNormal * $item['cantidad'];
         }
       }
     }
@@ -194,7 +211,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
             echo $mostrar = 'inline';
           } ?>">
           <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
-          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</button>
+          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</button>
         </div>
       </div>
       <div class="col-md-2">
@@ -275,8 +292,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                         <a class="dropdown-item" href="checkout.html">Resiva</a>
                       </div>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="#"><span class="karl-level">hot</span>Dresses</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Sign In</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</a></li>
                   </ul>
                 </div>
               </nav>
@@ -455,6 +471,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
   $cantidadRegistros = 50;
   $Reg_Ignorados = $pagina * $cantidadRegistros;
 
+
   if($queryVal == 2) {
     // if (isset($_SESSION['filtro_price'])) {
     $valMin = $_SESSION['filtro_price'][0]['min'];
@@ -476,16 +493,18 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     I.EXIST,
     I.CVE_ART,
     I.DESCR as Nombre,
-    I.ULT_COSTO,
+    PP.PRECIO AS ULT_COSTO,
     I.CVE_IMAGEN,
     I.DESCR as Descripcion
     FROM INVE" .$BD. " I
-    LEFT JOIN MULT01 M ON M.CVE_ART = I.CVE_ART
+    LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
+    INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
     WHERE I.EXIST > 0 AND
     M.CVE_ALM = 1 AND
+    PP.CVE_PRECIO = $ID_PRECIO AND
     I.CVE_ART LIKE '$material' AND
     I.CVE_ART  LIKE '$accesorio' AND
-    I.ULT_COSTO BETWEEN $valMin AND $valMax
+    PP.PRECIO BETWEEN $valMin AND $valMax
     ORDER BY I.ULT_COSTO
     OFFSET $Reg_Ignorados ROWS
     FETCH NEXT  $cantidadRegistros ROWS ONLY";
@@ -496,13 +515,15 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     I.EXIST,
     I.CVE_ART,
     I.DESCR as Nombre,
-    I.ULT_COSTO,
+    PP.PRECIO AS ULT_COSTO,
     I.CVE_IMAGEN,
     I.DESCR as Descripcion
     FROM INVE" .$BD. " I
     LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
+    INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
     WHERE I.EXIST > 0 AND
-    M.CVE_ALM = 1
+    M.CVE_ALM = 1 AND
+    PP.CVE_PRECIO = $ID_PRECIO
     ORDER BY I.CVE_ART
     OFFSET $Reg_Ignorados ROWS
     FETCH NEXT  $cantidadRegistros ROWS ONLY";
@@ -513,6 +534,10 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
   if (0 !== sqlsrv_num_rows($res)){
     while ($category = sqlsrv_fetch_array($res)) {
       $EXISTENCIA = $category['EXIST'];
+
+      $precio = $category['ULT_COSTO'];
+
+
       ?>
       <!-- ****** Quick View Modal Area Start ****** -->
       <div class="modal fade" id="quickview<?php echo $category['CVE_ART'] ?>" tabindex="-1" role="dialog" aria-labelledby="quickview" aria-hidden="true">
@@ -543,7 +568,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                           <i class="fa fa-star" aria-hidden="true"></i>
                           <i class="fa fa-star" aria-hidden="true"></i>
                         </div>
-                        <h5 class="price">$<?php echo number_format($category['ULT_COSTO'],2) ?> <span>$624</span></h5>
+                        <h5 class="price">$<?php echo number_format($precio,2) ?> <span>$624</span></h5>
                         <p>Marca: SILVER</p>
                         <p><?php echo $category['Descripcion'] ?></p>
                         <p style="color: #ff084e;"><strong>STOCK DISPONIBLE: <?php echo $category['EXIST'] ?></strong></p>
@@ -842,17 +867,19 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               I.EXIST,
               I.CVE_ART,
               I.DESCR as Nombre,
-              I.ULT_COSTO,
+              PP.PRECIO AS ULT_COSTO,
               I.CVE_IMAGEN,
               I.DESCR as Descripcion
               FROM INVE" .$BD. " I
               LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
+              INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
               WHERE I.EXIST > 0 AND
               M.CVE_ALM = 1 AND
+              PP.CVE_PRECIO = $ID_PRECIO AND
               I.CVE_ART LIKE '$material' AND
               I.CVE_ART  LIKE '$accesorio' AND
-              I.ULT_COSTO BETWEEN $valMin AND $valMax
-              ORDER BY I.ULT_COSTO
+              PP.PRECIO BETWEEN $valMin AND $valMax
+              ORDER BY PP.PRECIO
               OFFSET $Reg_Ignorados ROWS
               FETCH NEXT  $cantidadRegistros ROWS ONLY";
             }
@@ -862,13 +889,15 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               I.EXIST,
               I.CVE_ART,
               I.DESCR as Nombre,
-              I.ULT_COSTO,
+              PP.PRECIO AS ULT_COSTO,
               I.CVE_IMAGEN,
               I.DESCR as Descripcion
               FROM INVE" .$BD. " I
               LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
+              INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
               WHERE I.EXIST > 0 AND
-              M.CVE_ALM = 1
+              M.CVE_ALM = 1 AND
+              PP.CVE_PRECIO = $ID_PRECIO
               ORDER BY I.CVE_ART
               OFFSET $Reg_Ignorados ROWS
               FETCH NEXT  $cantidadRegistros ROWS ONLY";
@@ -878,200 +907,202 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
             if (0 !== sqlsrv_num_rows($res)){
               while ($category = sqlsrv_fetch_array($res)) {
 
-                ?>
+                  $precio = $category['ULT_COSTO'];
 
-                <!-- Single gallery Item -->
-                <div class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.2s">
-                  <!-- Product Image -->
-                  <div class="product-img">
-                    <h6 class="title" style="color: #ff084e;">STOCK DIPONBLE: <?php echo $category['EXIST'] ?></h6>
-                    <img src="img/product-img/product-1.JPG" alt="">
-                    <div class="product-quicview">
-                      <a href="#" id="btnShowquickview<?php echo $category['CVE_ART'] ?>" data-toggle="modal" data-target="#quickview<?php echo $category['CVE_ART'] ?>"><i class="ti-plus"></i></a>
+                  ?>
+
+                  <!-- Single gallery Item -->
+                  <div class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.2s">
+                    <!-- Product Image -->
+                    <div class="product-img">
+                      <h6 class="title" style="color: #ff084e;">STOCK DIPONBLE: <?php echo $category['EXIST'] ?></h6>
+                      <img src="img/product-img/product-1.JPG" alt="">
+                      <div class="product-quicview">
+                        <a href="#" id="btnShowquickview<?php echo $category['CVE_ART'] ?>" data-toggle="modal" data-target="#quickview<?php echo $category['CVE_ART'] ?>"><i class="ti-plus"></i></a>
+                      </div>
+                    </div>
+                    <!-- Product Description -->
+                    <div class="product-description">
+                      <h4 class="product-price">$<?php echo number_format($precio,2) ; ?></h4>
+                      <p><?php echo $category['Nombre'] ?></p>
+                      <!-- Add to Cart -->
+                      <!-- <a href="#" class="add-to-cart-btn">ADD TO CART</a> -->
                     </div>
                   </div>
-                  <!-- Product Description -->
-                  <div class="product-description">
-                    <h4 class="product-price">$<?php echo number_format($category['ULT_COSTO'],2) ; ?></h4>
-                    <p><?php echo $category['Nombre'] ?></p>
-                    <!-- Add to Cart -->
-                    <!-- <a href="#" class="add-to-cart-btn">ADD TO CART</a> -->
-                  </div>
-                </div>
-                <?php
-              }
-              sqlsrv_close($con);
-            }
-            ?>
-
-            <div>
-            </div>
-          </div>
-        </div>
-        <div class="shop_pagination_area wow fadeInUp" data-wow-delay="1.1s">
-
-          <nav aria-label="Page navigation">
-            <!-- <ul class="pagination pagination-sm"> -->
-            <ul class="pagination">
-              <?php
-              $i=0;
-              $paginaADD=$pagina;
-              require_once "php/Conexion.php";
-              $con = conexion();
-              $pagina = 0;
-              if (isset($_GET['p'])) {
-                $pagina = $_GET['p'];
-              }
-              $cantidadRegistros = 10;
-              $Reg_Ignorados = $pagina * $cantidadRegistros;
-
-              $sql="SELECT 0
-              FROM INVE" .$BD. "
-              WHERE EXIST > 0
-              ORDER BY CVE_ART
-              OFFSET $Reg_Ignorados ROWS
-              FETCH NEXT  $cantidadRegistros ROWS ONLY";
-              ?>
-              <!-- <li><a href="joyas-h.php?p=<?php echo $pagina-1?>">«</a></li> -->
-              <li><a href="joyas-h.php?p=0">«</a></li>
-              <?php
-              $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
-              if (0 !== sqlsrv_num_rows($res)){
-                while ($category = sqlsrv_fetch_array($res)) {
-                  ?>
-                  <li><a href="joyas-h.php?p=<?php
-                  if($pagina <= 9){
-                    echo $i;
-                  }else{
-                    echo $paginaADD;
-                  }
-                  ?>">
                   <?php
-                  if($pagina <= 9){
-                    echo $i+1;
-                  }
-                  else{
-                    echo $paginaADD;
-                  }
-                  ?>  </a></li>
-                  <?php
-                  $i++;
-                  $paginaADD++;
                 }
-
-                ?>
-                <li><a href="joyas-h.php?p=<?php echo $pagina+1?>">»</a></li>
-                <?php
                 sqlsrv_close($con);
-              } ?>
-            </ul>
-          </nav>
-        </div>
-        <div class="row">
-          <div class="col-md-3">
-            <!-- <a>Pagina: </a> -->
+              }
+              ?>
+
+              <div>
+              </div>
+            </div>
           </div>
-          <div class="col-md-3">
-            <!-- <a>Pagina: </a> -->
+          <div class="shop_pagination_area wow fadeInUp" data-wow-delay="1.1s">
+
+            <nav aria-label="Page navigation">
+              <!-- <ul class="pagination pagination-sm"> -->
+              <ul class="pagination">
+                <?php
+                $i=0;
+                $paginaADD=$pagina;
+                require_once "php/Conexion.php";
+                $con = conexion();
+                $pagina = 0;
+                if (isset($_GET['p'])) {
+                  $pagina = $_GET['p'];
+                }
+                $cantidadRegistros = 10;
+                $Reg_Ignorados = $pagina * $cantidadRegistros;
+
+                $sql="SELECT 0
+                FROM INVE" .$BD. "
+                WHERE EXIST > 0
+                ORDER BY CVE_ART
+                OFFSET $Reg_Ignorados ROWS
+                FETCH NEXT  $cantidadRegistros ROWS ONLY";
+                ?>
+                <!-- <li><a href="joyas-h.php?p=<?php echo $pagina-1?>">«</a></li> -->
+                <li><a href="joyas-h.php?p=0">«</a></li>
+                <?php
+                $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+                if (0 !== sqlsrv_num_rows($res)){
+                  while ($category = sqlsrv_fetch_array($res)) {
+                    ?>
+                    <li><a href="joyas-h.php?p=<?php
+                    if($pagina <= 9){
+                      echo $i;
+                    }else{
+                      echo $paginaADD;
+                    }
+                    ?>">
+                    <?php
+                    if($pagina <= 9){
+                      echo $i+1;
+                    }
+                    else{
+                      echo $paginaADD;
+                    }
+                    ?>  </a></li>
+                    <?php
+                    $i++;
+                    $paginaADD++;
+                  }
+
+                  ?>
+                  <li><a href="joyas-h.php?p=<?php echo $pagina+1?>">»</a></li>
+                  <?php
+                  sqlsrv_close($con);
+                } ?>
+              </ul>
+            </nav>
           </div>
-          <div class="col-md-3">
-            <!-- <a>Pagina: </a> -->
-          </div>
-          <div class="col-md-3">
-            <a><strong>Pagina: <?php echo $pagina+1 ?></strong> </a>
+          <div class="row">
+            <div class="col-md-3">
+              <!-- <a>Pagina: </a> -->
+            </div>
+            <div class="col-md-3">
+              <!-- <a>Pagina: </a> -->
+            </div>
+            <div class="col-md-3">
+              <!-- <a>Pagina: </a> -->
+            </div>
+            <div class="col-md-3">
+              <a><strong>Pagina: <?php echo $pagina+1 ?></strong> </a>
+            </div>
           </div>
         </div>
       </div>
     </div>
+  </section>
+
+  <!-- ****** Footer Area Start ****** -->
+  <footer class="footer_area">
+    <div class="container">
+      <div class="row">
+        <!-- Single Footer Area Start -->
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="single_footer_area">
+            <div class="footer-logo">
+              <img src="img/core-img/logo.png" alt="">
+            </div>
+            <div class="copywrite_text d-flex align-items-center">
+              <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+              </div>
+            </div>
+          </div>
+          <!-- Single Footer Area Start -->
+          <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+            <div class="single_footer_area">
+              <ul class="footer_widget_menu">
+                <li><a href="#">About</a></li>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Faq</a></li>
+                <li><a href="#">Returns</a></li>
+                <li><a href="#">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- Single Footer Area Start -->
+          <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+            <div class="single_footer_area">
+              <ul class="footer_widget_menu">
+                <li><a href="#">My Account</a></li>
+                <li><a href="#">Shipping</a></li>
+                <li><a href="#">Our Policies</a></li>
+                <li><a href="#">Afiliates</a></li>
+              </ul>
+            </div>
+          </div>
+          <!-- Single Footer Area Start -->
+          <div class="col-12 col-lg-5">
+            <div class="single_footer_area">
+              <div class="footer_heading mb-30">
+                <h6>Subscribe to our newsletter</h6>
+              </div>
+              <div class="subscribtion_form">
+                <form action="#" method="post">
+                  <input type="email" name="mail" class="mail" placeholder="Your email here">
+                  <button type="submit" class="submit">Subscribe</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="line"></div>
+
+        <!-- Footer Bottom Area Start -->
+        <div class="footer_bottom_area">
+          <div class="row">
+            <div class="col-12">
+              <div class="footer_social_area text-center">
+                <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                <a href="https://es-la.facebook.com/newsilverevolution/"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- ****** Footer Area End ****** -->
   </div>
-</section>
+  <!-- /.wrapper end -->
 
-<!-- ****** Footer Area Start ****** -->
-<footer class="footer_area">
-  <div class="container">
-    <div class="row">
-      <!-- Single Footer Area Start -->
-      <div class="col-12 col-md-6 col-lg-3">
-        <div class="single_footer_area">
-          <div class="footer-logo">
-            <img src="img/core-img/logo.png" alt="">
-          </div>
-          <div class="copywrite_text d-flex align-items-center">
-            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-              Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | Made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> &amp; distributed by <a href="https://themewagon.com" target="_blank">ThemeWagon</a>
-              <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
-            </div>
-          </div>
-        </div>
-        <!-- Single Footer Area Start -->
-        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-          <div class="single_footer_area">
-            <ul class="footer_widget_menu">
-              <li><a href="#">About</a></li>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Faq</a></li>
-              <li><a href="#">Returns</a></li>
-              <li><a href="#">Contact</a></li>
-            </ul>
-          </div>
-        </div>
-        <!-- Single Footer Area Start -->
-        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-          <div class="single_footer_area">
-            <ul class="footer_widget_menu">
-              <li><a href="#">My Account</a></li>
-              <li><a href="#">Shipping</a></li>
-              <li><a href="#">Our Policies</a></li>
-              <li><a href="#">Afiliates</a></li>
-            </ul>
-          </div>
-        </div>
-        <!-- Single Footer Area Start -->
-        <div class="col-12 col-lg-5">
-          <div class="single_footer_area">
-            <div class="footer_heading mb-30">
-              <h6>Subscribe to our newsletter</h6>
-            </div>
-            <div class="subscribtion_form">
-              <form action="#" method="post">
-                <input type="email" name="mail" class="mail" placeholder="Your email here">
-                <button type="submit" class="submit">Subscribe</button>
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="line"></div>
-
-      <!-- Footer Bottom Area Start -->
-      <div class="footer_bottom_area">
-        <div class="row">
-          <div class="col-12">
-            <div class="footer_social_area text-center">
-              <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-              <a href="https://es-la.facebook.com/newsilverevolution/"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-              <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-              <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
-  <!-- ****** Footer Area End ****** -->
-</div>
-<!-- /.wrapper end -->
-
-<!-- jQuery (Necessary for All JavaScript Plugins) -->
-<script src="js/jquery/jquery-2.2.4.min.js"></script>
-<!-- Popper js -->
-<script src="js/popper.min.js"></script>
-<!-- Bootstrap js -->
-<script src="js/bootstrap.min.js"></script>
-<!-- Plugins js -->
-<script src="js/plugins.js"></script>
-<!-- Active js -->
-<script src="js/active.js"></script>
+  <!-- jQuery (Necessary for All JavaScript Plugins) -->
+  <script src="js/jquery/jquery-2.2.4.min.js"></script>
+  <!-- Popper js -->
+  <script src="js/popper.min.js"></script>
+  <!-- Bootstrap js -->
+  <script src="js/bootstrap.min.js"></script>
+  <!-- Plugins js -->
+  <script src="js/plugins.js"></script>
+  <!-- Active js -->
+  <script src="js/active.js"></script>
 
 </body>
 
@@ -1140,192 +1171,211 @@ $(document).ready(function(){
       email = 1;
     }
     pass= $('#txtPass').val();
-    roll = $("#cbmRoll option:selected").val();
-
-    if(nombre == ""){
-
-      alert("Debe ingresar un nombrel...");
-    }
-    if(apellidoP == ""){
-
-      alert("Debe ingresar un apellido paterno...");
-    }if(apellidoM == ""){
-
-      alert("Debe ingresar un apellido Materno...");
-    }
-    if(calle == ""){
-
-      alert("Debe ingresar una calle...");
-    }if(numCalle == ""){
-
-      alert("Debe ingresar un número de la hubicación...");
-    }
-    if(cp == ""){
-
-      alert("Debe ingresar un código postal...");
-    }if(ciudad == ""){
-
-      alert("Debe ingresar una ciudad...");
-    }
-    if(estado == ""){
-
-      alert("Debe ingresar un estado...");
-    }
-    if(cel == ""){
-
-      alert("Debe ingresar un número de contacto...");
-    }
-
-    if(nombre_Recibe == ""){
-
-      alert("Debe ingresar un nombre de quien recibirá el producto...");
-    }
-    if(apellidoP_Recibe == ""){
-
-      alert("Debe ingresar un apellido paterno de quien recibirá el producto...");
-    }if(apellidoM_Recibe == ""){
-
-      alert("Debe ingresar un apellido Materno de quien recibirá el producto...");
-    }
-
-    if (txtCel.value.length != 10) {
-      alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
-      txtCel.focus();
-    }
-
-    if(email == ""){
-
-      alert("Debe ingresar un E-mail...");
-    }
-    if(pass == ""){
-
-      alert("Debe ingresar una contraseña...");
-    }
-    if(roll == 0){
-
-      alert("Debe seleccionar un roll de usuario...");
-    }
-    if(nombre != "" &&
-    apellidoP != "" &&
-    apellidoM != "" &&
-    calle != "" &&
-    numCalle != "" &&
-    cp != "" &&
-    ciudad != "" &&
-    estado != "" &&
-    cel != "" &&
-    nombre_Recibe != "" &&
-    apellidoP_Recibe != "" &&
-    apellidoM_Recibe != "" &&
-    txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
-      agregarUsuarios(nombre,
-        apellidoP,
-        apellidoM,
-        calle,
-        numCalle,
-        cp,ciudad,
-        estado,
-        cel,
-        nombre_Recibe,
-        apellidoP_Recibe,
-        apellidoM_Recibe,
-        email,
-        pass,
-        roll);
+    <?php
+    if (isset($_SESSION["status"])) {
+      if($_SESSION["status"] == 'ADMIN'){
+        ?>
+        roll = 'ADMIN';
+        <?php
       }
+
+      else {
+        ?>
+
+        roll = 'COMUN';
+        <?php
+      }
+    }
+    else {
+      ?>
+      roll = 'COMUN';
+
+      <?php } ?>
+
+      if(nombre == ""){
+
+        alert("Debe ingresar un nombrel...");
+      }
+      if(apellidoP == ""){
+
+        alert("Debe ingresar un apellido paterno...");
+      }if(apellidoM == ""){
+
+        alert("Debe ingresar un apellido Materno...");
+      }
+      if(calle == ""){
+
+        alert("Debe ingresar una calle...");
+      }if(numCalle == ""){
+
+        alert("Debe ingresar un número de la hubicación...");
+      }
+      if(cp == ""){
+
+        alert("Debe ingresar un código postal...");
+      }if(ciudad == ""){
+
+        alert("Debe ingresar una ciudad...");
+      }
+      if(estado == ""){
+
+        alert("Debe ingresar un estado...");
+      }
+      if(cel == ""){
+
+        alert("Debe ingresar un número de contacto...");
+      }
+
+      if(nombre_Recibe == ""){
+
+        alert("Debe ingresar un nombre de quien recibirá el producto...");
+      }
+      if(apellidoP_Recibe == ""){
+
+        alert("Debe ingresar un apellido paterno de quien recibirá el producto...");
+      }if(apellidoM_Recibe == ""){
+
+        alert("Debe ingresar un apellido Materno de quien recibirá el producto...");
+      }
+
+      if (txtCel.value.length != 10) {
+        alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
+        txtCel.focus();
+      }
+
+      if(email == ""){
+
+        alert("Debe ingresar un E-mail...");
+      }
+      if(pass == ""){
+
+        alert("Debe ingresar una contraseña...");
+      }
+      if(roll == 0){
+
+        alert("Debe seleccionar un roll de usuario...");
+      }
+      if(nombre != "" &&
+      apellidoP != "" &&
+      apellidoM != "" &&
+      calle != "" &&
+      numCalle != "" &&
+      cp != "" &&
+      ciudad != "" &&
+      estado != "" &&
+      cel != "" &&
+      nombre_Recibe != "" &&
+      apellidoP_Recibe != "" &&
+      apellidoM_Recibe != "" &&
+      txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
+        agregarUsuarios(nombre,
+          apellidoP,
+          apellidoM,
+          calle,
+          numCalle,
+          cp,ciudad,
+          estado,
+          cel,
+          nombre_Recibe,
+          apellidoP_Recibe,
+          apellidoM_Recibe,
+          email,
+          pass,
+          roll);
+        }
+      });
+
+      $('#btnBusPrecio').click(function(){
+        query=0;
+        minval = parseInt($('#minVal').val());
+        maxval = parseInt($('#maxVal').val());
+        material = 1;
+        accesorio = 1;
+        if (minval != 0 && maxval != 0) {
+          query = 2;
+        }
+        if (minval > maxval) {
+          alert('El monto mínimo no puede ser mayor que el monto máximo.')
+        }
+        if (minval < maxval && maxval > minval ) {
+          filtros(minval,maxval,material,accesorio,query);
+        }
+      });
+
+      $('#btnLimpiarPriceFilter').click(function(){
+        vaciar=1;
+        limpiarPriceFilter(vaciar);
+      });
+
+      $('#btnBusMaterial').click(function(){
+        minval = 0;
+        maxval = 100000;
+        material = $("#cbmMaterial option:selected").val();
+        accesorio = 1;
+        query = 0;
+
+        if(material == 0){
+          alert("Debe seleccionar un material...");
+        }else{
+          query = 2;
+          filtros(minval,maxval,material,accesorio,query);
+        }
+      });
+
+      $('#btnBusAcs').click(function(){
+        query = 0;
+
+        minval = 0;
+        maxval = 100000;
+        material = 1;
+        accesorio = $('#cbmAccesorio option:selected').val();
+        if(accesorio == 0){
+          alert("Debe seleccionar un accesorio...");
+        }else{
+          query = 2;
+          filtros(minval,maxval,material,accesorio,query);
+        }
+
+      });
+
+      // Enter de inicio de sesion
+      var input = document.getElementById("txt_Pass");
+      input.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnEntrar").click();
+        }
+      });
+
     });
 
-    $('#btnBusPrecio').click(function(){
-      query=0;
-      minval = parseInt($('#minVal').val());
-      maxval = parseInt($('#maxVal').val());
-      material = 1;
-      accesorio = 1;
-      if (minval != 0 && maxval != 0) {
-        query = 2;
-      }
-      if (minval > maxval) {
-        alert('El monto mínimo no puede ser mayor que el monto máximo.')
-      }
-      if (minval < maxval && maxval > minval ) {
-        filtros(minval,maxval,material,accesorio,query);
-      }
-    });
+    function mayus(e) {
+      e.value = e.value.toUpperCase();
+    }
+    function minus(e) {
+      e.value = e.value.toLowerCase();
+    }
 
-    $('#btnLimpiarPriceFilter').click(function(){
-      vaciar=1;
-      limpiarPriceFilter(vaciar);
-    });
+    function validar_email( email )
+    {
+      var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      return regex.test(email) ? true : false;
+    }
 
-    $('#btnBusMaterial').click(function(){
-      minval = 0;
-      maxval = 100000;
-      material = $("#cbmMaterial option:selected").val();
-      accesorio = 1;
-      query = 0;
+    var slider = document.getElementById("myRangeMin");
+    var sliderMax = document.getElementById("myRangeMax");
+    // $('#minVal').val(slider.value);
+    // $('#maxVal').val(sliderMax.value);
 
-      if(material == 0){
-        alert("Debe seleccionar un material...");
-      }else{
-        query = 2;
-        filtros(minval,maxval,material,accesorio,query);
-      }
-    });
-
-    $('#btnBusAcs').click(function(){
-      query = 0;
-
-      minval = 0;
-      maxval = 100000;
-      material = 1;
-      accesorio = $('#cbmAccesorio option:selected').val();
-      if(accesorio == 0){
-        alert("Debe seleccionar un accesorio...");
-      }else{
-        query = 2;
-        filtros(minval,maxval,material,accesorio,query);
-      }
-
-    });
-
-    // Enter de inicio de sesion
-    var input = document.getElementById("txt_Pass");
-    input.addEventListener("keyup", function(event) {
-      // Number 13 is the "Enter" key on the keyboard
-      if (event.keyCode === 13) {
-        // Cancel the default action, if needed
-        event.preventDefault();
-        // Trigger the button element with a click
-        document.getElementById("btnEntrar").click();
-      }
-    });
-
-  });
-
-  function mayus(e) {
-    e.value = e.value.toUpperCase();
-  }
-  function minus(e) {
-    e.value = e.value.toLowerCase();
-  }
-
-  function validar_email( email )
-  {
-    var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    return regex.test(email) ? true : false;
-  }
-
-  var slider = document.getElementById("myRangeMin");
-  var sliderMax = document.getElementById("myRangeMax");
-  // $('#minVal').val(slider.value);
-  // $('#maxVal').val(sliderMax.value);
-
-  slider.oninput = function() {
-    $('#minVal').val(slider.value);
-  }
-  sliderMax.oninput = function() {
-    $('#maxVal').val(sliderMax.value);
-  }
+    slider.oninput = function() {
+      $('#minVal').val(slider.value);
+    }
+    sliderMax.oninput = function() {
+      $('#maxVal').val(sliderMax.value);
+    }
 
 
-</script>
+    </script>

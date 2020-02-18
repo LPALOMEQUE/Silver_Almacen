@@ -23,6 +23,16 @@ $BD = '01';
 $ID_MOV = 0;
 $CVE_DOC = '';
 
+// PRECIO CON DESCUENTO (SUPER PRECIO)
+$ID_PRECIO = 2;
+
+// FILTRADO POR PRECIO DEPENDIENDO DEL TIPO DE USUARIO
+if(isset($_SESSION['status'])){
+  if($_SESSION["status"] == 'ADMIN'){
+    // PRECIO NORMAL
+    $ID_PRECIO = 1;
+  }
+}
 
 if (isset($_POST['VACIAR_LOGIN'])) {
   unset($_SESSION['ID_USER']);
@@ -41,12 +51,12 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   foreach($ID_ARTICLES as $key => $item){
 
     $id = $item['id'];
-    $sql = "SELECT COSTO_PROM FROM INVE" .$BD. " where CVE_ART='$id'";
+    $sql = "SELECT PRECIO AS ULT_COSTO FROM PRECIO_X_PROD" .$BD. " WHERE CVE_ART = '$id' AND  CVE_PRECIO = $ID_PRECIO";
     $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
     if (0 !== sqlsrv_num_rows($res)){
       while ($arti = sqlsrv_fetch_array($res)) {
 
-        $precioNormal = $arti['COSTO_PROM'] * 3;
+        $precioNormal = $arti['ULT_COSTO'];
         $TotalxArtGlobal += $precioNormal * $item['cantidad'];
         $vtaTotal = $TotalxArtGlobal + $_COOKIE['express'];
       }
@@ -67,36 +77,53 @@ require_once "php/Conexion.php";
 $con = conexion();
 $ID = $_SESSION['ID_USER'];
 $MAIL = $_SESSION['Email'];
+
+
 $sql = "SELECT
-CRUZAMIENTOS_ENVIO AS CORREO,
+ID,
+USUARIO,
+CLAVE,
 NOMBRE,
-ADDENDAF AS NOMBRE_RECIBE,
-CALLE,
-NUMEXT,
-CODIGO,
-LOCALIDAD,
-ESTADO,
-TELEFONO
-FROM CLIE" .$BD. "
-WHERE CLAVE='$ID' AND CRUZAMIENTOS_ENVIO='$MAIL'";
+NIVEL AS ROLL
+FROM SOUSUARIOS
+WHERE ID ='$ID' AND
+USUARIO = '$MAIL'";
+
 
 $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 if (0 !== sqlsrv_num_rows($res)){
   while ($user = sqlsrv_fetch_array($res)) {
-    $emailUser = $user['CORREO'];
+    $emailUser = $user['USUARIO'];
     $nombre = $user['NOMBRE'];
-    $nombreRecibe = $user['NOMBRE_RECIBE'];
-    // $apellidoM = $user[4];
-    $calle = $user['CALLE'];
-    $numCalle = $user['NUMEXT'];
-    $cp = $user['CODIGO'];
-    $ciudad = $user['LOCALIDAD'];
-    $estado = $user['ESTADO'];
-    $cel = $user['TELEFONO'];
   }
 }
 sqlsrv_close($con);
 // endRegion carrito_compra
+
+require_once "php/Conexion.php";
+$con = conexion();
+$sql2 = "SELECT CVE_DOC FROM PAR_FACTP01 WHERE CVE_DOC LIKE 'WEBP%'";
+$res2 =  sqlsrv_query($con, $sql2, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+if (0 !== sqlsrv_num_rows($res2)){
+
+  while ($fila = sqlsrv_fetch_array($res2)) {
+    $EXIST_CVE_DOC = $fila['CVE_DOC'];
+
+    $str = $EXIST_CVE_DOC;
+    $array = (explode("P",$str));
+
+    $num = $array[1]+1;
+    //echo $num+1;
+    $claveOld = $array[0];
+    //echo $CVE;
+    $CVE_DOC = $claveOld .'P'. $num;
+
+  }
+}
+else {
+  $CVE_DOC = 'WEBP1';
+}
+sqlsrv_close($con);
 
 
 
@@ -116,7 +143,7 @@ $mpdf->SetHTMLFooter('
 <tr>
 <td width="33%">{DATE j-m-Y}</td>
 <td width="33%" align="center">{PAGENO}/{nbpg}</td>
-<td width="33%" style="text-align: right;">Consigna</td>
+<td width="33%" style="text-align: right;">'.$CVE_DOC.'</td>
 </tr>
 </table>');
 
@@ -132,45 +159,9 @@ $dataHTML .= '<h1>Comprobante de Pedido</h1>';
 $dataHTML .= '<br/>'.'<h3><i><strong>Vendedor:</strong></i></h3>';
 $dataHTML .= '' .$nombre. '<br/>';
 
-$dataHTML .= '<br/>'.'<h3><i><strong>Información de envío...</strong></i></h3>';
-$dataHTML .= '
-<table style="width:100%">
-<tr>
-<td width="5%">Quien recibe: ' . $nombreRecibe . '</td>
-<td width="5%"> </td>
-<td width="5%"> </td>
-</tr>
-
-<tr>
-<td width="5%">Calle: ' . $calle . '</td>
-<td width="5%">Número: #' . $numCalle . '</td>
-<td width="5%">Código Postal: ' . $cp . '</td>
-</tr>
-
-<tr>
-<td width="5%">Ciudad: ' . $ciudad . '</td>
-<td width="5%">Estado: ' . $estado . '</td>
-</tr>
-</table>
-';
-
-$dataHTML .= '<br/>'.'<h3><i><strong>Información de contacto...</strong></i></h3>';
-$dataHTML .= '
-<table style="width:100%">
-
-<tr>
-<td width="5%">Correo: ' . $emailUser . '</td>
-</tr>
-<tr>
-<td width="5%">Celular: ' . $cel . '</td>
-</tr>
-</table>
-';
-
-
 $dataHTML .= '<h3><i><strong>Información del pedido...</strong></i></h3>';
 
-$dataHTML .= '<strong>Folio de Consigna: </strong>#CAMBIAR POR EL CVE_DOC<br/>' ;
+$dataHTML .= '<strong>Folio de Consigna: </strong>#'.$CVE_DOC.'<br/>' ;
 $dataHTML .= '<strong>Fecha del pedido:</strong> '. $fecha . '<br/><br/><br/>';
 
 $dataHTML .= '<br/><br/>
@@ -187,12 +178,19 @@ require_once "php/Conexion.php";
 $con = conexion();
 foreach ($ID_ARTICLES as $key => $item) {
   $id = $item['id'];
-  $sql = "SELECT DESCR as Nombre, COSTO_PROM FROM INVE" .$BD. " where CVE_ART='$id'";
+  $sql = "SELECT
+  I.DESCR as Nombre,
+  PP.PRECIO AS ULT_COSTO
+  FROM INVE" .$BD. " I
+  INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
+  WHERE
+  I.CVE_ART = '$id' AND
+  PP.CVE_PRECIO = $ID_PRECIO";
 
   $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
   if (0 !== sqlsrv_num_rows($res)){
     while ($arti = sqlsrv_fetch_array($res)) {
-      $precioNormal = $arti['COSTO_PROM'] * 3;
+      $precioNormal = $arti['ULT_COSTO'];
       $TotalxArt = $precioNormal  * $item['cantidad'];
       $dataHTML .= '
       <tr>
@@ -254,33 +252,10 @@ $pdf = $mpdf -> Output('','S');
 //obtener informacion
 $sendData = [
   'EMAIL' => $emailUser,
-  'idVenta' => 'PONER CVE_DOC'
+  'idVenta' => $CVE_DOC
 ];
 
-require_once "php/Conexion.php";
-$con = conexion();
-$sql2 = "SELECT CVE_DOC FROM PAR_FACTP01 WHERE CVE_DOC LIKE 'WEBP%'";
-$res2 =  sqlsrv_query($con, $sql2, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
-if (0 !== sqlsrv_num_rows($res2)){
 
-  while ($fila = sqlsrv_fetch_array($res2)) {
-    $EXIST_CVE_DOC = $fila['CVE_DOC'];
-
-    $str = $EXIST_CVE_DOC;
-    $array = (explode("P",$str));
-
-    $num = $array[1]+1;
-    //echo $num+1;
-    $claveOld = $array[0];
-    //echo $CVE;
-    $CVE_DOC = $claveOld .'P'. $num;
-
-  }
-}
-else {
-  $CVE_DOC = 'WEBP1';
-}
-sqlsrv_close($con);
 
 
 
@@ -295,12 +270,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
     $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
     if (0 !== sqlsrv_num_rows($res)){
       while ($arti = sqlsrv_fetch_array($res)) {
-        echo $ID;
-        echo "----";
-        echo $fecha_php;
-        echo "----";
-        echo $CVE_DOC;
-        echo "----";
+
         $SUPER_PRECIO_ART = $arti['COSTO_PROM'];
         $PRECIO_ART = $arti['COSTO_PROM']*3;
         $CANTIDAD_ART = $item['cantidad'];
@@ -721,7 +691,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 
 
 
-// sendEmail($pdf, $sendData);
+sendEmail($pdf, $sendData);
 echo "
 <script type='text/javascript'>
 // window.location= 'index.php?vaciar=1';
@@ -742,7 +712,7 @@ function sendEmail($pdf, $sendData){
     $mail->Host       = 'smtp.gmail.com';                    //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
     $mail->Username   = 'fernando18092105@gmail.com';                     // SMTP username  gerenciageneral@evolutionsilver.com
-    $mail->Password   = '****************';                               // SMTP password
+    $mail->Password   = '********';                              // SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
     $mail->SMTPSecure = 'tls';
     $mail->Port  = 587;                                    // TCP port to connect to

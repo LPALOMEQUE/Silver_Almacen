@@ -1,4 +1,5 @@
 <?php
+session_start();
 $NuevaClave = "";
 
 $nombre = $_POST['NOMBRE'];
@@ -17,34 +18,95 @@ $email = $_POST['EMAIL'];
 $pass = $_POST['PASS'];
 $roll = $_POST['ROLL'];
 
+// VENDEDOR QUIEN DIO DE ALTA AL CLIENTE
+if (isset($_SESSION["ID_USER"])){
+$CVE_VEND = $_SESSION["ID_USER"];
+}
+else{
+  $CVE_VEND = '100' 
+}
+if(isset($_SESSION['status'])){
 
-require_once "Conexion.php";
-$con = conexion();
+  require_once "Conexion.php";
+  $con = conexion();
 
-// $id = $item['id'];
-$sql = "SELECT TOP 1 CLAVE  FROM CLIE01 WHERE CLAVE LIKE 'WEB-%' ORDER BY CLAVE DESC";
-$res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
-if (0 !== sqlsrv_num_rows($res)){
+  // if($_SESSION["status"] == 'COMUN'){
+  //
+  //   $sql = "SELECT TOP 1 CLAVE  FROM CLIE01 WHERE CLAVE LIKE 'WEB-%' ORDER BY CLAVE DESC";
+  //   $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+  //   if (0 !== sqlsrv_num_rows($res)){
+  //
+  //     while ($fila = sqlsrv_fetch_array($res)) {
+  //       $identificador = $fila['CLAVE'];
+  //
+  //       $str = $identificador;
+  //       $array = (explode("-",$str));
+  //
+  //       $num = $array[1]+1;
+  //       //echo $num+1;
+  //       $claveOld = $array[0];
+  //       //echo $CVE;
+  //       $NuevaClave = $claveOld .'-'. $num;
+  //     }
+  //   }
+  // }
+  // else
+  if($_SESSION["status"] == 'ADMIN'){
 
-  while ($fila = sqlsrv_fetch_array($res)) {
-    $identificador = $fila['CLAVE'];
+    $sql = "SELECT TOP 1 CLAVE  FROM CLIE01 WHERE CLAVE LIKE 'WEBC-%' ORDER BY CLAVE DESC";
+    $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+    if (0 !== sqlsrv_num_rows($res)){
 
-    $str = $identificador;
-    $array = (explode("-",$str));
+      while ($fila = sqlsrv_fetch_array($res)) {
+        $identificador = $fila['CLAVE'];
 
-    $num = $array[1]+1;
-    //echo $num+1;
-    $claveOld = $array[0];
-    //echo $CVE;
-    $NuevaClave = $claveOld .'-'. $num;
+        $str = $identificador;
+        $array = (explode("-",$str));
 
+        $num = $array[1]+1;
+        //echo $num+1;
+        $claveOld = $array[0];
+        //echo $CVE;
+        $NuevaClave = $claveOld .'-'. $num;
+      }
+    }
+    else{
+
+      $NuevaClave = 'WEBC-1';
+    }
   }
   sqlsrv_close($con);
-}
-else {
 
-  sqlsrv_close($con);
 }
+else{
+
+  require_once "Conexion.php";
+  $con = conexion();
+
+  $sql = "SELECT TOP 1 CLAVE  FROM CLIE01 WHERE CLAVE LIKE 'WEB-%' ORDER BY CLAVE DESC";
+  $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+  if (0 !== sqlsrv_num_rows($res)){
+
+    while ($fila = sqlsrv_fetch_array($res)) {
+      $identificador = $fila['CLAVE'];
+
+      $str = $identificador;
+      $array = (explode("-",$str));
+
+      $num = $array[1]+1;
+      //echo $num+1;
+      $claveOld = $array[0];
+      //echo $CVE;
+      $NuevaClave = $claveOld .'-'. $num;
+    }
+  }
+  else{
+
+    $NuevaClave = 'WEB-1';
+  }
+}
+
+
 
 require_once "Conexion.php";
 $con = conexion();

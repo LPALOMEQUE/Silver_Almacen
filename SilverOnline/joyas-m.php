@@ -8,6 +8,18 @@ $valMin =1;
 $valMax = 1;
 $queryVal=0;
 $BD = '01';
+
+// PRECIO CON DESCUENTO (SUPER PRECIO)
+$ID_PRECIO = 2;
+
+// FILTRADO POR PRECIO DEPENDIENDO DEL TIPO DE USUARIO
+if(isset($_SESSION['status'])){
+  if($_SESSION["status"] == 'ADMIN'){
+    // PRECIO NORMAL
+    $ID_PRECIO = 1;
+  }
+}
+
 if (isset($_POST['VaciarFilterP'])) {
   unset($_SESSION['filtro_price']);
 }
@@ -35,6 +47,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
   if (isset($_POST['VACIAR_LOGIN'])) {
     unset($_SESSION['ID_USER']);
     unset($_SESSION['Email']);
+    unset($_SESSION['status']);
   }
 
   //Imprimiendo datos globales del carrito
@@ -45,11 +58,14 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     foreach($ID_ARTICLES as $key => $item){
 
       $id = $item['id'];
-      $sql = "SELECT ULT_COSTO FROM INVE" .$BD. " where CVE_ART='$id'";
+      $sql = "SELECT PRECIO AS ULT_COSTO, * FROM PRECIO_X_PROD" .$BD. " WHERE CVE_ART = '$id' AND  CVE_PRECIO = $ID_PRECIO";
+
       $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
       if (0 !== sqlsrv_num_rows($res)){
         while ($fila = sqlsrv_fetch_array($res)) {
-          $TotalxArtGlobal += $fila['ULT_COSTO'] * $item['cantidad'];
+
+          $precioNormal = $fila['ULT_COSTO'];
+          $TotalxArtGlobal += $precioNormal * $item['cantidad'];
         }
       }
     }
@@ -193,7 +209,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
             echo $mostrar = 'inline';
           } ?>">
           <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
-          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</button>
+          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</button>
         </div>
       </div>
       <div class="col-md-2">
@@ -274,8 +290,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                         <a class="dropdown-item" href="checkout.html">Resiva</a>
                       </div>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="#"><span class="karl-level">hot</span>Dresses</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Sign In</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</a></li>
                   </ul>
                 </div>
               </nav>
@@ -395,7 +410,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                         <input type="password" class="form-control" id="txtPass" value="" required>
                       </div>
                     </div>
-                    <div class="row">
+                    <!-- <div class="row">
                       <div class="col-md-12 mb-3">
                         <label id="lbRoll" for="cbmRoll">Roll</label>
                         <select id="cbmRoll"  class="form-control" name="state">
@@ -406,7 +421,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                           <option value="COMUN">COMÚN</option>form-control
                         </select>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -475,16 +490,18 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     I.EXIST,
     I.CVE_ART,
     I.DESCR as Nombre,
-    I.ULT_COSTO,
+    PP.PRECIO AS ULT_COSTO,
     I.CVE_IMAGEN,
     I.DESCR as Descripcion
     FROM INVE" .$BD. " I
-    LEFT JOIN MULT01 M ON M.CVE_ART = I.CVE_ART
+    LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
+    INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
     WHERE I.EXIST > 0 AND
     M.CVE_ALM = 1 AND
+    PP.CVE_PRECIO = $ID_PRECIO AND
     I.CVE_ART LIKE '$material' AND
     I.CVE_ART  LIKE '$accesorio' AND
-    I.ULT_COSTO BETWEEN $valMin AND $valMax
+    PP.PRECIO BETWEEN $valMin AND $valMax
     ORDER BY I.ULT_COSTO
     OFFSET $Reg_Ignorados ROWS
     FETCH NEXT  $cantidadRegistros ROWS ONLY";
@@ -495,13 +512,15 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     I.EXIST,
     I.CVE_ART,
     I.DESCR as Nombre,
-    I.ULT_COSTO,
+    PP.PRECIO AS ULT_COSTO,
     I.CVE_IMAGEN,
     I.DESCR as Descripcion
     FROM INVE" .$BD. " I
     LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
+    INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
     WHERE I.EXIST > 0 AND
-    M.CVE_ALM = 1
+    M.CVE_ALM = 1 AND
+    PP.CVE_PRECIO = $ID_PRECIO
     ORDER BY I.CVE_ART
     OFFSET $Reg_Ignorados ROWS
     FETCH NEXT  $cantidadRegistros ROWS ONLY";
@@ -512,6 +531,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
   if (0 !== sqlsrv_num_rows($res)){
     while ($category = sqlsrv_fetch_array($res)) {
       $EXISTENCIA = $category['EXIST'];
+      $precio = $category['ULT_COSTO'];
       ?>
       <!-- ****** Quick View Modal Area Start ****** -->
       <div class="modal fade" id="quickview<?php echo $category['CVE_ART'] ?>" tabindex="-1" role="dialog" aria-labelledby="quickview" aria-hidden="true">
@@ -542,7 +562,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                           <i class="fa fa-star" aria-hidden="true"></i>
                           <i class="fa fa-star" aria-hidden="true"></i>
                         </div>
-                        <h5 class="price">$<?php echo number_format($category['ULT_COSTO'],2) ?> <span>$624</span></h5>
+                        <h5 class="price">$<?php echo number_format($precio,2) ?> <span>$624</span></h5>
                         <p>Marca: SILVER</p>
                         <p><?php echo $category['Descripcion'] ?></p>
                         <p style="color: #ff084e;"><strong>STOCK DISPONIBLE: <?php echo $category['EXIST'] ?></strong></p>
@@ -842,16 +862,18 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               I.EXIST,
               I.CVE_ART,
               I.DESCR as Nombre,
-              I.ULT_COSTO,
+              PP.PRECIO AS ULT_COSTO,
               I.CVE_IMAGEN,
               I.DESCR as Descripcion
               FROM INVE" .$BD. " I
               LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
+              INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
               WHERE I.EXIST > 0 AND
               M.CVE_ALM = 1 AND
+              PP.CVE_PRECIO = $ID_PRECIO AND
               I.CVE_ART LIKE '$material' AND
               I.CVE_ART  LIKE '$accesorio' AND
-              I.ULT_COSTO BETWEEN $valMin AND $valMax
+              PP.PRECIO BETWEEN $valMin AND $valMax
               ORDER BY I.ULT_COSTO
               OFFSET $Reg_Ignorados ROWS
               FETCH NEXT  $cantidadRegistros ROWS ONLY";
@@ -862,13 +884,15 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               I.EXIST,
               I.CVE_ART,
               I.DESCR as Nombre,
-              I.ULT_COSTO,
+              PP.PRECIO AS ULT_COSTO,
               I.CVE_IMAGEN,
               I.DESCR as Descripcion
               FROM INVE" .$BD. " I
               LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
+              INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
               WHERE I.EXIST > 0 AND
-              M.CVE_ALM = 1
+              M.CVE_ALM = 1 AND
+              PP.CVE_PRECIO = $ID_PRECIO
               ORDER BY I.CVE_ART
               OFFSET $Reg_Ignorados ROWS
               FETCH NEXT  $cantidadRegistros ROWS ONLY";
@@ -877,7 +901,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
             $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
             if (0 !== sqlsrv_num_rows($res)){
               while ($category = sqlsrv_fetch_array($res)) {
-
+                $precio = $category['ULT_COSTO'];
                 ?>
 
                 <!-- Single gallery Item -->
@@ -892,7 +916,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                   </div>
                   <!-- Product Description -->
                   <div class="product-description">
-                    <h4 class="product-price">$<?php echo number_format($category['ULT_COSTO'],2) ; ?></h4>
+                    <h4 class="product-price">$<?php echo number_format($precio,2) ; ?></h4>
                     <p><?php echo $category['Nombre'] ?></p>
                     <!-- Add to Cart -->
                     <!-- <a href="#" class="add-to-cart-btn">ADD TO CART</a> -->
@@ -1115,8 +1139,6 @@ $(document).ready(function(){
   });
 
   $('#btnGuardar').click(function(){
-
-
     nombre = $('#txtNombre').val();
     apellidoP = $('#txtApellidoP').val();
     apellidoM = $('#txtApellidoM').val();
@@ -1140,7 +1162,27 @@ $(document).ready(function(){
       email = 1;
     }
     pass= $('#txtPass').val();
-    roll = $("#cbmRoll option:selected").val();
+
+    <?php
+    if (isset($_SESSION["status"])) {
+      if($_SESSION["status"] == 'ADMIN'){
+        ?>
+        roll = 'ADMIN';
+        <?php
+      }
+
+      else {
+        ?>
+
+        roll = 'COMUN';
+        <?php
+      }
+    }
+    else {
+      ?>
+      roll = 'COMUN';
+
+      <?php } ?>
 
     if(nombre == ""){
 

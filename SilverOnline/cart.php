@@ -5,7 +5,18 @@ $sHTML = '';
 $bagNumber = 0;
 $TotalxArtGlobal = 0;
 $cantidad = 0;
+$BD = '01';
 
+// PRECIO CON DESCUENTO (SUPER PRECIO)
+$ID_PRECIO = 2;
+
+// FILTRADO POR PRECIO DEPENDIENDO DEL TIPO DE USUARIO
+if(isset($_SESSION['status'])){
+  if($_SESSION["status"] == 'ADMIN'){
+    // PRECIO NORMAL
+    $ID_PRECIO = 1;
+  }
+}
 
 if (isset($_SESSION['ID_ARTICLES'])) {
   $bagNumber = count($_SESSION['ID_ARTICLES']);
@@ -16,6 +27,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 if (isset($_POST['VACIAR_LOGIN'])) {
   unset($_SESSION['ID_USER']);
   unset($_SESSION['Email']);
+  unset($_SESSION['status']);
 }
 
 // Vaciamos el carrito
@@ -59,7 +71,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
     }
   }
 
-  //Imprimimos datos globales del carrito
+  //Imprimiendo datos globales del carrito
   require_once "php/Conexion.php";
   $con = conexion();
   if (isset($_SESSION['ID_ARTICLES'])) {
@@ -67,11 +79,14 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
     foreach($ID_ARTICLES as $key => $item){
 
       $id = $item['id'];
-      $sql = "SELECT COSTO_PROM FROM INVE01 where CVE_ART='$id'";
+      $sql = "SELECT PRECIO AS ULT_COSTO FROM PRECIO_X_PROD" .$BD. " WHERE CVE_ART = '$id' AND  CVE_PRECIO = $ID_PRECIO";
+
       $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
       if (0 !== sqlsrv_num_rows($res)){
         while ($fila = sqlsrv_fetch_array($res)) {
-          $TotalxArtGlobal += $fila['COSTO_PROM'] * $item['cantidad'];
+
+          $precioNormal = $fila['ULT_COSTO'];
+          $TotalxArtGlobal += $precioNormal * $item['cantidad'];
         }
       }
     }
@@ -409,7 +424,17 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
               if (isset($_SESSION['ID_ARTICLES'])) {
                 foreach ($ID_ARTICLES as $key => $item) {
                   $id= $item['id'];
-                  $sql = "SELECT EXIST,DESCR,CVE_IMAGEN,COSTO_PROM FROM INVE01 where CVE_ART='$id'";
+
+                  $sql = "SELECT
+                  I.EXIST,
+                  I.DESCR,
+                  I.CVE_IMAGEN,
+                  PP.PRECIO AS COSTO_PROM
+                  FROM INVE" .$BD. " I
+                  INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
+                  where
+                  I.CVE_ART= '$id' AND
+                  PP.CVE_PRECIO = $ID_PRECIO";
 
                   $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
                   if (0 !== sqlsrv_num_rows($res)){
