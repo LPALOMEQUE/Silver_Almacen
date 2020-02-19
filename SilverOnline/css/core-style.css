@@ -2161,3 +2161,12 @@ img {
 border: 0px solid #000000;
 float: right;
 }
+
+.scroll-div{
+
+height:300px;
+overflow-y: scroll;
+overflow-x: hidden;
+width: 783px;
+
+}
