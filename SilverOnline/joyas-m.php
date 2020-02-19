@@ -502,7 +502,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     I.CVE_ART LIKE '$material' AND
     I.CVE_ART  LIKE '$accesorio' AND
     PP.PRECIO BETWEEN $valMin AND $valMax
-    ORDER BY I.ULT_COSTO
+    ORDER BY PP.PRECIO
     OFFSET $Reg_Ignorados ROWS
     FETCH NEXT  $cantidadRegistros ROWS ONLY";
   }
@@ -874,7 +874,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               I.CVE_ART LIKE '$material' AND
               I.CVE_ART  LIKE '$accesorio' AND
               PP.PRECIO BETWEEN $valMin AND $valMax
-              ORDER BY I.ULT_COSTO
+              ORDER BY PP.PRECIO
               OFFSET $Reg_Ignorados ROWS
               FETCH NEXT  $cantidadRegistros ROWS ONLY";
             }

@@ -42,13 +42,6 @@ if(isset($_SESSION['status'])){
       while ($fila = sqlsrv_fetch_array($res)) {
         $num = $fila['CLAVE']+1;
 
-        // $str = $identificador;
-        // $array = (explode("-",$str));
-        //
-        // $num = $array[1]+1;
-        // //echo $num+1;
-        // $claveOld = $array[0];
-        //echo $CVE;
         $NuevaClave = 'WEBC' .'-'. $num;
       }
     }
@@ -72,13 +65,6 @@ else{
     while ($fila = sqlsrv_fetch_array($res)) {
       $num = $fila['CLAVE']+1;
 
-      // $str = $identificador;
-      // $array = (explode("-",$str));
-      //
-      // $num = $array[1]+1;
-      // //echo $num+1;
-      // $claveOld = $array[0];
-      //echo $CVE;
       $NuevaClave = 'WEB' .'-'. $num;
     }
   }
@@ -87,8 +73,6 @@ else{
     $NuevaClave = 'WEB-1';
   }
 }
-
-
 
 require_once "Conexion.php";
 $con = conexion();
