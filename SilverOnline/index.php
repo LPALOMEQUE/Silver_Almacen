@@ -326,49 +326,159 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
                 <li class="nav-item active"><a class="nav-link" href="#"></a></li>
                 <li class="nav-item active"><a class="nav-link" href="#"></a></li>
 
-                <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categorías</a>
-                  <div class="dropdown-menu" aria-labelledby="karlDropdown">
-                    <a class="dropdown-item" href="joyas-m.php">Joyería</a>
-                    <a class="dropdown-item" href="#">Bolsas</a>
-                    <a class="dropdown-item" href="#">Perfumes</a>
-                    <a class="dropdown-item" href="#">Ropa</a>
-                  </div>
-                </li>
-
-
                 <div class="<?php
-                if (isset($_SESSION["Email"])) {
-                  echo $ocultar = 'none';
+                if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
+                  echo $category = 'inline';
                 }else {
-                  echo $mostrar = 'inline';
-                } ?> ">
-                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</a></li>
+                  echo $category = 'none';
+                } ?>">
+
+                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalViewClientes"><span class="karl-level">Seleccione</span>Cliente</a></li>
               </div>
+              <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categorías</a>
+                <div class="dropdown-menu" aria-labelledby="karlDropdown">
+                  <a class="dropdown-item" href="joyas-m.php">Joyería</a>
+                  <a class="dropdown-item" href="#">Bolsas</a>
+                  <a class="dropdown-item" href="#">Perfumes</a>
+                  <a class="dropdown-item" href="#">Ropa</a>
+                </div>
+              </li>
+
 
               <div class="<?php
               if (isset($_SESSION["Email"])) {
-                echo $mostrar = 'inline';
-              }else {
                 echo $ocultar = 'none';
+              }else {
+                echo $mostrar = 'inline';
               } ?> ">
-              <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroCliente">Registrar Cliente</a></li>
+              <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</a></li>
             </div>
 
-            <!-- <div class="<?php
-            if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
-            echo $category = 'inline';
-          }else {
-          echo $category = 'none';
-        } ?>">
-        <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalArticulos">Add Articulos</a></li>
+            <div class="<?php
+            if (isset($_SESSION["status"]) && $_SESSION['status'] == 'ADMIN') {
+              echo $mostrar = 'inline';
+            }else {
+              echo $ocultar = 'none';
+            } ?> ">
+            <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroCliente">Registrar Cliente</a></li>
+          </div>
 
-      </div> -->
-    </ul>
-  </div>
+          <!-- <div class="<?php
+          if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
+          echo $category = 'inline';
+        }else {
+        echo $category = 'none';
+      } ?>">
+      <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalArticulos">Add Articulos</a></li>
+
+    </div> -->
+  </ul>
+</div>
 </nav>
 </div>
+
+
+<!-- Modal para View Clientes -->
+<div class="modal fade" id="ModalViewClientes" tabindex="-1" role="dialog" aria-labelledby="ModalViewClientes" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalViewClientes">Clientes Registrados...</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-5 mb-3">
+            <p id=""><strong>Cliente:</strong></p>
+          </div>
+
+          <div class="col-md-5 mb-3">
+            <p><strong>E-MAIL:</strong></p>
+          </div>
+          <div class="col-md-1 mb-3">
+
+          </div>
+        </div>
+
+        <div class="scroll-div">
+
+          <?php
+          if (isset($_SESSION['ID_USER'])) {
+
+            require_once "php/Conexion.php";
+            $con = conexion();
+            $ID = $_SESSION['ID_USER'];
+            $sql = "SELECT
+            CLAVE,
+            CRUZAMIENTOS_ENVIO AS CORREO,
+            NOMBRE
+            FROM CLIE" .$BD. "
+            WHERE CVE_VEND='$ID'";
+
+            $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+            if (0 !== sqlsrv_num_rows($res)){
+              while ($user = sqlsrv_fetch_array($res)) {
+                ?>
+
+                <div class="row">
+                  <div class="col-md-5 mb-3">
+                    <p><?php echo $user['NOMBRE'] ?></p>
+                  </div>
+
+                  <div class="col-md-5 mb-3">
+                    <p><?php echo $user['CORREO'] ?></p>
+                  </div>
+
+                  <div class="col-md-1 mb-3">
+                    <button type="button" class="btn btn-success" id="btnGetClient<?php echo $user['CLAVE'] ?>"></button>
+                  </div>
+
+                </div>
+                <script type="text/javascript">
+                $(document).ready(function(){
+
+                  $('#btnGetClient<?php echo $user['CLAVE'] ?>').click(function(){
+                    debugger;
+                    <?php
+                    $_SESSION['ID_CLIENTE'] = $user['CLAVE'];
+                    ?>
+                    id = '<?php echo $_SESSION['ID_CLIENTE'] ?>';
+                  });
+
+
+                });
+                </script>
+                <?php
+              }
+            }
+          }
+          sqlsrv_close($con);
+
+          ?>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" id="btnGuardarC">Registrarse</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
 
 <!-- Modal para registro de Clientes -->
 <div class="modal fade" id="ModalRegistroCliente" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroCliente" aria-hidden="true">

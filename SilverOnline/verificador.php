@@ -194,7 +194,7 @@ if ($state == 'approved') {
 
   $dataHTML .= '<h1>Comprobante de Pedido</h1>';
 
-  $dataHTML .= '<br/>'.'<h3><i><strong>Vendedor:</strong></i></h3>';
+  $dataHTML .= '<br/>'.'<h3><i><strong>Cliente:</strong></i></h3>';
   $dataHTML .= '' .$nombre. '<br/>';
 
   $dataHTML .= '<br/>'.'<h3><i><strong>Información de envío...</strong></i></h3>';

@@ -23,6 +23,12 @@ $BD = '01';
 $ID_MOV = 0;
 $CVE_DOC = '';
 
+
+if (isset($_SESSION['ID_CLIENTE'])) {
+  $id_cliente = $_SESSION['ID_CLIENTE'];
+}
+
+
 // PRECIO CON DESCUENTO (SUPER PRECIO)
 $ID_PRECIO = 2;
 
@@ -79,24 +85,41 @@ $ID = $_SESSION['ID_USER'];
 $MAIL = $_SESSION['Email'];
 
 
-$sql = "SELECT
-ID,
-USUARIO,
-CLAVE,
-NOMBRE,
-NIVEL AS ROLL
-FROM SOUSUARIOS
-WHERE ID ='$ID' AND
-USUARIO = '$MAIL'";
 
+
+require_once "php/Conexion.php";
+$con = conexion();
+$ID = $_SESSION['ID_USER'];
+$MAIL = $_SESSION['Email'];
+$sql = "SELECT
+CRUZAMIENTOS_ENVIO AS CORREO,
+NOMBRE,
+-- ADDENDAF AS NOMBRE_RECIBE,
+CALLE,
+NUMEXT,
+CODIGO,
+LOCALIDAD,
+ESTADO,
+TELEFONO
+FROM CLIE" .$BD. "
+WHERE CLAVE='$id_cliente'";
 
 $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 if (0 !== sqlsrv_num_rows($res)){
   while ($user = sqlsrv_fetch_array($res)) {
-    $emailUser = $user['USUARIO'];
+    $email = $user['CORREO'];
     $nombre = $user['NOMBRE'];
+    // $nombreRecibe = $user['NOMBRE_RECIBE'];
+    // $apellidoM = $user[4];
+    $calle = $user['CALLE'];
+    $numCalle = $user['NUMEXT'];
+    $cp = $user['CODIGO'];
+    $ciudad = $user['LOCALIDAD'];
+    $estado = $user['ESTADO'];
+    $cel = $user['TELEFONO'];
   }
 }
+
 sqlsrv_close($con);
 // endRegion carrito_compra
 
@@ -156,8 +179,39 @@ $dataHTML .= '<img src="img/core-img/silverEvolution.png"><br/><br/>';
 
 $dataHTML .= '<h1>Comprobante de Pedido</h1>';
 
-$dataHTML .= '<br/>'.'<h3><i><strong>Vendedor:</strong></i></h3>';
+$dataHTML .= '<br/>'.'<h3><i><strong>Cliente:</strong></i></h3>';
 $dataHTML .= '' .$nombre. '<br/>';
+
+$dataHTML .= '<br/>'.'<h3><i><strong>Información de envío...</strong></i></h3>';
+$dataHTML .= '
+<table style="width:100%">
+
+
+<tr>
+<td width="5%">Calle: ' . $calle . '</td>
+<td width="5%">Número: #' . $numCalle . '</td>
+<td width="5%">Código Postal: ' . $cp . '</td>
+</tr>
+
+<tr>
+<td width="5%">Ciudad: ' . $ciudad . '</td>
+<td width="5%">Estado: ' . $estado . '</td>
+</tr>
+</table>
+';
+
+$dataHTML .= '<br/>'.'<h3><i><strong>Información de contacto...</strong></i></h3>';
+$dataHTML .= '
+<table style="width:100%">
+
+<tr>
+<td width="5%">Correo: ' . $email . '</td>
+</tr>
+<tr>
+<td width="5%">Celular: ' . $cel . '</td>
+</tr>
+</table>
+';
 
 $dataHTML .= '<h3><i><strong>Información del pedido...</strong></i></h3>';
 
@@ -251,7 +305,7 @@ $pdf = $mpdf -> Output('','S');
 
 //obtener informacion
 $sendData = [
-  'EMAIL' => $emailUser,
+  'EMAIL' => $email,
   'idVenta' => $CVE_DOC
 ];
 
