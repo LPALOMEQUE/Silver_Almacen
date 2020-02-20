@@ -194,55 +194,44 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
       </div>
       <div id="wrapper">
         <div class="row">
-          <div class="col-md-3 error">
-            <a class="center"><strong>Usuario:</strong>
-              <?php
-              if (isset($_SESSION["Email"])) {
-                echo $_SESSION["Email"];
-              }else {
-                echo $invitado = 'Invitado...';
-              } ?>
-            </a>
-          </div>
-          <div class="col-md-2 error">
-            <div class="<?php
+          <div class="col-md-4 error">
+            <a class="center"> <strong>Usuario:</strong> <?php
             if (isset($_SESSION["Email"])) {
-
-              echo $mostrar = 'inline';
+              echo $_SESSION["Email"];
             }else {
-              echo $ocultar = 'none';
-            } ?> ">
-            <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
-          </div>
-
+              echo $invitado = 'Invitado...';
+            } ?>
+          </a>
+        </div>
+        <div class="col-md-2 error">
           <div class="<?php
           if (isset($_SESSION["Email"])) {
-
-            echo $ocultar = 'none';
-          }else {
             echo $mostrar = 'inline';
-          } ?>">
-          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
-          <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</button>
+          }else {
+            echo $ocultar = 'none';
+          } ?> ">
+          <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
         </div>
+        <div class="<?php
+        if (isset($_SESSION["Email"])) {
+
+          echo $ocultar = 'none';
+        }else {
+          echo $mostrar = 'inline';
+        } ?>">
+        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
+        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</button>
       </div>
-      <div class="col-md-2">
-
-      </div>
-      <!-- <div class="col-md-1">
-
-    </div> -->
-    <div class="col-md-3 right">
-
     </div>
-
     <div class="col-md-2">
-
+    </div>
+    <div class="col-md-3 right">
+    </div>
+    <div class="col-md-2">
     </div>
   </div>
   <!-- ****** Header Area Start ****** -->
   <header class="header_area bg-img background-overlay-white" style="background-image: url(img/bg-img/bg-1.jpg);">
-
     <!-- Top Header Area Start -->
     <div class="top_header_area">
       <div class="container h-100">
@@ -260,7 +249,6 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                 <div class="cart">
                   <a href="cart.php"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i><strong> Carrito:</strong>  $<?php echo number_format($TotalxArtGlobal,2) ?></a>
                   <!-- Cart List Area Start -->
-
                 </div>
                 <div class="header-right-side-menu ml-15">
                   <a href="#" id="sideMenuBtn"><i class="ti-menu" aria-hidden="true"></i></a>
@@ -268,7 +256,6 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -288,26 +275,50 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
             <!-- Menu Area -->
             <div class="main-menu-area">
               <nav class="navbar navbar-expand-lg align-items-start">
-
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#karl-navbar" aria-controls="karl-navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="ti-menu"></i></span></button>
-
                 <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
                   <ul class="navbar-nav animated" id="nav">
-                    <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
-                    <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Paginas</a>
-                      <div class="dropdown-menu" aria-labelledby="karlDropdown">
-                        <a class="dropdown-item" href="index.php">Inicio</a>
-                        <a class="dropdown-item" href="shop.html">Compras</a>
-                        <a class="dropdown-item" href="product-details.html">Detalles de productos</a>
-                        <a class="dropdown-item" href="cart.php">Carrito</a>
-                        <a class="dropdown-item" href="checkout.html">Resiva</a>
-                      </div>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</a></li>
-                  </ul>
+                    <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                    <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                    <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                    <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                    <div class="<?php
+                    if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
+                      echo $category = 'inline';
+                    }else {
+                      echo $category = 'none';
+                    } ?>">
+                    <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalViewClientes"><span class="karl-level">Seleccione</span>Cliente</a></li>
+                  </div>
+                  <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categorías</a>
+                    <div class="dropdown-menu" aria-labelledby="karlDropdown">
+                      <a class="dropdown-item" href="joyas-m.php">Joyería</a>
+                      <a class="dropdown-item" href="#">Bolsas</a>
+                      <a class="dropdown-item" href="#">Perfumes</a>
+                      <a class="dropdown-item" href="#">Ropa</a>
+                    </div>
+                  </li>
+                  <div class="<?php
+                  if (isset($_SESSION["Email"])) {
+                    echo $ocultar = 'none';
+                  }else {
+                    echo $mostrar = 'inline';
+                  } ?> ">
+                  <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</a></li>
                 </div>
-              </nav>
+                <div class="<?php
+                if (isset($_SESSION["status"]) && $_SESSION['status'] == 'ADMIN') {
+                  echo $mostrar = 'inline';
+                }else {
+                  echo $ocultar = 'none';
+                } ?> ">
+                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroCliente">Registrar Cliente</a></li>
+              </div>
+            </ul>
+          </div>
+        </nav>
             </div>
             <!-- Modal para inicio de sesion -->
             <div class="modal fade" id="ModalLogin" tabindex="-1" role="dialog" aria-labelledby="ModalLogin" aria-hidden="true">
@@ -342,6 +353,182 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                 </div>
               </div>
             </div>
+
+            <!-- Modal para View Clientes -->
+            <div class="modal fade" id="ModalViewClientes" tabindex="-1" role="dialog" aria-labelledby="ModalViewClientes" aria-hidden="true">
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="ModalViewClientes">Clientes Registrados...</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-md-5">
+                      </div>
+                      <div class="col-md-5">
+                        <input type="text" name="txtBusc" id="txtBus" value="" class="form-control" placeholder="Nombre del cliente">
+                      </div>
+                      <div class="col-md-2">
+                        <button type="button" class="btn btn-warning" id="btnBus" name="button">Buscar</button>
+                      </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <div class="<?php
+                    if ($_SESSION["status"] == 'ADMIN' && isset($_SESSION["BUS_CLIENTE"])) {
+                      echo 'inline';
+                    }else {
+                      echo 'none';
+                    } ?>">
+                    <div class="row">
+                      <div class="col-md-5 mb-3">
+                        <p id=""><strong>Cliente:</strong></p>
+                      </div>
+                      <div class="col-md-5 mb-3">
+                        <p><strong>E-MAIL:</strong></p>
+                      </div>
+                      <div class="col-md-1 mb-3">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="scroll-div">
+                    <?php
+                    if ($_SESSION['status'] == 'ADMIN') {
+
+                      if(isset($_SESSION['BUS_CLIENTE'])){
+
+                        require_once "php/Conexion.php";
+                        $con = conexion();
+                        $ID = $_SESSION['ID_USER'];
+                        $sql = "SELECT
+                        CLAVE,
+                        rtrim(ltrim(CLAVE)) AS CLAVE2,
+                        CRUZAMIENTOS_ENVIO AS CORREO,
+                        NOMBRE
+                        FROM CLIE" .$BD. "
+                        WHERE CVE_VEND='$ID' AND NOMBRE LIKE '%".$_SESSION['BUS_CLIENTE']."%'";
+
+                        $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+                        if (0 !== sqlsrv_num_rows($res)){
+                          while ($user = sqlsrv_fetch_array($res)) {
+                            ?>
+                            <div class="row">
+                              <div class="col-md-5 mb-3">
+                                <p><?php echo $user['NOMBRE'] ?></p>
+                              </div>
+
+                              <div class="col-md-5 mb-3">
+                                <p><?php echo $user['CORREO'] ?></p>
+                              </div>
+                              <div class="col-md-1 mb-3">
+                                <button type="button" class="btn btn-success" id="btnGetClient<?php echo $user['CLAVE2'] ?>"></button>
+                              </div>
+                              <input type="hidden" name="clave" value="<?php echo $user['CLAVE'] ?>" id="txtClave<?php echo $user['CLAVE2'] ?>" >
+                            </div>
+                            <script type="text/javascript">
+                            $(document).ready(function(){
+
+                              $('#btnGetClient<?php echo $user['CLAVE2'] ?>').click(function(){
+                                debugger;
+                                id_cliente = $('#txtClave<?php echo $user['CLAVE2'] ?>').val();
+                                getCliente(id_cliente);
+                              });
+                            });
+                            </script>
+                            <?php
+                          }
+                        }
+                        sqlsrv_close($con);
+                      }
+                    }
+                    ?>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                  <!-- <button type="button" class="btn btn-primary" id="btnGuardarC">Registrarse</button> -->
+                </div>
+              </div>
+            </div>
+            </div>
+
+            <!-- Modal para registro de Clientes -->
+            <div class="modal fade" id="ModalRegistroCliente" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroCliente" aria-hidden="true">
+              <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="ModalRegistroCliente">Registro de Cliente</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-md-4 mb-3">
+                        <label for="txtNombreC">Nombre(s)</label>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombreC" value="" required>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="txtApellidoPC">Apellido Paterno</label>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoPC" value="" required>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="txtApellidoMC">Apellido Materno</label>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoMC" value="" required>
+                      </div>
+                    </div>
+                    <h6>Datos de dirección...</h6>
+
+                    <div class="row">
+                      <div class="col-md-4 mb-3">
+                        <label for="txtCalleC">Calle</label>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCalleC" value="" required>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="txtNumCalleC">Núm(#)</label>
+                        <input type="number" class="form-control" id="txtNumCalleC" value="" required>
+                      </div>
+                      <div class="col-md-4 mb-3">
+                        <label for="txtCpC">C.P.</label>
+                        <input type="number" class="form-control" id="txtCpC" value="" required>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-4" "mb-3">
+                        <label for="txtCiudadC">Ciudad</label>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudadC" value="" required>
+                      </div>
+                      <div class="col-md-4" "mb-3">
+                        <label for="txtEstadoC">Estado</label>
+                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstadoC" value="" required>
+                      </div>
+                      <div class="col-md-4" "mb-3">
+                        <label for="txtCelC">Celular</label>
+                        <input type="number" class="form-control" id="txtCelC" value="" required>
+                      </div>
+                    </div>
+                    <br/>
+                    <br/>
+                    <h6>Datos de cuenta...</h6>
+                    <div class="row">
+                      <div class="col-md-12 mb-12">
+                        <label for="txtEmailC">E-MaiL</label>
+                        <input type="email" onkeyup="minus(this);" class="form-control" id="txtEmailC" value="" required>
+                      </div>
+
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarC">Registrarse</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Modal para registro de Usuarios -->
             <div class="modal fade" id="ModalRegistroUsuarios" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroUsuarios" aria-hidden="true">
               <div class="modal-dialog modal-lg" role="document">
@@ -1152,6 +1339,106 @@ $(document).ready(function(){
     logOut(vaciar);
   });
 
+  $('#btnGuardarC').click(function(){
+    debugger;
+    nombre = $('#txtNombreC').val();
+    apellidoP = $('#txtApellidoPC').val();
+    apellidoM = $('#txtApellidoMC').val();
+    calle = $('#txtCalleC').val();
+    numCalle = $('#txtNumCalleC').val();
+    cp = $('#txtCpC').val();
+    ciudad = $('#txtCiudadC').val();
+    estado = $('#txtEstadoC').val();
+    cel = $('#txtCelC').val();
+    nombre_Recibe = ' ';
+    apellidoP_Recibe = ' ';
+    apellidoM_Recibe = ' ';
+    email= $('#txtEmailC').val();
+
+    if(validar_email( email ))
+    {
+    }
+    else
+    {
+      alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+      email = 1;
+    }
+    pass= 'Silver2020';
+
+
+    roll = 'COMUN';
+
+    if(nombre == ""){
+
+      alert("Debe ingresar un nombrel...");
+    }
+    if(apellidoP == ""){
+
+      alert("Debe ingresar un apellido paterno...");
+    }if(apellidoM == ""){
+
+      alert("Debe ingresar un apellido Materno...");
+    }
+    if(calle == ""){
+
+      alert("Debe ingresar una calle...");
+    }if(numCalle == ""){
+
+      alert("Debe ingresar un número de la hubicación...");
+    }
+    if(cp == ""){
+
+      alert("Debe ingresar un código postal...");
+    }if(ciudad == ""){
+
+      alert("Debe ingresar una ciudad...");
+    }
+    if(estado == ""){
+
+      alert("Debe ingresar un estado...");
+    }
+    if(cel == ""){
+
+      alert("Debe ingresar un número de contacto...");
+    }
+
+    if (txtCelC.value.length != 10) {
+      alert('El número celular es incorrecto ya que tiene ' + txtCelC.value.length + ' caracteres y debe contener 10...');
+      txtCelC.focus();
+    }
+
+    if(email == ""){
+
+      alert("Debe ingresar un E-mail...");
+    }
+
+    if(nombre != "" &&
+    apellidoP != "" &&
+    apellidoM != "" &&
+    calle != "" &&
+    numCalle != "" &&
+    cp != "" &&
+    ciudad != "" &&
+    estado != "" &&
+    cel != "" &&
+    txtCelC.value.length == 10  && email != "" && email !=1){
+      agregarUsuarios(nombre,
+        apellidoP,
+        apellidoM,
+        calle,
+        numCalle,
+        cp,ciudad,
+        estado,
+        cel,
+        nombre_Recibe,
+        apellidoP_Recibe,
+        apellidoM_Recibe,
+        email,
+        pass,
+        roll);
+      }
+    });
+
   $('#btnGuardar').click(function(){
     nombre = $('#txtNombre').val();
     apellidoP = $('#txtApellidoP').val();
@@ -1356,6 +1643,54 @@ $(document).ready(function(){
         }
       });
 
+      $('#btnBus').click(function(){
+
+        nombreCliente = $('#txtBus').val();
+
+        if(nombreCliente == ""){
+          alert("Debe ingresar un nombre o apellido...");
+        }
+        if(nombreCliente != "" ){
+          busClienteConsigna(nombreCliente);
+        }
+      });
+
+      // Enter buscador
+      var txtBus = document.getElementById("txtBus");
+      txtBus.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnBus").click();
+        }
+      });
+
+      // Enter guardar clientes Consigna
+      var txtEmailC = document.getElementById("txtEmailC");
+      txtEmailC.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnGuardarC").click();
+        }
+      });
+
+      // Enter guardar clientes
+      var txtEmail = document.getElementById("txtEmail");
+      txtEmail.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnGuardar").click();
+        }
+      });
+
     });
 
     function mayus(e) {
@@ -1384,4 +1719,4 @@ $(document).ready(function(){
     }
 
 
-  </script>
+    </script>

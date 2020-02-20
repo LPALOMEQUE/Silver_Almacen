@@ -407,24 +407,14 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
         </div>
         <div class="modal-body">
           <div class="row">
-
             <div class="col-md-5">
-
             </div>
-
             <div class="col-md-5">
-
               <input type="text" name="txtBusc" id="txtBus" value="" class="form-control" placeholder="Nombre del cliente">
             </div>
-
-
             <div class="col-md-2">
               <button type="button" class="btn btn-warning" id="btnBus" name="button">Buscar</button>
             </div>
-
-
-
-
           </div>
           <br/>
           <br/>
@@ -438,17 +428,14 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
             <div class="col-md-5 mb-3">
               <p id=""><strong>Cliente:</strong></p>
             </div>
-
             <div class="col-md-5 mb-3">
               <p><strong>E-MAIL:</strong></p>
             </div>
             <div class="col-md-1 mb-3">
-
             </div>
           </div>
         </div>
         <div class="scroll-div">
-
           <?php
           if ($_SESSION['status'] == 'ADMIN') {
 
@@ -469,7 +456,6 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
               if (0 !== sqlsrv_num_rows($res)){
                 while ($user = sqlsrv_fetch_array($res)) {
                   ?>
-
                   <div class="row">
                     <div class="col-md-5 mb-3">
                       <p><?php echo $user['NOMBRE'] ?></p>
@@ -478,7 +464,6 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
                     <div class="col-md-5 mb-3">
                       <p><?php echo $user['CORREO'] ?></p>
                     </div>
-
                     <div class="col-md-1 mb-3">
                       <button type="button" class="btn btn-success" id="btnGetClient<?php echo $user['CLAVE2'] ?>"></button>
                     </div>
@@ -487,16 +472,11 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
                   <script type="text/javascript">
                   $(document).ready(function(){
 
-
-
                     $('#btnGetClient<?php echo $user['CLAVE2'] ?>').click(function(){
                       debugger;
                       id_cliente = $('#txtClave<?php echo $user['CLAVE2'] ?>').val();
                       getCliente(id_cliente);
-
                     });
-
-
                   });
                   </script>
                   <?php
@@ -505,7 +485,6 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
               sqlsrv_close($con);
             }
           }
-
           ?>
         </div>
       </div>
@@ -1516,6 +1495,30 @@ $(document).ready(function(){
               event.preventDefault();
               // Trigger the button element with a click
               document.getElementById("btnBus").click();
+            }
+          });
+
+          // Enter guardar clientes Consigna
+          var txtEmailC = document.getElementById("txtEmailC");
+          txtEmailC.addEventListener("keyup", function(event) {
+            // Number 13 is the "Enter" key on the keyboard
+            if (event.keyCode === 13) {
+              // Cancel the default action, if needed
+              event.preventDefault();
+              // Trigger the button element with a click
+              document.getElementById("btnGuardarC").click();
+            }
+          });
+
+          // Enter guardar clientes
+          var txtEmail = document.getElementById("txtEmail");
+          txtEmail.addEventListener("keyup", function(event) {
+            // Number 13 is the "Enter" key on the keyboard
+            if (event.keyCode === 13) {
+              // Cancel the default action, if needed
+              event.preventDefault();
+              // Trigger the button element with a click
+              document.getElementById("btnGuardar").click();
             }
           });
 
