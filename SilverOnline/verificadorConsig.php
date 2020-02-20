@@ -509,25 +509,21 @@ echo "----";
 
   // PASO 5
 
-  $sql6 = "SELECT isnull(MAX(FOLIO),1) AS FOLIO FROM FACTP" .$BD. " where SERIE = 'WEBP'";
+  $sql6 = "SELECT isnull(MAX(FOLIO),0) AS FOLIO FROM FACTP" .$BD. " where SERIE = 'WEBP'";
 
   $res6 =  sqlsrv_query($con, $sql6, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
   if (0 !== sqlsrv_num_rows($res6)){
     while ($f = sqlsrv_fetch_array($res6)) {
 
 
-      if($f['FOLIO'] != 1){
-        $folio= $folio +1;
+      if($f['FOLIO'] == 0){
+        $folio = 1;
       }
       else{
-        $folio = $f['FOLIO'];
+        $folio = $f['FOLIO'] + 1;
       }
     }
   }
-  // else{
-  //   $folio = 1;
-  //
-  // }
 
   $sql7 = "IF NOT EXISTS (SELECT CVE_DOC FROM FACTP" .$BD. "
   WHERE CVE_DOC = '$CVE_DOC')
