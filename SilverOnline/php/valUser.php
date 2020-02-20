@@ -33,7 +33,7 @@ if (0 !== sqlsrv_num_rows($res)){
 else{
 
   $sql2 = "SELECT
-          ID,
+          VEND,
           USUARIO,
           CLAVE,
           NIVEL AS ROLL
@@ -47,7 +47,7 @@ else{
 
       if ($email == $sousuario['USUARIO'] && $pass == $sousuario['CLAVE']) {
         echo 1;
-        $_SESSION["ID_USER"] = $sousuario['ID'];
+        $_SESSION["ID_USER"] = $sousuario['VEND'];
         $_SESSION["Email"] = $sousuario['USUARIO'];
 
         if($sousuario['ROLL'] == 0){

@@ -20,6 +20,20 @@ if(isset($_SESSION['status'])){
   }
 }
 
+// verifica si el vendedor selecciono un cliente, de lo contrario no permite agregar productos
+if (isset($_SESSION['status'])) {
+
+  if ($_SESSION['status'] == 'ADMIN' && !isset($_SESSION["ID_CLIENTE"])) {
+    // header('Location: index.php');
+
+    echo "
+    <script type='text/javascript'>
+    window.location= 'index.php';
+    alert('Debe seleccionar un cliente...');
+    </script>";
+  }
+}
+
 if (isset($_POST['VaciarFilterP'])) {
   unset($_SESSION['filtro_price']);
 }
@@ -48,6 +62,8 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     unset($_SESSION['ID_USER']);
     unset($_SESSION['Email']);
     unset($_SESSION['status']);
+    unset($_SESSION['ID_CLIENTE']);
+
   }
 
   //Imprimiendo datos globales del carrito
@@ -176,11 +192,9 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
           </div>
         </div>
       </div>
-
       <div id="wrapper">
         <div class="row">
           <div class="col-md-3 error">
-
             <a class="center"><strong>Usuario:</strong>
               <?php
               if (isset($_SESSION["Email"])) {
@@ -411,228 +425,227 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                       </div>
                     </div>
                     <!-- <div class="row">
-                      <div class="col-md-12 mb-3">
-                        <label id="lbRoll" for="cbmRoll">Roll</label>
-                        <select id="cbmRoll"  class="form-control" name="state">
-                          <option value="0">Selecciona...</option>
-                          ...
-                          <option value="ADMIN">ADMINISTRADOR</option>
-                          ...
-                          <option value="COMUN">COMÚN</option>form-control
-                        </select>
-                      </div>
-                    </div> -->
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="btnGuardar">Registrarse</button>
-                  </div>
+                    <div class="col-md-12 mb-3">
+                    <label id="lbRoll" for="cbmRoll">Roll</label>
+                    <select id="cbmRoll"  class="form-control" name="state">
+                    <option value="0">Selecciona...</option>
+                    ...
+                    <option value="ADMIN">ADMINISTRADOR</option>
+                    ...
+                    <option value="COMUN">COMÚN</option>form-control
+                  </select>
                 </div>
-              </div>
+              </div> -->
             </div>
-            <!-- Help Line -->
-            <div class="help-line">
-              <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              <button type="button" class="btn btn-primary" id="btnGuardar">Registrarse</button>
             </div>
           </div>
         </div>
       </div>
+      <!-- Help Line -->
+      <div class="help-line">
+        <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
+      </div>
     </div>
-  </header>
-  <!-- ****** Header Area End ****** -->
-  <!-- <P><?php   var_dump($_SESSION['filtro_price']); ?></P> -->
-  <section class="top-discount-area d-md-flex align-items-center">
-    <!-- Single Discount Area -->
-    <div class="single-discount-area">
-      <h5>Apresurate &amp; Atrevete a ganar mas</h5>
-      <h6><a href="#">Compra ya</a></h6>
-    </div>
-    <!-- Single Discount Area -->
-    <div class="single-discount-area">
-      <h5>Silver Evolution</h5>
-      <h6>Tu mejor opción</h6>
-    </div>
-    <!-- Single Discount Area -->
-    <div class="single-discount-area">
-      <h5>Empresa 100% Mexicana</h5>
-      <h6>Crecé con nosotros</h6>
-    </div>
-  </section>
+  </div>
+</div>
+</div>
+</header>
+<!-- ****** Header Area End ****** -->
+<!-- <P><?php   var_dump($_SESSION['filtro_price']); ?></P> -->
+<section class="top-discount-area d-md-flex align-items-center">
+  <!-- Single Discount Area -->
+  <div class="single-discount-area">
+    <h5>Apresurate &amp; Atrevete a ganar mas</h5>
+    <h6><a href="#">Compra ya</a></h6>
+  </div>
+  <!-- Single Discount Area -->
+  <div class="single-discount-area">
+    <h5>Silver Evolution</h5>
+    <h6>Tu mejor opción</h6>
+  </div>
+  <!-- Single Discount Area -->
+  <div class="single-discount-area">
+    <h5>Empresa 100% Mexicana</h5>
+    <h6>Crecé con nosotros</h6>
+  </div>
+</section>
 
-  <?php
-  require_once "php/Conexion.php";
-  $con = conexion();
-  $pagina = 0;
-  if (isset($_GET['p'])) {
-    $pagina = $_GET['p'];
+<?php
+require_once "php/Conexion.php";
+$con = conexion();
+$pagina = 0;
+if (isset($_GET['p'])) {
+  $pagina = $_GET['p'];
+}
+$cantidadRegistros = 50;
+$Reg_Ignorados = $pagina * $cantidadRegistros;
+
+if($queryVal == 2) {
+  // if (isset($_SESSION['filtro_price'])) {
+  $valMin = $_SESSION['filtro_price'][0]['min'];
+  $valMax = $_SESSION['filtro_price'][0]['max'];
+  $material = $_SESSION['filtro_price'][0]['material'];
+  $accesorio = $_SESSION['filtro_price'][0]['accesorio'];
+
+  if ($material == 1) {
+    $material = '___________';
   }
-  $cantidadRegistros = 50;
-  $Reg_Ignorados = $pagina * $cantidadRegistros;
-
-  if($queryVal == 2) {
-    // if (isset($_SESSION['filtro_price'])) {
-    $valMin = $_SESSION['filtro_price'][0]['min'];
-    $valMax = $_SESSION['filtro_price'][0]['max'];
-    $material = $_SESSION['filtro_price'][0]['material'];
-    $accesorio = $_SESSION['filtro_price'][0]['accesorio'];
-
-    if ($material == 1) {
-      $material = '___________';
-    }
-    elseif($material == 'ACERO'){
-      $material = '%AC';
-    }
-
-    if ($accesorio == 1) {
-      $accesorio = '___________';
-    }
-    $sql="SELECT
-    I.EXIST,
-    I.CVE_ART,
-    I.DESCR as Nombre,
-    PP.PRECIO AS ULT_COSTO,
-    I.CVE_IMAGEN,
-    I.DESCR as Descripcion
-    FROM INVE" .$BD. " I
-    LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
-    INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
-    WHERE I.EXIST > 0 AND
-    M.CVE_ALM = 1 AND
-    PP.CVE_PRECIO = $ID_PRECIO AND
-    I.CVE_ART LIKE '$material' AND
-    I.CVE_ART  LIKE '$accesorio' AND
-    PP.PRECIO BETWEEN $valMin AND $valMax
-    ORDER BY PP.PRECIO
-    OFFSET $Reg_Ignorados ROWS
-    FETCH NEXT  $cantidadRegistros ROWS ONLY";
+  elseif($material == 'ACERO'){
+    $material = '%AC';
   }
-  else {
 
-    $sql="SELECT
-    I.EXIST,
-    I.CVE_ART,
-    I.DESCR as Nombre,
-    PP.PRECIO AS ULT_COSTO,
-    I.CVE_IMAGEN,
-    I.DESCR as Descripcion
-    FROM INVE" .$BD. " I
-    LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
-    INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
-    WHERE I.EXIST > 0 AND
-    M.CVE_ALM = 1 AND
-    PP.CVE_PRECIO = $ID_PRECIO
-    ORDER BY I.CVE_ART
-    OFFSET $Reg_Ignorados ROWS
-    FETCH NEXT  $cantidadRegistros ROWS ONLY";
-
+  if ($accesorio == 1) {
+    $accesorio = '___________';
   }
-  // print_r($sql);
-  $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
-  if (0 !== sqlsrv_num_rows($res)){
-    while ($category = sqlsrv_fetch_array($res)) {
-      $EXISTENCIA = $category['EXIST'];
-      $precio = $category['ULT_COSTO'];
-      ?>
-      <!-- ****** Quick View Modal Area Start ****** -->
-      <div class="modal fade" id="quickview<?php echo $category['CVE_ART'] ?>" tabindex="-1" role="dialog" aria-labelledby="quickview" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-          <div class="modal-content">
-            <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+  $sql="SELECT
+  I.EXIST,
+  I.CVE_ART,
+  I.DESCR as Nombre,
+  PP.PRECIO AS ULT_COSTO,
+  I.CVE_IMAGEN,
+  I.DESCR as Descripcion
+  FROM INVE" .$BD. " I
+  LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
+  INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
+  WHERE I.EXIST > 0 AND
+  M.CVE_ALM = 1 AND
+  PP.CVE_PRECIO = $ID_PRECIO AND
+  I.CVE_ART LIKE '$material' AND
+  I.CVE_ART  LIKE '$accesorio' AND
+  PP.PRECIO BETWEEN $valMin AND $valMax
+  ORDER BY PP.PRECIO
+  OFFSET $Reg_Ignorados ROWS
+  FETCH NEXT  $cantidadRegistros ROWS ONLY";
+}
+else {
 
-            <div class="modal-body">
-              <div class="quickview_body">
-                <div class="container">
+  $sql="SELECT
+  I.EXIST,
+  I.CVE_ART,
+  I.DESCR as Nombre,
+  PP.PRECIO AS ULT_COSTO,
+  I.CVE_IMAGEN,
+  I.DESCR as Descripcion
+  FROM INVE" .$BD. " I
+  LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
+  INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
+  WHERE I.EXIST > 0 AND
+  M.CVE_ALM = 1 AND
+  PP.CVE_PRECIO = $ID_PRECIO
+  ORDER BY I.CVE_ART
+  OFFSET $Reg_Ignorados ROWS
+  FETCH NEXT  $cantidadRegistros ROWS ONLY";
 
-                  <div class="row">
+}
+// print_r($sql);
+$res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+if (0 !== sqlsrv_num_rows($res)){
+  while ($category = sqlsrv_fetch_array($res)) {
+    $EXISTENCIA = $category['EXIST'];
+    $precio = $category['ULT_COSTO'];
+    ?>
+    <!-- ****** Quick View Modal Area Start ****** -->
+    <div class="modal fade" id="quickview<?php echo $category['CVE_ART'] ?>" tabindex="-1" role="dialog" aria-labelledby="quickview" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <button type="button" class="close btn" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
 
-                    <div class="col-12 col-lg-5">
-                      <div class="quickview_pro_img">
-                        <img src="img/product-img/<?php echo $category['CVE_IMAGEN'] ?>.JPG" alt="">
-                      </div>
+          <div class="modal-body">
+            <div class="quickview_body">
+              <div class="container">
+
+                <div class="row">
+
+                  <div class="col-12 col-lg-5">
+                    <div class="quickview_pro_img">
+                      <img src="img/product-img/<?php echo $category['CVE_IMAGEN'] ?>.JPG" alt="">
                     </div>
-                    <div class="col-12 col-lg-7">
-                      <div class="quickview_pro_des">
-                        <h4 class="title"><?php echo $category['Nombre'] ?></h4>
-                        <div class="top_seller_product_rating mb-15">
-                          <i class="fa fa-star" aria-hidden="true"></i>
-                          <i class="fa fa-star" aria-hidden="true"></i>
-                          <i class="fa fa-star" aria-hidden="true"></i>
-                          <i class="fa fa-star" aria-hidden="true"></i>
-                          <i class="fa fa-star" aria-hidden="true"></i>
-                        </div>
-                        <h5 class="price">$<?php echo number_format($precio,2) ?> <span>$624</span></h5>
-                        <p>Marca: SILVER</p>
-                        <p><?php echo $category['Descripcion'] ?></p>
-                        <p style="color: #ff084e;"><strong>STOCK DISPONIBLE: <?php echo $category['EXIST'] ?></strong></p>
+                  </div>
+                  <div class="col-12 col-lg-7">
+                    <div class="quickview_pro_des">
+                      <h4 class="title"><?php echo $category['Nombre'] ?></h4>
+                      <div class="top_seller_product_rating mb-15">
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
+                        <i class="fa fa-star" aria-hidden="true"></i>
                       </div>
-                      <div class="row">
-                        <!-- Add to Cart Form -->
-                        <!-- <form id="formEnvio" class="cart" method="post"> -->
-                        <div class="quantity">
-                          <button type="button" class="qty-minus" id="btnMenos<?php echo $category['CVE_ART'] ?>">-</button>
-                          <input type="number" class="qty-text" id="qty<?php echo $category['CVE_ART'] ?>" name="CANTIDAD" value="1">
-                          <button type="button" class="qty-minus" id="btnMas<?php echo $category['CVE_ART'] ?>">+</button>
+                      <h5 class="price">$<?php echo number_format($precio,2) ?> <span>$624</span></h5>
+                      <p>Marca: SILVER</p>
+                      <p><?php echo $category['Descripcion'] ?></p>
+                      <p style="color: #ff084e;"><strong>STOCK DISPONIBLE: <?php echo $category['EXIST'] ?></strong></p>
+                    </div>
+                    <div class="row">
+                      <!-- Add to Cart Form -->
+                      <!-- <form id="formEnvio" class="cart" method="post"> -->
+                      <div class="quantity">
+                        <button type="button" class="qty-minus" id="btnMenos<?php echo $category['CVE_ART'] ?>">-</button>
+                        <input type="number" class="qty-text" id="qty<?php echo $category['CVE_ART'] ?>" name="CANTIDAD" value="1">
+                        <button type="button" class="qty-minus" id="btnMas<?php echo $category['CVE_ART'] ?>">+</button>
 
-                        </div>
+                      </div>
 
-                        <button type="button" class="btn cart-submit" id="btnSendPost<?php echo $category['CVE_ART'] ?>"> + CARRITO</button>
-                        <script type="text/javascript">
-                        $(document).ready(function(){
-                          $('#btnSendPost<?php echo $category['CVE_ART'] ?>').click(function(){
+                      <button type="button" class="btn cart-submit" id="btnSendPost<?php echo $category['CVE_ART'] ?>"> + CARRITO</button>
+                      <script type="text/javascript">
+                      $(document).ready(function(){
+                        $('#btnSendPost<?php echo $category['CVE_ART'] ?>').click(function(){
 
-                            id= "<?php echo $category['CVE_ART'] ?>";
-                            cantidad= $('#qty<?php echo $category['CVE_ART'] ?>').val();
+                          id= "<?php echo $category['CVE_ART'] ?>";
+                          cantidad= $('#qty<?php echo $category['CVE_ART'] ?>').val();
 
-                            debugger;
-                            if (cantidad <= <?php echo $EXISTENCIA ?>) {
-                              AddCart(id,
-                                cantidad);
-                              }
-                              else {
-                                alert("No hay stock disponible, solo puede agregar la cantidad maxima de: " + <?php echo $EXISTENCIA ?>)
-                              }
+                          debugger;
+                          if (cantidad <= <?php echo $EXISTENCIA ?>) {
+                            AddCart(id,
+                              cantidad);
+                            }
+                            else {
+                              alert("No hay stock disponible, solo puede agregar la cantidad maxima de: " + <?php echo $EXISTENCIA ?>)
+                            }
 
-                            });
-                            $('#btnMenos<?php echo $category['CVE_ART'] ?>').click(function(){
-                              valor = document.getElementById("qty<?php echo $category['CVE_ART'] ?>");
-                              valor.value --;
-
-                            });
-                            $('#btnMas<?php echo $category['CVE_ART'] ?>').click(function(){
-                              valor = document.getElementById("qty<?php echo $category['CVE_ART'] ?>");
-                              valor.value ++;
-
-                            });
-
-                            var input = document.getElementById("qty<?php echo $category['CVE_ART'] ?>");
-                            // Execute a function when the user releases a key on the keyboard
-                            input.addEventListener("keyup", function(event) {
-                              // Number 13 is the "Enter" key on the keyboard
-                              if (event.keyCode === 13) {
-                                // Cancel the default action, if needed
-                                event.preventDefault();
-                                // Trigger the button element with a click
-                                document.getElementById("btnSendPost<?php echo $category['CVE_ART'] ?>").click();
-                              }
-                            });
                           });
-                          </script>
+                          $('#btnMenos<?php echo $category['CVE_ART'] ?>').click(function(){
+                            valor = document.getElementById("qty<?php echo $category['CVE_ART'] ?>");
+                            valor.value --;
 
-                        </div>
-                        <!-- END ENVIO DE DATOS POR URL ESCONDIDA -->
-                        <div class="share_wf mt-30">
-                          <p>Comparte con tus amigos</p>
-                          <div class="_icon">
-                            <a href="https://es-la.facebook.com/newsilverevolution/"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                            <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-                            <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-                            <a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
-                          </div>
-                        </div>
+                          });
+                          $('#btnMas<?php echo $category['CVE_ART'] ?>').click(function(){
+                            valor = document.getElementById("qty<?php echo $category['CVE_ART'] ?>");
+                            valor.value ++;
+
+                          });
+
+                          var input = document.getElementById("qty<?php echo $category['CVE_ART'] ?>");
+                          // Execute a function when the user releases a key on the keyboard
+                          input.addEventListener("keyup", function(event) {
+                            // Number 13 is the "Enter" key on the keyboard
+                            if (event.keyCode === 13) {
+                              // Cancel the default action, if needed
+                              event.preventDefault();
+                              // Trigger the button element with a click
+                              document.getElementById("btnSendPost<?php echo $category['CVE_ART'] ?>").click();
+                            }
+                          });
+                        });
+                        </script>
 
                       </div>
+                      <!-- END ENVIO DE DATOS POR URL ESCONDIDA -->
+                      <div class="share_wf mt-30">
+                        <p>Comparte con tus amigos</p>
+                        <div class="_icon">
+                          <a href="https://es-la.facebook.com/newsilverevolution/"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                          <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                          <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                          <a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
                 </div>
@@ -640,139 +653,101 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
             </div>
           </div>
         </div>
-        <?php
-      }
-      sqlsrv_close($con);
+      </div>
+      <?php
     }
-    ?>
-    <!-- ****** Quick View Modal Area End ****** -->
+    sqlsrv_close($con);
+  }
+  ?>
+  <!-- ****** Quick View Modal Area End ****** -->
 
-    <section class="shop_grid_area section_padding_100">
-      <div class="container">
-        <div class="row">
-          <div class="col-12 col-md-4 col-lg-3">
-            <div class="shop_sidebar_area">
+  <section class="shop_grid_area section_padding_100">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-4 col-lg-3">
+          <div class="shop_sidebar_area">
 
-              <div class="widget catagory mb-50">
-                <!--  Side Nav  -->
-                <div class="nav-side-menu">
-                  <h6 class="mb-0">Categorías</h6>
-                  <div class="menu-list">
-                    <ul id="menu-content2" class="menu-content collapse out">
-                      <!-- Single Item -->
-                      <li data-toggle="collapse" data-target="#women2">
-                        <a href="#">Joyeria</a>
-                        <ul class="sub-menu collapse show" id="women2">
-                          <li><a href="joyas-h.php">Hombre</a></li>
-                        </ul>
-                      </li>
+            <div class="widget catagory mb-50">
+              <!--  Side Nav  -->
+              <div class="nav-side-menu">
+                <h6 class="mb-0">Categorías</h6>
+                <div class="menu-list">
+                  <ul id="menu-content2" class="menu-content collapse out">
+                    <!-- Single Item -->
+                    <li data-toggle="collapse" data-target="#women2">
+                      <a href="#">Joyeria</a>
+                      <ul class="sub-menu collapse show" id="women2">
+                        <li><a href="joyas-h.php">Hombre</a></li>
+                      </ul>
+                    </li>
 
-                      <!-- Single Item -->
-                      <li data-toggle="collapse" data-target="#Bolsas" class="collapsed">
-                        <a href="#">Bolsas</a>
-                        <ul class="sub-menu collapse" id="Bolsas">
-                          <li><a href="#">Hombre</a></li>
-                          <li><a href="#">Mujer</a></li>
-                        </ul>
-                      </li>
+                    <!-- Single Item -->
+                    <li data-toggle="collapse" data-target="#Bolsas" class="collapsed">
+                      <a href="#">Bolsas</a>
+                      <ul class="sub-menu collapse" id="Bolsas">
+                        <li><a href="#">Hombre</a></li>
+                        <li><a href="#">Mujer</a></li>
+                      </ul>
+                    </li>
 
-                      <!-- Single Item -->
-                      <li data-toggle="collapse" data-target="#Perfumes" class="collapsed">
-                        <a href="#">Perfumes</a>
-                        <ul class="sub-menu collapse" id="Perfumes">
-                          <li><a href="#">Hombre</a></li>
-                          <li><a href="#">Mujer</a></li>
-                        </ul>
-                      </li>
+                    <!-- Single Item -->
+                    <li data-toggle="collapse" data-target="#Perfumes" class="collapsed">
+                      <a href="#">Perfumes</a>
+                      <ul class="sub-menu collapse" id="Perfumes">
+                        <li><a href="#">Hombre</a></li>
+                        <li><a href="#">Mujer</a></li>
+                      </ul>
+                    </li>
 
-                      <!-- Single Item -->
-                      <li data-toggle="collapse" data-target="#Ropa" class="collapsed">
-                        <a href="#">Ropa</a>
-                        <ul class="sub-menu collapse" id="Ropa">
-                          <li><a href="#">Hombre</a></li>
-                          <li><a href="#">Mujer</a></li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
+                    <!-- Single Item -->
+                    <li data-toggle="collapse" data-target="#Ropa" class="collapsed">
+                      <a href="#">Ropa</a>
+                      <ul class="sub-menu collapse" id="Ropa">
+                        <li><a href="#">Hombre</a></li>
+                        <li><a href="#">Mujer</a></li>
+                      </ul>
+                    </li>
+                  </ul>
                 </div>
               </div>
+            </div>
 
-              <div class="widget price mb-50">
-                <h6 class="widget-title mb-30">Filtro por precio</h6>
-                <button type="button" id="btnLimpiarPriceFilter" class="btn btn-danger btnDel">X</button>
-                <div class="widget-desc">
-                  <div class="slider-range">
-                    <div class="slidecontainer">
-                      <label class="range-price">Min: $
-                        <input type="number" id="minVal" class="sinBordeRangePrice" name="" value="<?php
-                        if(isset($_SESSION['filtro_price'])){
-                          echo $_SESSION['filtro_price'][0]['min'];
-                        } ?>" min="0">
-                        <input type="range" min="1" max="1000" step="0.01" value="0" class="ui-slider-range ui-widget-header ui-corner-all" id="myRangeMin">
-                      </label>
-                      <label class="range-price">Max: $
-                        <input type="number" id="maxVal" class="sinBordeRangePrice" name="" value="<?php
-                        if(isset($_SESSION['filtro_price'])){
-                          echo $_SESSION['filtro_price'][0]['max'];
-                        } ?>" min="0">
-                        <input type="range" min="1" max="1000" step="0.01" value="0" class="ui-slider-range ui-widget-header ui-corner-all" id="myRangeMax">
-                      </label>
-                      <button type="button" class="btn btnSearch" id="btnBusPrecio">Filtrar</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="widget color mb-70">
-                <h6 class="widget-title mb-30">Filtro por Material: <label style="color:#FF0000;">
-                  <?php
-                  if (isset($_SESSION['filtro_price'])) {
-
-                    if ($_SESSION['filtro_price'][0]['material'] == 1) {
-                      echo " ";
-                    }
-                    else {
-                      echo $_SESSION['filtro_price'][0]['material'];
-                    }
-                  }
-                  ?>
-                </label>
-
-              </h6>
+            <div class="widget price mb-50">
+              <h6 class="widget-title mb-30">Filtro por precio</h6>
+              <button type="button" id="btnLimpiarPriceFilter" class="btn btn-danger btnDel">X</button>
               <div class="widget-desc">
-                <select id="cbmMaterial"  class="form-control" name="material">
-                  <option value="0">Selecciona...</option>
-                  <option value="%OL">ORO LAMINADO</option>
-                  <option value="%PL">PLATA</option>
-                  <option value="ACERO">ACERO</option>
-                  <option value="%RD">RODIO</option>
-                </select>
-                <br/>
-                <ul class="d-flex justify-content-between">
-                  <li class="yellow"><a href="#"></a></li>
-                  <li class="gray"><a href="#"></a></li>
-                  <li class="red"><a href="#"></a></li>
-                  <li class="green"><a href="#"></a></li>
-                  <li class="teal"><a href="#"></a></li>
-                  <li class="cyan"><a href="#"></a></li>
-                </ul>
+                <div class="slider-range">
+                  <div class="slidecontainer">
+                    <label class="range-price">Min: $
+                      <input type="number" id="minVal" class="sinBordeRangePrice" name="" value="<?php
+                      if(isset($_SESSION['filtro_price'])){
+                        echo $_SESSION['filtro_price'][0]['min'];
+                      } ?>" min="0">
+                      <input type="range" min="1" max="1000" step="0.01" value="0" class="ui-slider-range ui-widget-header ui-corner-all" id="myRangeMin">
+                    </label>
+                    <label class="range-price">Max: $
+                      <input type="number" id="maxVal" class="sinBordeRangePrice" name="" value="<?php
+                      if(isset($_SESSION['filtro_price'])){
+                        echo $_SESSION['filtro_price'][0]['max'];
+                      } ?>" min="0">
+                      <input type="range" min="1" max="1000" step="0.01" value="0" class="ui-slider-range ui-widget-header ui-corner-all" id="myRangeMax">
+                    </label>
+                    <button type="button" class="btn btnSearch" id="btnBusPrecio">Filtrar</button>
+                  </div>
+                </div>
               </div>
-              <br/><br/>
-              <button type="button" class="btn btnSearch" id="btnBusMaterial">Filtrar</button>
-
             </div>
 
             <div class="widget color mb-70">
-              <h6 class="widget-title mb-30">Filtro por Accesorio: <label style="color:#FF0000;">
+              <h6 class="widget-title mb-30">Filtro por Material: <label style="color:#FF0000;">
                 <?php
                 if (isset($_SESSION['filtro_price'])) {
 
-                  if ($_SESSION['filtro_price'][0]['accesorio'] == 1) {
+                  if ($_SESSION['filtro_price'][0]['material'] == 1) {
                     echo " ";
                   }
                   else {
-                    echo $_SESSION['filtro_price'][0]['accesorio'];
+                    echo $_SESSION['filtro_price'][0]['material'];
                   }
                 }
                 ?>
@@ -780,39 +755,14 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
 
             </h6>
             <div class="widget-desc">
-
-              <select id="cbmAccesorio"  class="form-control" name="accesorio">
+              <select id="cbmMaterial"  class="form-control" name="material">
                 <option value="0">Selecciona...</option>
-                <option value="ALI%">ALINZA</option>
-                <option value="ANI%">ANILLOS</option>
-                <option value="ARO%">AROS</option>
-                <option value="ARR%">ARRACADA</option>
-                <option value="ART%">ARETE</option>
-                <option value="BRO%">BROQUEL</option>
-                <option value="BRZ%">BRAZALETE</option>
-
-                <option value="CDN%">CADENA</option>
-                <option value="COL%">COLLAR</option>
-                <option value="DIJ%">DIJE</option>
-
-                <option value="ESC%">ESCAPULARIO</option>
-                <option value="FIN%">FIN DE SEMANA</option>
-                <option value="GRG%">GARGANTILLA</option>
-                <option value="GRP%">GRAPAS</option>
-                <option value="JGS%">JUEGOS</option>
-                <option value="LLV%">LLAVERO</option>
-                <option value="OMG%">OMEGA</option>
-                <option value="PIS%">PISA CORBATA</option>
-                <option value="PLS%">PULSERA</option>
-                <option value="PRE%">PRENDEDOR</option>
-                <option value="REJ%">RELOJ</option>
-                <option value="ROS%">ROSARIO</option>
-                <option value="SMR%">SEMANARIO</option>
-                <option value="TOB%">TOBILLERA</option>
-                <option value="VIO%">VIOLADOR</option>
-
+                <option value="%OL">ORO LAMINADO</option>
+                <option value="%PL">PLATA</option>
+                <option value="ACERO">ACERO</option>
+                <option value="%RD">RODIO</option>
               </select>
-              <br/><br/>
+              <br/>
               <ul class="d-flex justify-content-between">
                 <li class="yellow"><a href="#"></a></li>
                 <li class="gray"><a href="#"></a></li>
@@ -823,191 +773,255 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               </ul>
             </div>
             <br/><br/>
-            <button type="button" class="btn btnSearch" id="btnBusAcs">Filtrar</button>
+            <button type="button" class="btn btnSearch" id="btnBusMaterial">Filtrar</button>
 
+          </div>
+
+          <div class="widget color mb-70">
+            <h6 class="widget-title mb-30">Filtro por Accesorio: <label style="color:#FF0000;">
+              <?php
+              if (isset($_SESSION['filtro_price'])) {
+
+                if ($_SESSION['filtro_price'][0]['accesorio'] == 1) {
+                  echo " ";
+                }
+                else {
+                  echo $_SESSION['filtro_price'][0]['accesorio'];
+                }
+              }
+              ?>
+            </label>
+
+          </h6>
+          <div class="widget-desc">
+
+            <select id="cbmAccesorio"  class="form-control" name="accesorio">
+              <option value="0">Selecciona...</option>
+              <option value="ALI%">ALINZA</option>
+              <option value="ANI%">ANILLOS</option>
+              <option value="ARO%">AROS</option>
+              <option value="ARR%">ARRACADA</option>
+              <option value="ART%">ARETE</option>
+              <option value="BRO%">BROQUEL</option>
+              <option value="BRZ%">BRAZALETE</option>
+
+              <option value="CDN%">CADENA</option>
+              <option value="COL%">COLLAR</option>
+              <option value="DIJ%">DIJE</option>
+
+              <option value="ESC%">ESCAPULARIO</option>
+              <option value="FIN%">FIN DE SEMANA</option>
+              <option value="GRG%">GARGANTILLA</option>
+              <option value="GRP%">GRAPAS</option>
+              <option value="JGS%">JUEGOS</option>
+              <option value="LLV%">LLAVERO</option>
+              <option value="OMG%">OMEGA</option>
+              <option value="PIS%">PISA CORBATA</option>
+              <option value="PLS%">PULSERA</option>
+              <option value="PRE%">PRENDEDOR</option>
+              <option value="REJ%">RELOJ</option>
+              <option value="ROS%">ROSARIO</option>
+              <option value="SMR%">SEMANARIO</option>
+              <option value="TOB%">TOBILLERA</option>
+              <option value="VIO%">VIOLADOR</option>
+
+            </select>
+            <br/><br/>
+            <ul class="d-flex justify-content-between">
+              <li class="yellow"><a href="#"></a></li>
+              <li class="gray"><a href="#"></a></li>
+              <li class="red"><a href="#"></a></li>
+              <li class="green"><a href="#"></a></li>
+              <li class="teal"><a href="#"></a></li>
+              <li class="cyan"><a href="#"></a></li>
+            </ul>
+          </div>
+          <br/><br/>
+          <button type="button" class="btn btnSearch" id="btnBusAcs">Filtrar</button>
+
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-8 col-lg-9">
+      <div class="shop_grid_product_area">
+        <div class="row">
+          <?php
+          require_once "php/Conexion.php";
+          $con = conexion();
+          $pagina = 0;
+          if (isset($_GET['p'])) {
+            $pagina = $_GET['p'];
+          }
+          $cantidadRegistros = 50;
+          $Reg_Ignorados = $pagina * $cantidadRegistros;
+
+          if($queryVal == 2) {
+            // if (isset($_SESSION['filtro_price'])) {
+            $valMin = $_SESSION['filtro_price'][0]['min'];
+            $valMax = $_SESSION['filtro_price'][0]['max'];
+            $material = $_SESSION['filtro_price'][0]['material'];
+            $accesorio = $_SESSION['filtro_price'][0]['accesorio'];
+
+            if ($material == 1) {
+              $material = '___________';
+            }
+            elseif($material == 'ACERO'){
+              $material = '%AC';
+            }
+
+            if ($accesorio == 1) {
+              $accesorio = '___________';
+            }
+            $sql="SELECT
+            I.EXIST,
+            I.CVE_ART,
+            I.DESCR as Nombre,
+            PP.PRECIO AS ULT_COSTO,
+            I.CVE_IMAGEN,
+            I.DESCR as Descripcion
+            FROM INVE" .$BD. " I
+            LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
+            INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
+            WHERE I.EXIST > 0 AND
+            M.CVE_ALM = 1 AND
+            PP.CVE_PRECIO = $ID_PRECIO AND
+            I.CVE_ART LIKE '$material' AND
+            I.CVE_ART  LIKE '$accesorio' AND
+            PP.PRECIO BETWEEN $valMin AND $valMax
+            ORDER BY PP.PRECIO
+            OFFSET $Reg_Ignorados ROWS
+            FETCH NEXT  $cantidadRegistros ROWS ONLY";
+          }
+          else {
+
+            $sql="SELECT
+            I.EXIST,
+            I.CVE_ART,
+            I.DESCR as Nombre,
+            PP.PRECIO AS ULT_COSTO,
+            I.CVE_IMAGEN,
+            I.DESCR as Descripcion
+            FROM INVE" .$BD. " I
+            LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
+            INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
+            WHERE I.EXIST > 0 AND
+            M.CVE_ALM = 1 AND
+            PP.CVE_PRECIO = $ID_PRECIO
+            ORDER BY I.CVE_ART
+            OFFSET $Reg_Ignorados ROWS
+            FETCH NEXT  $cantidadRegistros ROWS ONLY";
+
+          }
+          $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+          if (0 !== sqlsrv_num_rows($res)){
+            while ($category = sqlsrv_fetch_array($res)) {
+              $precio = $category['ULT_COSTO'];
+              ?>
+
+              <!-- Single gallery Item -->
+              <div class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.2s">
+                <!-- Product Image -->
+                <div class="product-img">
+                  <h6 class="title" style="color: #ff084e;">STOCK DIPONBLE: <?php echo $category['EXIST'] ?></h6>
+                  <img src="img/product-img/<?php echo $category['CVE_IMAGEN'] ?>.JPG" alt="">
+                  <div class="product-quicview">
+                    <a href="#" data-toggle="modal" data-target="#quickview<?php echo $category['CVE_ART'] ?>"><i class="ti-plus"></i></a>
+                  </div>
+                </div>
+                <!-- Product Description -->
+                <div class="product-description">
+                  <h4 class="product-price">$<?php echo number_format($precio,2) ; ?></h4>
+                  <p><?php echo $category['Nombre'] ?></p>
+                  <!-- Add to Cart -->
+                  <!-- <a href="#" class="add-to-cart-btn">ADD TO CART</a> -->
+                </div>
+              </div>
+              <?php
+            }
+            sqlsrv_close($con);
+          }
+          ?>
+
+          <div>
           </div>
         </div>
       </div>
-      <div class="col-12 col-md-8 col-lg-9">
-        <div class="shop_grid_product_area">
-          <div class="row">
+      <div class="shop_pagination_area wow fadeInUp" data-wow-delay="1.1s">
+
+        <nav aria-label="Page navigation">
+          <!-- <ul class="pagination pagination-sm"> -->
+          <ul class="pagination">
             <?php
+            $i=0;
+            $paginaADD=$pagina;
             require_once "php/Conexion.php";
             $con = conexion();
             $pagina = 0;
             if (isset($_GET['p'])) {
               $pagina = $_GET['p'];
             }
-            $cantidadRegistros = 50;
+            $cantidadRegistros = 10;
             $Reg_Ignorados = $pagina * $cantidadRegistros;
 
-            if($queryVal == 2) {
-              // if (isset($_SESSION['filtro_price'])) {
-              $valMin = $_SESSION['filtro_price'][0]['min'];
-              $valMax = $_SESSION['filtro_price'][0]['max'];
-              $material = $_SESSION['filtro_price'][0]['material'];
-              $accesorio = $_SESSION['filtro_price'][0]['accesorio'];
-
-              if ($material == 1) {
-                $material = '___________';
-              }
-              elseif($material == 'ACERO'){
-                $material = '%AC';
-              }
-
-              if ($accesorio == 1) {
-                $accesorio = '___________';
-              }
-              $sql="SELECT
-              I.EXIST,
-              I.CVE_ART,
-              I.DESCR as Nombre,
-              PP.PRECIO AS ULT_COSTO,
-              I.CVE_IMAGEN,
-              I.DESCR as Descripcion
-              FROM INVE" .$BD. " I
-              LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
-              INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
-              WHERE I.EXIST > 0 AND
-              M.CVE_ALM = 1 AND
-              PP.CVE_PRECIO = $ID_PRECIO AND
-              I.CVE_ART LIKE '$material' AND
-              I.CVE_ART  LIKE '$accesorio' AND
-              PP.PRECIO BETWEEN $valMin AND $valMax
-              ORDER BY PP.PRECIO
-              OFFSET $Reg_Ignorados ROWS
-              FETCH NEXT  $cantidadRegistros ROWS ONLY";
-            }
-            else {
-
-              $sql="SELECT
-              I.EXIST,
-              I.CVE_ART,
-              I.DESCR as Nombre,
-              PP.PRECIO AS ULT_COSTO,
-              I.CVE_IMAGEN,
-              I.DESCR as Descripcion
-              FROM INVE" .$BD. " I
-              LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
-              INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
-              WHERE I.EXIST > 0 AND
-              M.CVE_ALM = 1 AND
-              PP.CVE_PRECIO = $ID_PRECIO
-              ORDER BY I.CVE_ART
-              OFFSET $Reg_Ignorados ROWS
-              FETCH NEXT  $cantidadRegistros ROWS ONLY";
-
-            }
+            $sql="SELECT 0
+            FROM INVE" .$BD. "
+            WHERE EXIST > 0
+            ORDER BY CVE_ART
+            OFFSET $Reg_Ignorados ROWS
+            FETCH NEXT  $cantidadRegistros ROWS ONLY";
+            ?>
+            <!-- <li><a href="joyas-h.php?p=<?php echo $pagina-1?>">«</a></li> -->
+            <li><a href="joyas-m.php?p=0">«</a></li>
+            <?php
             $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
             if (0 !== sqlsrv_num_rows($res)){
               while ($category = sqlsrv_fetch_array($res)) {
-                $precio = $category['ULT_COSTO'];
                 ?>
-
-                <!-- Single gallery Item -->
-                <div class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.2s">
-                  <!-- Product Image -->
-                  <div class="product-img">
-                    <h6 class="title" style="color: #ff084e;">STOCK DIPONBLE: <?php echo $category['EXIST'] ?></h6>
-                    <img src="img/product-img/<?php echo $category['CVE_IMAGEN'] ?>.JPG" alt="">
-                    <div class="product-quicview">
-                      <a href="#" data-toggle="modal" data-target="#quickview<?php echo $category['CVE_ART'] ?>"><i class="ti-plus"></i></a>
-                    </div>
-                  </div>
-                  <!-- Product Description -->
-                  <div class="product-description">
-                    <h4 class="product-price">$<?php echo number_format($precio,2) ; ?></h4>
-                    <p><?php echo $category['Nombre'] ?></p>
-                    <!-- Add to Cart -->
-                    <!-- <a href="#" class="add-to-cart-btn">ADD TO CART</a> -->
-                  </div>
-                </div>
-                <?php
-              }
-              sqlsrv_close($con);
-            }
-            ?>
-
-            <div>
-            </div>
-          </div>
-        </div>
-        <div class="shop_pagination_area wow fadeInUp" data-wow-delay="1.1s">
-
-          <nav aria-label="Page navigation">
-            <!-- <ul class="pagination pagination-sm"> -->
-            <ul class="pagination">
-              <?php
-              $i=0;
-              $paginaADD=$pagina;
-              require_once "php/Conexion.php";
-              $con = conexion();
-              $pagina = 0;
-              if (isset($_GET['p'])) {
-                $pagina = $_GET['p'];
-              }
-              $cantidadRegistros = 10;
-              $Reg_Ignorados = $pagina * $cantidadRegistros;
-
-              $sql="SELECT 0
-              FROM INVE" .$BD. "
-              WHERE EXIST > 0
-              ORDER BY CVE_ART
-              OFFSET $Reg_Ignorados ROWS
-              FETCH NEXT  $cantidadRegistros ROWS ONLY";
-              ?>
-              <!-- <li><a href="joyas-h.php?p=<?php echo $pagina-1?>">«</a></li> -->
-              <li><a href="joyas-m.php?p=0">«</a></li>
-              <?php
-              $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
-              if (0 !== sqlsrv_num_rows($res)){
-                while ($category = sqlsrv_fetch_array($res)) {
-                  ?>
-                  <li><a href="joyas-m.php?p=<?php
-                  if($pagina <= 9){
-                    echo $i;
-                  }else{
-                    echo $paginaADD;
-                  }
-                  ?>">
-                  <?php
-                  if($pagina <= 9){
-                    echo $i+1;
-                  }
-                  else{
-                    echo $paginaADD;
-                  }
-                  ?>  </a></li>
-                  <?php
-                  $i++;
-                  $paginaADD++;
+                <li><a href="joyas-m.php?p=<?php
+                if($pagina <= 9){
+                  echo $i;
+                }else{
+                  echo $paginaADD;
                 }
-
-                ?>
-                <li><a href="joyas-m.php?p=<?php echo $pagina+1?>">»</a></li>
+                ?>">
                 <?php
-                sqlsrv_close($con);
-              } ?>
-            </ul>
-          </nav>
+                if($pagina <= 9){
+                  echo $i+1;
+                }
+                else{
+                  echo $paginaADD;
+                }
+                ?>  </a></li>
+                <?php
+                $i++;
+                $paginaADD++;
+              }
+
+              ?>
+              <li><a href="joyas-m.php?p=<?php echo $pagina+1?>">»</a></li>
+              <?php
+              sqlsrv_close($con);
+            } ?>
+          </ul>
+        </nav>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <!-- <a>Pagina: </a> -->
         </div>
-        <div class="row">
-          <div class="col-md-3">
-            <!-- <a>Pagina: </a> -->
-          </div>
-          <div class="col-md-3">
-            <!-- <a>Pagina: </a> -->
-          </div>
-          <div class="col-md-3">
-            <!-- <a>Pagina: </a> -->
-          </div>
-          <div class="col-md-3">
-            <a><strong>Pagina: <?php echo $pagina+1 ?></strong> </a>
-          </div>
+        <div class="col-md-3">
+          <!-- <a>Pagina: </a> -->
+        </div>
+        <div class="col-md-3">
+          <!-- <a>Pagina: </a> -->
+        </div>
+        <div class="col-md-3">
+          <a><strong>Pagina: <?php echo $pagina+1 ?></strong> </a>
         </div>
       </div>
     </div>
   </div>
+</div>
 </section>
 
 <!-- ****** Footer Area Start ****** -->
@@ -1184,190 +1198,190 @@ $(document).ready(function(){
 
       <?php } ?>
 
-    if(nombre == ""){
+      if(nombre == ""){
 
-      alert("Debe ingresar un nombrel...");
-    }
-    if(apellidoP == ""){
-
-      alert("Debe ingresar un apellido paterno...");
-    }if(apellidoM == ""){
-
-      alert("Debe ingresar un apellido Materno...");
-    }
-    if(calle == ""){
-
-      alert("Debe ingresar una calle...");
-    }if(numCalle == ""){
-
-      alert("Debe ingresar un número de la hubicación...");
-    }
-    if(cp == ""){
-
-      alert("Debe ingresar un código postal...");
-    }if(ciudad == ""){
-
-      alert("Debe ingresar una ciudad...");
-    }
-    if(estado == ""){
-
-      alert("Debe ingresar un estado...");
-    }
-    if(cel == ""){
-
-      alert("Debe ingresar un número de contacto...");
-    }
-
-    if(nombre_Recibe == ""){
-
-      alert("Debe ingresar un nombre de quien recibirá el producto...");
-    }
-    if(apellidoP_Recibe == ""){
-
-      alert("Debe ingresar un apellido paterno de quien recibirá el producto...");
-    }if(apellidoM_Recibe == ""){
-
-      alert("Debe ingresar un apellido Materno de quien recibirá el producto...");
-    }
-
-    if (txtCel.value.length != 10) {
-      alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
-      txtCel.focus();
-    }
-
-    if(email == ""){
-
-      alert("Debe ingresar un E-mail...");
-    }
-    if(pass == ""){
-
-      alert("Debe ingresar una contraseña...");
-    }
-    if(roll == 0){
-
-      alert("Debe seleccionar un roll de usuario...");
-    }
-    if(nombre != "" &&
-    apellidoP != "" &&
-    apellidoM != "" &&
-    calle != "" &&
-    numCalle != "" &&
-    cp != "" &&
-    ciudad != "" &&
-    estado != "" &&
-    cel != "" &&
-    nombre_Recibe != "" &&
-    apellidoP_Recibe != "" &&
-    apellidoM_Recibe != "" &&
-    txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
-      agregarUsuarios(nombre,
-        apellidoP,
-        apellidoM,
-        calle,
-        numCalle,
-        cp,ciudad,
-        estado,
-        cel,
-        nombre_Recibe,
-        apellidoP_Recibe,
-        apellidoM_Recibe,
-        email,
-        pass,
-        roll);
+        alert("Debe ingresar un nombrel...");
       }
+      if(apellidoP == ""){
+
+        alert("Debe ingresar un apellido paterno...");
+      }if(apellidoM == ""){
+
+        alert("Debe ingresar un apellido Materno...");
+      }
+      if(calle == ""){
+
+        alert("Debe ingresar una calle...");
+      }if(numCalle == ""){
+
+        alert("Debe ingresar un número de la hubicación...");
+      }
+      if(cp == ""){
+
+        alert("Debe ingresar un código postal...");
+      }if(ciudad == ""){
+
+        alert("Debe ingresar una ciudad...");
+      }
+      if(estado == ""){
+
+        alert("Debe ingresar un estado...");
+      }
+      if(cel == ""){
+
+        alert("Debe ingresar un número de contacto...");
+      }
+
+      if(nombre_Recibe == ""){
+
+        alert("Debe ingresar un nombre de quien recibirá el producto...");
+      }
+      if(apellidoP_Recibe == ""){
+
+        alert("Debe ingresar un apellido paterno de quien recibirá el producto...");
+      }if(apellidoM_Recibe == ""){
+
+        alert("Debe ingresar un apellido Materno de quien recibirá el producto...");
+      }
+
+      if (txtCel.value.length != 10) {
+        alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
+        txtCel.focus();
+      }
+
+      if(email == ""){
+
+        alert("Debe ingresar un E-mail...");
+      }
+      if(pass == ""){
+
+        alert("Debe ingresar una contraseña...");
+      }
+      if(roll == 0){
+
+        alert("Debe seleccionar un roll de usuario...");
+      }
+      if(nombre != "" &&
+      apellidoP != "" &&
+      apellidoM != "" &&
+      calle != "" &&
+      numCalle != "" &&
+      cp != "" &&
+      ciudad != "" &&
+      estado != "" &&
+      cel != "" &&
+      nombre_Recibe != "" &&
+      apellidoP_Recibe != "" &&
+      apellidoM_Recibe != "" &&
+      txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
+        agregarUsuarios(nombre,
+          apellidoP,
+          apellidoM,
+          calle,
+          numCalle,
+          cp,ciudad,
+          estado,
+          cel,
+          nombre_Recibe,
+          apellidoP_Recibe,
+          apellidoM_Recibe,
+          email,
+          pass,
+          roll);
+        }
+      });
+
+      $('#btnBusPrecio').click(function(){
+        query=0;
+        minval = parseInt($('#minVal').val());
+        maxval = parseInt($('#maxVal').val());
+        material = 1;
+        accesorio = 1;
+        if (minval != 0 && maxval != 0) {
+          query = 2;
+        }
+        if (minval > maxval) {
+          alert('El monto mínimo no puede ser mayor que el monto máximo.')
+        }
+        if (minval < maxval && maxval > minval ) {
+          filtrosMujer(minval,maxval,material,accesorio,query);
+        }
+      });
+
+      $('#btnLimpiarPriceFilter').click(function(){
+        vaciar=1;
+        limpiarPriceFilterM(vaciar);
+      });
+
+      $('#btnBusMaterial').click(function(){
+        minval = 0;
+        maxval = 100000;
+        material = $("#cbmMaterial option:selected").val();
+        accesorio = 1;
+        query = 0;
+
+        if(material == 0){
+          alert("Debe seleccionar un material...");
+        }else{
+          query = 2;
+          filtrosMujer(minval,maxval,material,accesorio,query);
+        }
+      });
+
+      $('#btnBusAcs').click(function(){
+        query = 0;
+
+        minval = 0;
+        maxval = 100000;
+        material = 1;
+        accesorio = $('#cbmAccesorio option:selected').val();
+        if(accesorio == 0){
+          alert("Debe seleccionar un accesorio...");
+        }else{
+          query = 2;
+          filtrosMujer(minval,maxval,material,accesorio,query);
+        }
+
+      });
+
+      // Enter de inicio de sesion
+      var input = document.getElementById("txt_Pass");
+      input.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnEntrar").click();
+        }
+      });
+
     });
 
-    $('#btnBusPrecio').click(function(){
-      query=0;
-      minval = parseInt($('#minVal').val());
-      maxval = parseInt($('#maxVal').val());
-      material = 1;
-      accesorio = 1;
-      if (minval != 0 && maxval != 0) {
-        query = 2;
-      }
-      if (minval > maxval) {
-        alert('El monto mínimo no puede ser mayor que el monto máximo.')
-      }
-      if (minval < maxval && maxval > minval ) {
-        filtrosMujer(minval,maxval,material,accesorio,query);
-      }
-    });
+    function mayus(e) {
+      e.value = e.value.toUpperCase();
+    }
+    function minus(e) {
+      e.value = e.value.toLowerCase();
+    }
 
-    $('#btnLimpiarPriceFilter').click(function(){
-      vaciar=1;
-      limpiarPriceFilterM(vaciar);
-    });
+    function validar_email( email )
+    {
+      var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      return regex.test(email) ? true : false;
+    }
 
-    $('#btnBusMaterial').click(function(){
-      minval = 0;
-      maxval = 100000;
-      material = $("#cbmMaterial option:selected").val();
-      accesorio = 1;
-      query = 0;
+    var slider = document.getElementById("myRangeMin");
+    var sliderMax = document.getElementById("myRangeMax");
+    // $('#minVal').val(slider.value);
+    // $('#maxVal').val(sliderMax.value);
 
-      if(material == 0){
-        alert("Debe seleccionar un material...");
-      }else{
-        query = 2;
-        filtrosMujer(minval,maxval,material,accesorio,query);
-      }
-    });
-
-    $('#btnBusAcs').click(function(){
-      query = 0;
-
-      minval = 0;
-      maxval = 100000;
-      material = 1;
-      accesorio = $('#cbmAccesorio option:selected').val();
-      if(accesorio == 0){
-        alert("Debe seleccionar un accesorio...");
-      }else{
-        query = 2;
-        filtrosMujer(minval,maxval,material,accesorio,query);
-      }
-
-    });
-
-    // Enter de inicio de sesion
-    var input = document.getElementById("txt_Pass");
-    input.addEventListener("keyup", function(event) {
-      // Number 13 is the "Enter" key on the keyboard
-      if (event.keyCode === 13) {
-        // Cancel the default action, if needed
-        event.preventDefault();
-        // Trigger the button element with a click
-        document.getElementById("btnEntrar").click();
-      }
-    });
-
-  });
-
-  function mayus(e) {
-    e.value = e.value.toUpperCase();
-  }
-  function minus(e) {
-    e.value = e.value.toLowerCase();
-  }
-
-  function validar_email( email )
-  {
-    var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    return regex.test(email) ? true : false;
-  }
-
-  var slider = document.getElementById("myRangeMin");
-  var sliderMax = document.getElementById("myRangeMax");
-  // $('#minVal').val(slider.value);
-  // $('#maxVal').val(sliderMax.value);
-
-  slider.oninput = function() {
-    $('#minVal').val(slider.value);
-  }
-  sliderMax.oninput = function() {
-    $('#maxVal').val(sliderMax.value);
-  }
+    slider.oninput = function() {
+      $('#minVal').val(slider.value);
+    }
+    sliderMax.oninput = function() {
+      $('#maxVal').val(sliderMax.value);
+    }
 
 
-</script>
+  </script>

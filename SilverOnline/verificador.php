@@ -23,6 +23,7 @@ $vtaTotal = 0;
 $ID = '';
 $BD = '01';
 $ID_MOV = 0;
+// $CVE_DOC = '';
 
 if (isset($_POST['VACIAR_LOGIN'])) {
   unset($_SESSION['ID_USER']);
@@ -63,8 +64,7 @@ $ID = $_SESSION['ID_USER'];
 $MAIL = $_SESSION['Email'];
 require_once "php/Conexion.php";
 $con = conexion();
-$ID = $_SESSION['ID_USER'];
-$MAIL = $_SESSION['Email'];
+
 $sql = "SELECT
 CRUZAMIENTOS_ENVIO AS CORREO,
 NOMBRE,
@@ -334,11 +334,10 @@ if ($state == 'approved') {
       if (0 !== sqlsrv_num_rows($res)){
         while ($arti = sqlsrv_fetch_array($res)) {
           ECHO $CVE_DOC = 'WEB'.$idventa;
-          echo "----";
-          echo $ID;
-          echo "----";
-          echo $fecha_php;
-          echo "----";
+           echo "----";
+           echo $ID;
+           echo "----";
+           echo $fecha_php;
           $PRECIO_ART = $arti['COSTO_PROM'];
           $CANTIDAD_ART = $item['cantidad'];
           $TotalxArt = $arti['COSTO_PROM'] * $item['cantidad'];
@@ -481,13 +480,13 @@ if ($state == 'approved') {
           VALUES
           ('$CVE_ART',--CVE_ART
           '1',--ALMACEN
-          (SELECT ISNULL(MAX(NUM_MOV),0) + 1 FROM MINVE" .$BD. "),--(SELECT ISNULL(MAX(NUM_MOV),0) + 1 FROM MINVE01) NUM_MOV
+          (SELECT ISNULL(MAX(NUM_MOV),0) + 1 FROM MINVE" .$BD. "),--(SELECT ISNULL(MAX(NUM_MOV),0) + 1 FROM MINVE" .$BD. ") NUM_MOV
           '61',--CVE_CPTO				---VALOR FIJO
           '$fecha_php',--FECHA_DOCU
           'R',--TIPO_DOC				---VALOR FIJO
           '$CVE_DOC',--REFER
           '$ID',--CLAVE_CLPV  ESTA ES LA CLAVE DEL CLIENTE
-          '1',--VEND
+          '100',--VEND
           '$CANTIDAD_ART',--CANT
           '0',--CANT_COST
           '$PRECIO_ART',--PRECIO
@@ -496,7 +495,7 @@ if ($state == 'approved') {
           '1',--REG_SERIE				---VALOR FIJO
           'pz',--UNI_VENTA
           '0',--E_LTPD				---VALOR FIJO
-          (SELECT EXIST FROM MULT" .$BD. " WHERE CVE_ART = '$CVE_ART' AND CVE_ALM = 1),-- SELECT EXIST FROM MULT13 WHERE CVE_ART = 'ALI000036OL' AND CVE_ALM = 1     ...EXISTENCIA
+          (SELECT EXIST FROM MULT" .$BD. " WHERE CVE_ART = '$CVE_ART' AND CVE_ALM = 1),-- SELECT EXIST FROM MULT WHERE CVE_ART = 'ALI000036OL' AND CVE_ALM = 1     ...EXISTENCIA
           'P',--TIPO_PROD				---VALOR FIJO
           '1',--FACTOR_CON			---VALOR FIJO
           '$fecha_php',--FECHAELAB
@@ -628,7 +627,7 @@ if ($state == 'approved') {
     'R',--TIP_DOC		---VALOR FIJO
     '$CVE_DOC',--CVE_DOC
     '$TotalxArtGlobal',--CAN_TOT CANTIDAD TOTAL DE VENTA
-    '1',--CVE_VEND		---VALOR FIJO
+    '100',--CVE_VEND		---VALOR FIJO
     NULL,--FECHA_CANCELA
     '0',--DES_TOT		---VALOR FIJO ---------------------PREGUNTAR
     'O',--ENLAZADO
@@ -684,7 +683,7 @@ if ($state == 'approved') {
     // PASO 9
     $sql12 = "UPDATE AFACT" .$BD. "
     SET RVTA_COM = ISNULL(RVTA_COM,0) + $TotalxArtGlobal, --CAN_TOT        EL 160 ES LA CANTIDAD TOTAL DE VENTA
-    RDESCTO = ISNULL(RDESCTO,0) + 0--DES_TOT                  EL 0 ES EL DESCUENTO
+    RDESCTO = ISNULL(RDESCTO,0) + 0 --DES_TOT                  EL 0 ES EL DESCUENTO
     WHERE CVE_AFACT = $mes	--OBTENEMOS EL NUMERO DEL MES";
 
     $res12 =  sqlsrv_query($con, $sql12, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
@@ -893,7 +892,7 @@ function sendEmail($pdf, $sendData){
     $mail->Host       = 'smtp.gmail.com';                    //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
     $mail->Username   = 'fernando18092105@gmail.com';                     // SMTP username  gerenciageneral@evolutionsilver.com
-    $mail->Password   = '********';                               // SMTP password
+    $mail->Password   = '*******';                               // SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
     $mail->SMTPSecure = 'tls';
     $mail->Port  = 587;                                    // TCP port to connect to
@@ -925,7 +924,6 @@ function sendEmail($pdf, $sendData){
 ?>
 
 <!DOCTYPE html>
-<?php echo $_POST['CONSIGNA'] ?>;
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8">

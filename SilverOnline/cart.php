@@ -18,6 +18,21 @@ if(isset($_SESSION['status'])){
   }
 }
 
+// verifica si el vendedor selecciono un cliente, de lo contrario no permite agregar productos
+if (isset($_SESSION['status'])) {
+
+  if ($_SESSION['status'] == 'ADMIN' && !isset($_SESSION["ID_CLIENTE"])) {
+    // header('Location: index.php');
+
+    echo "
+    <script type='text/javascript'>
+    window.location= 'index.php';
+    alert('Debe seleccionar un cliente...');
+    </script>";
+  }
+}
+
+
 if (isset($_SESSION['ID_ARTICLES'])) {
   $bagNumber = count($_SESSION['ID_ARTICLES']);
   $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
@@ -28,6 +43,8 @@ if (isset($_POST['VACIAR_LOGIN'])) {
   unset($_SESSION['ID_USER']);
   unset($_SESSION['Email']);
   unset($_SESSION['status']);
+  unset($_SESSION['ID_CLIENTE']);
+
 }
 
 // Vaciamos el carrito
@@ -256,7 +273,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
 
     <div id="wrapper">
       <div class="row">
-        <div class="col-md-3 error">
+        <div class="col-md-5 error">
           <a class="center"> <strong>Usuario:</strong> <?php
           if (isset($_SESSION["Email"])) {
             echo $_SESSION["Email"];

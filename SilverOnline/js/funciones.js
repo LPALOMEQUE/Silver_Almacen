@@ -14,6 +14,7 @@ function ModDatosUsuarios(nombre,nombre_recibe,calle,numCalle,cp,ciudad,estado,c
     url: "php/modUsuarios.php",
     data:cadena,
     success:function(result){
+      debugger;
       if(result==1){
 
         alert("Se actualizarón los datos de forma correcta...");
@@ -29,6 +30,27 @@ function ModDatosUsuarios(nombre,nombre_recibe,calle,numCalle,cp,ciudad,estado,c
   });
 
 }
+
+
+function busClienteConsigna(nombreCliente){
+  cadena = "NOMBREC_Consigna=" +nombreCliente;
+
+  $.ajax({
+    type:"POST",
+    url: "index.php",
+    data:cadena,
+    success:function(result){
+      debugger;
+
+      location.reload();
+
+      }
+
+  });
+
+}
+
+
 
 function envioDatosEmail(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,email,paymentToken,paymentID){
   cadena = "NOMBRE=" +nombre +
@@ -50,6 +72,24 @@ function envioDatosEmail(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
     data:cadena,
     success:function(result){
       location.href = 'php/verificador.php'
+    }
+
+  });
+
+}
+
+function getCliente(id_cliente){
+  debugger;
+  cadena = "ID_CLIENTEPost=" + id_cliente ;
+
+  $.ajax({
+    type:"POST",
+    url: "index.php",
+    data:cadena,
+    success:function(result){
+      debugger;
+      $('#ModalViewClientes').hide();
+      location.href = 'joyas-m.php'
     }
 
   });

@@ -11,6 +11,28 @@ $cantidad = 0;
 $key = 1;
 $BD = '01';
 
+$filtroName = '*/+';
+
+
+
+
+
+
+
+if(isset($_POST['NOMBREC_Consigna'])){
+
+  $_SESSION['BUS_CLIENTE'] = $_POST['NOMBREC_Consigna'];
+}
+
+
+
+
+
+
+if (isset($_POST['ID_CLIENTEPost'])) {
+  $_SESSION['ID_CLIENTE'] = $_POST['ID_CLIENTEPost'];
+}
+
 // PRECIO CON DESCUENTO (SUPER PRECIO)
 $ID_PRECIO = 2;
 
@@ -170,7 +192,7 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
     <div id="wrapper">
 
       <div class="row">
-        <div class="col-md-3 error">
+        <div class="col-md-4 error">
           <a class="center"> <strong>Usuario:</strong> <?php
           if (isset($_SESSION["Email"])) {
             echo $_SESSION["Email"];
@@ -229,6 +251,8 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
             <div class="top_logo">
               <a href="#"><img src="img/core-img/logo_Silver.png" alt=""></a>
             </div>
+
+
             <!-- Cart & Menu Area -->
             <div class="header-cart-menu d-flex align-items-center ml-auto">
               <!-- Cart Area -->
@@ -365,120 +389,133 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
             <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroCliente">Registrar Cliente</a></li>
           </div>
 
-          <!-- <div class="<?php
-          if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
-          echo $category = 'inline';
-        }else {
-        echo $category = 'none';
-      } ?>">
-      <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalArticulos">Add Articulos</a></li>
-
-    </div> -->
-  </ul>
-</div>
-</nav>
-</div>
-
-
-<!-- Modal para View Clientes -->
-<div class="modal fade" id="ModalViewClientes" tabindex="-1" role="dialog" aria-labelledby="ModalViewClientes" aria-hidden="true">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="ModalViewClientes">Clientes Registrados...</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        </ul>
       </div>
-      <div class="modal-body">
-        <div class="row">
-          <div class="col-md-5 mb-3">
-            <p id=""><strong>Cliente:</strong></p>
-          </div>
+    </nav>
+  </div>
 
-          <div class="col-md-5 mb-3">
-            <p><strong>E-MAIL:</strong></p>
-          </div>
-          <div class="col-md-1 mb-3">
 
+  <!-- Modal para View Clientes -->
+  <div class="modal fade" id="ModalViewClientes" tabindex="-1" role="dialog" aria-labelledby="ModalViewClientes" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalViewClientes">Clientes Registrados...</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+
+            <div class="col-md-5">
+
+            </div>
+
+            <div class="col-md-5">
+
+              <input type="text" name="txtBusc" id="txtBus" value="" class="form-control" placeholder="Nombre del cliente">
+            </div>
+
+
+            <div class="col-md-2">
+              <button type="button" class="btn btn-warning" id="btnBus" name="button">Buscar</button>
+            </div>
+
+
+
+
+          </div>
+          <br/>
+          <br/>
+          <div class="<?php
+          if ($_SESSION["status"] == 'ADMIN' && isset($_SESSION["BUS_CLIENTE"])) {
+            echo 'inline';
+          }else {
+            echo 'none';
+          } ?>">
+          <div class="row">
+            <div class="col-md-5 mb-3">
+              <p id=""><strong>Cliente:</strong></p>
+            </div>
+
+            <div class="col-md-5 mb-3">
+              <p><strong>E-MAIL:</strong></p>
+            </div>
+            <div class="col-md-1 mb-3">
+
+            </div>
           </div>
         </div>
-
         <div class="scroll-div">
 
           <?php
-          if (isset($_SESSION['ID_USER'])) {
+          if ($_SESSION['status'] == 'ADMIN') {
 
-            require_once "php/Conexion.php";
-            $con = conexion();
-            $ID = $_SESSION['ID_USER'];
-            $sql = "SELECT
-            CLAVE,
-            CRUZAMIENTOS_ENVIO AS CORREO,
-            NOMBRE
-            FROM CLIE" .$BD. "
-            WHERE CVE_VEND='$ID'";
+            if(isset($_SESSION['BUS_CLIENTE'])){
 
-            $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
-            if (0 !== sqlsrv_num_rows($res)){
-              while ($user = sqlsrv_fetch_array($res)) {
-                ?>
+              require_once "php/Conexion.php";
+              $con = conexion();
+              $ID = $_SESSION['ID_USER'];
+              $sql = "SELECT
+              CLAVE,
+              rtrim(ltrim(CLAVE)) AS CLAVE2,
+              CRUZAMIENTOS_ENVIO AS CORREO,
+              NOMBRE
+              FROM CLIE" .$BD. "
+              WHERE CVE_VEND='$ID' AND NOMBRE LIKE '%".$_SESSION['BUS_CLIENTE']."%'";
 
-                <div class="row">
-                  <div class="col-md-5 mb-3">
-                    <p><?php echo $user['NOMBRE'] ?></p>
+              $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+              if (0 !== sqlsrv_num_rows($res)){
+                while ($user = sqlsrv_fetch_array($res)) {
+                  ?>
+
+                  <div class="row">
+                    <div class="col-md-5 mb-3">
+                      <p><?php echo $user['NOMBRE'] ?></p>
+                    </div>
+
+                    <div class="col-md-5 mb-3">
+                      <p><?php echo $user['CORREO'] ?></p>
+                    </div>
+
+                    <div class="col-md-1 mb-3">
+                      <button type="button" class="btn btn-success" id="btnGetClient<?php echo $user['CLAVE2'] ?>"></button>
+                    </div>
+                    <input type="hidden" name="clave" value="<?php echo $user['CLAVE'] ?>" id="txtClave<?php echo $user['CLAVE2'] ?>" >
                   </div>
+                  <script type="text/javascript">
+                  $(document).ready(function(){
 
-                  <div class="col-md-5 mb-3">
-                    <p><?php echo $user['CORREO'] ?></p>
-                  </div>
 
-                  <div class="col-md-1 mb-3">
-                    <button type="button" class="btn btn-success" id="btnGetClient<?php echo $user['CLAVE'] ?>"></button>
-                  </div>
 
-                </div>
-                <script type="text/javascript">
-                $(document).ready(function(){
+                    $('#btnGetClient<?php echo $user['CLAVE2'] ?>').click(function(){
+                      debugger;
+                      id_cliente = $('#txtClave<?php echo $user['CLAVE2'] ?>').val();
+                      getCliente(id_cliente);
 
-                  $('#btnGetClient<?php echo $user['CLAVE'] ?>').click(function(){
-                    debugger;
-                    <?php
-                    $_SESSION['ID_CLIENTE'] = $user['CLAVE'];
-                    ?>
-                    id = '<?php echo $_SESSION['ID_CLIENTE'] ?>';
+                    });
+
+
                   });
-
-
-                });
-                </script>
-                <?php
+                  </script>
+                  <?php
+                }
               }
+              sqlsrv_close($con);
             }
           }
-          sqlsrv_close($con);
 
           ?>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        <button type="button" class="btn btn-primary" id="btnGuardarC">Registrarse</button>
+        <!-- <button type="button" class="btn btn-primary" id="btnGuardarC">Registrarse</button> -->
       </div>
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 <!-- Modal para registro de Clientes -->
 <div class="modal fade" id="ModalRegistroCliente" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroCliente" aria-hidden="true">
@@ -636,25 +673,13 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
             <input type="password" class="form-control" id="txtPass" value="" required>
           </div>
         </div>
-        <!-- <div class="row">
-        <div class="col-md-12 mb-3">
-        <label id="lbRoll" for="cbmRoll">Roll</label>
-        <select id="cbmRoll"  class="form-control" name="state">
-        <option value="0">Selecciona...</option>
-        ...
-        <option value="ADMIN">ADMINISTRADOR</option>
-        ...
-        <option value="COMUN">COMÚN</option>form-control
-      </select>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-primary" id="btnGuardar">Registrarse</button>
+      </div>
     </div>
-  </div> -->
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-  <button type="button" class="btn btn-primary" id="btnGuardar">Registrarse</button>
-</div>
-</div>
-</div>
+  </div>
 </div>
 
 <!-- Modal para registro de Articulos -->
@@ -839,22 +864,7 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
         </div>
       </div>
     </div>
-
-    <!-- Single Slide Start -->
-    <!-- <div class="single_slide height-800 bg-img background-overlay" style="background-image: url(img/bg-img/bg-2.jpg);">
-    <div class="container h-100">
-    <div class="row h-100 align-items-center">
-    <div class="col-12">
-    <div class="welcome_slide_text">
-    <h6 data-animation="fadeInDown" data-delay="0" data-duration="500ms">* Only today we offer free shipping</h6>
-    <h2 data-animation="bounceInDown" data-delay="500ms" data-duration="500ms">Women Fashion</h2>
-    <a href="#" class="btn karl-btn" data-animation="fadeInRightBig" data-delay="1s" data-duration="500ms">Check Collection</a>
   </div>
-</div>
-</div>
-</div>
-</div> -->
-</div>
 </section>
 <!-- ****** Welcome Slides Area End ****** -->
 
@@ -1113,148 +1123,31 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
 
 $(document).ready(function(){
 
-  var validaImg =0;
-  var nameArticulo ="";
-  $('#btnGuardar').click(function(){
-    nombre = $('#txtNombre').val();
-    apellidoP = $('#txtApellidoP').val();
-    apellidoM = $('#txtApellidoM').val();
-    calle = $('#txtCalle').val();
-    numCalle = $('#txtNumCalle').val();
-    cp = $('#txtCp').val();
-    ciudad = $('#txtCiudad').val();
-    estado = $('#txtEstado').val();
-    cel = $('#txtCel').val();
-    nombre_Recibe = $('#txtNombre_Recibe').val();
-    apellidoP_Recibe = $('#txtApellidoP_Recibe').val();
-    apellidoM_Recibe = $('#txtApellidoM_Recibe').val();
-    email= $('#txtEmail').val();
+  <?php if(isset($_SESSION['status']) && $_SESSION['status'] == 'ADMIN'){ ?>
 
-    if(validar_email( email ) )
-    {
-    }
-    else
-    {
-      alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
-      email = 1;
-    }
-    pass= $('#txtPass').val();
+    $('#ModalViewClientes').modal('toggle');
 
 
-    roll = 'COMUN';
+    <?php } ?>
 
-    if(nombre == ""){
+    var validaImg =0;
+    var nameArticulo ="";
+    $('#btnGuardar').click(function(){
+      nombre = $('#txtNombre').val();
+      apellidoP = $('#txtApellidoP').val();
+      apellidoM = $('#txtApellidoM').val();
+      calle = $('#txtCalle').val();
+      numCalle = $('#txtNumCalle').val();
+      cp = $('#txtCp').val();
+      ciudad = $('#txtCiudad').val();
+      estado = $('#txtEstado').val();
+      cel = $('#txtCel').val();
+      nombre_Recibe = $('#txtNombre_Recibe').val();
+      apellidoP_Recibe = $('#txtApellidoP_Recibe').val();
+      apellidoM_Recibe = $('#txtApellidoM_Recibe').val();
+      email= $('#txtEmail').val();
 
-      alert("Debe ingresar un nombrel...");
-    }
-    if(apellidoP == ""){
-
-      alert("Debe ingresar un apellido paterno...");
-    }if(apellidoM == ""){
-
-      alert("Debe ingresar un apellido Materno...");
-    }
-    if(calle == ""){
-
-      alert("Debe ingresar una calle...");
-    }if(numCalle == ""){
-
-      alert("Debe ingresar un número de la hubicación...");
-    }
-    if(cp == ""){
-
-      alert("Debe ingresar un código postal...");
-    }if(ciudad == ""){
-
-      alert("Debe ingresar una ciudad...");
-    }
-    if(estado == ""){
-
-      alert("Debe ingresar un estado...");
-    }
-    if(cel == ""){
-
-      alert("Debe ingresar un número de contacto...");
-    }
-
-    if(nombre_Recibe == ""){
-
-      alert("Debe ingresar un nombre de quien recibirá el producto...");
-    }
-    if(apellidoP_Recibe == ""){
-
-      alert("Debe ingresar un apellido paterno de quien recibirá el producto...");
-    }if(apellidoM_Recibe == ""){
-
-      alert("Debe ingresar un apellido Materno de quien recibirá el producto...");
-    }
-
-    if (txtCel.value.length != 10) {
-      alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
-      txtCel.focus();
-    }
-
-    if(email == ""){
-
-      alert("Debe ingresar un E-mail...");
-    }
-    if(pass == ""){
-
-      alert("Debe ingresar una contraseña...");
-    }
-    if(roll == 0){
-
-      alert("Debe seleccionar un roll de usuario...");
-    }
-    if(nombre != "" &&
-    apellidoP != "" &&
-    apellidoM != "" &&
-    calle != "" &&
-    numCalle != "" &&
-    cp != "" &&
-    ciudad != "" &&
-    estado != "" &&
-    cel != "" &&
-    nombre_Recibe != "" &&
-    apellidoP_Recibe != "" &&
-    apellidoM_Recibe != "" &&
-    txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
-      agregarUsuarios(nombre,
-        apellidoP,
-        apellidoM,
-        calle,
-        numCalle,
-        cp,ciudad,
-        estado,
-        cel,
-        nombre_Recibe,
-        apellidoP_Recibe,
-        apellidoM_Recibe,
-        email,
-        pass,
-        roll);
-      }
-    });
-
-
-
-    $('#btnGuardarC').click(function(){
-      debugger;
-      nombre = $('#txtNombreC').val();
-      apellidoP = $('#txtApellidoPC').val();
-      apellidoM = $('#txtApellidoMC').val();
-      calle = $('#txtCalleC').val();
-      numCalle = $('#txtNumCalleC').val();
-      cp = $('#txtCpC').val();
-      ciudad = $('#txtCiudadC').val();
-      estado = $('#txtEstadoC').val();
-      cel = $('#txtCelC').val();
-      nombre_Recibe = ' ';
-      apellidoP_Recibe = ' ';
-      apellidoM_Recibe = ' ';
-      email= $('#txtEmailC').val();
-
-      if(validar_email( email ))
+      if(validar_email( email ) )
       {
       }
       else
@@ -1262,7 +1155,7 @@ $(document).ready(function(){
         alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
         email = 1;
       }
-      pass= 'Silver2020';
+      pass= $('#txtPass').val();
 
 
       roll = 'COMUN';
@@ -1301,16 +1194,35 @@ $(document).ready(function(){
         alert("Debe ingresar un número de contacto...");
       }
 
-      if (txtCelC.value.length != 10) {
-        alert('El número celular es incorrecto ya que tiene ' + txtCelC.value.length + ' caracteres y debe contener 10...');
-        txtCelC.focus();
+      if(nombre_Recibe == ""){
+
+        alert("Debe ingresar un nombre de quien recibirá el producto...");
+      }
+      if(apellidoP_Recibe == ""){
+
+        alert("Debe ingresar un apellido paterno de quien recibirá el producto...");
+      }if(apellidoM_Recibe == ""){
+
+        alert("Debe ingresar un apellido Materno de quien recibirá el producto...");
+      }
+
+      if (txtCel.value.length != 10) {
+        alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
+        txtCel.focus();
       }
 
       if(email == ""){
 
         alert("Debe ingresar un E-mail...");
       }
+      if(pass == ""){
 
+        alert("Debe ingresar una contraseña...");
+      }
+      if(roll == 0){
+
+        alert("Debe seleccionar un roll de usuario...");
+      }
       if(nombre != "" &&
       apellidoP != "" &&
       apellidoM != "" &&
@@ -1320,7 +1232,10 @@ $(document).ready(function(){
       ciudad != "" &&
       estado != "" &&
       cel != "" &&
-      txtCelC.value.length == 10  && email != "" && email !=1){
+      nombre_Recibe != "" &&
+      apellidoP_Recibe != "" &&
+      apellidoM_Recibe != "" &&
+      txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
         agregarUsuarios(nombre,
           apellidoP,
           apellidoM,
@@ -1338,176 +1253,284 @@ $(document).ready(function(){
         }
       });
 
+      $('#btnGuardarC').click(function(){
+        debugger;
+        nombre = $('#txtNombreC').val();
+        apellidoP = $('#txtApellidoPC').val();
+        apellidoM = $('#txtApellidoMC').val();
+        calle = $('#txtCalleC').val();
+        numCalle = $('#txtNumCalleC').val();
+        cp = $('#txtCpC').val();
+        ciudad = $('#txtCiudadC').val();
+        estado = $('#txtEstadoC').val();
+        cel = $('#txtCelC').val();
+        nombre_Recibe = ' ';
+        apellidoP_Recibe = ' ';
+        apellidoM_Recibe = ' ';
+        email= $('#txtEmailC').val();
 
-
-
-
-
-
-
-
-
-
-
-
-
-      $('#btnGuardarArt').click(function(){
-
-        nomArt= $('#txtNameArt').val();
-        descArt= $('#txtDescArt').val();
-        barCode = $('#txtBarCode').val();
-        modelArt = $('#txtModelo').val();
-        marcaArt = $("#cbmMarca option:selected").val();
-        precioArt = $('#txtPrecio').val();
-        categoria = $("#cbmCategoria option:selected").val();
-        subCatego = $("#cbmSubcategoria option:selected").val();
-        statusArt = $("#cbmStatus option:selected").val();
-        nombreImg = $('#txtNameIMG').val();
-
-
-        if(nomArt == ""){
-
-          alert("Debe ingresar el nombre del artículo...");
+        if(validar_email( email ))
+        {
         }
-        if(descArt == ""){
-
-          alert("Debe ingresar la descripción del artículo...");
+        else
+        {
+          alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+          email = 1;
         }
-        if(barCode == ""){
+        pass= 'Silver2020';
 
-          alert("Debe ingresar el codigo de barra del artículo...");
+
+        roll = 'COMUN';
+
+        if(nombre == ""){
+
+          alert("Debe ingresar un nombrel...");
         }
+        if(apellidoP == ""){
 
-        if (txtBarCode.value.length != 11) {
-          alert('El codigo de barra es incorrecto ya que tiene una longitud de ' + txtBarCode.value.length + ' y debe contener 11 caracteres...');
-          txtBarCode.focus();
+          alert("Debe ingresar un apellido paterno...");
+        }if(apellidoM == ""){
+
+          alert("Debe ingresar un apellido Materno...");
         }
+        if(calle == ""){
 
-        if(modelArt == ""){
+          alert("Debe ingresar una calle...");
+        }if(numCalle == ""){
 
-          alert("Debe ingresar el modelo del artículo...");
+          alert("Debe ingresar un número de la hubicación...");
         }
-        if(marcaArt == 0){
+        if(cp == ""){
 
-          alert("Debe seleccionar una marca...");
+          alert("Debe ingresar un código postal...");
+        }if(ciudad == ""){
+
+          alert("Debe ingresar una ciudad...");
         }
-        if(precioArt == "" && precioArt !=0){
+        if(estado == ""){
 
-          alert("Debe ingresar el precio del artículo...");
+          alert("Debe ingresar un estado...");
         }
-        if(categoria == 0){
+        if(cel == ""){
 
-          alert("Debe seleccionar una categoría...");
-        }
-        if(subCatego == 0){
-
-          alert("Debe seleccionar una subcategoría...");
-        }
-        if(statusArt == 2){
-
-          alert("Debe seleccionar un estatus del artículo...");
+          alert("Debe ingresar un número de contacto...");
         }
 
-        if (validaImg == 0) {
-
-          alert("Debe cargar la imagen del artículo...");
+        if (txtCelC.value.length != 10) {
+          alert('El número celular es incorrecto ya que tiene ' + txtCelC.value.length + ' caracteres y debe contener 10...');
+          txtCelC.focus();
         }
-
-        if (nomArt != "" && descArt != "" && barCode != "" && txtBarCode.value.length == 11 && modelArt != "" && precioArt != "" && precioArt != 0 && nameArticulo != "" && marcaArt !=0 && statusArt !=2 && validaImg != 0){
-          guardarArt(nomArt,
-            descArt,
-            barCode,
-            modelArt,
-            marcaArt,
-            precioArt,
-            categoria,
-            subCatego,
-            statusArt,
-            nameArticulo);
-            validaImg=0;
-            nameArticulo = "";
-          }
-
-        });
-        $('#upload').on('click', function() {
-
-          var file_data = $('#sortpicture').prop('files')[0];
-          var form_data = new FormData();
-          form_data.append('file', file_data);
-          $.ajax({
-            url: 'cargaIMG.php', // point to server-side PHP script
-            dataType: 'text',  // what to expect back from the PHP script, if anything
-            cache: false,
-            contentType: false,
-            processData: false,
-            data: form_data,
-            type: 'post',
-            success: function(result){
-              if (result != "") {
-                validaImg =1;
-                nameArticulo = result;
-                document.getElementById("sortpicture").value = "";
-              }else{
-                validaImg=0;
-                document.getElementById("sortpicture").value = "";
-              }
-            }
-          });
-        });
-
-        // Enter de inicio de sesion
-        var input = document.getElementById("txt_Pass");
-        input.addEventListener("keyup", function(event) {
-          // Number 13 is the "Enter" key on the keyboard
-          if (event.keyCode === 13) {
-            // Cancel the default action, if needed
-            event.preventDefault();
-            // Trigger the button element with a click
-            document.getElementById("btnEntrar").click();
-          }
-        });
-      });
-
-      $('#btnLogOut').click(function(){
-        vaciar = 1;
-
-        logOut(vaciar);
-      });
-
-      $('#btnEntrar').click(function(){
-
-        email= $('#txt_Email').val();
-        pass= $('#txt_Pass').val();
 
         if(email == ""){
 
           alert("Debe ingresar un E-mail...");
         }
-        if(pass == ""){
 
-          alert("Debe ingresar una contraseña...");
-        }
-        if(email != "" && pass != ""){
-          login(email, pass);
-        }
-      });
+        if(nombre != "" &&
+        apellidoP != "" &&
+        apellidoM != "" &&
+        calle != "" &&
+        numCalle != "" &&
+        cp != "" &&
+        ciudad != "" &&
+        estado != "" &&
+        cel != "" &&
+        txtCelC.value.length == 10  && email != "" && email !=1){
+          agregarUsuarios(nombre,
+            apellidoP,
+            apellidoM,
+            calle,
+            numCalle,
+            cp,ciudad,
+            estado,
+            cel,
+            nombre_Recibe,
+            apellidoP_Recibe,
+            apellidoM_Recibe,
+            email,
+            pass,
+            roll);
+          }
+        });
 
-      //   function ValidarBarCode(barcode) {
-      //   if (barcode.value.length = 11) {
-      //     alert("Escriba su número completo");
-      //     barcode.focus();
-      //     barcode.select();
-      //   }
-      // }
-      function mayus(e) {
-        e.value = e.value.toUpperCase();
-      }
-      function minus(e) {
-        e.value = e.value.toLowerCase();
-      }
-      function validar_email( email )
-      {
-        var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-        return regex.test(email) ? true : false;
-      }
-      </script>
+        $('#btnGuardarArt').click(function(){
+
+          nomArt= $('#txtNameArt').val();
+          descArt= $('#txtDescArt').val();
+          barCode = $('#txtBarCode').val();
+          modelArt = $('#txtModelo').val();
+          marcaArt = $("#cbmMarca option:selected").val();
+          precioArt = $('#txtPrecio').val();
+          categoria = $("#cbmCategoria option:selected").val();
+          subCatego = $("#cbmSubcategoria option:selected").val();
+          statusArt = $("#cbmStatus option:selected").val();
+          nombreImg = $('#txtNameIMG').val();
+
+
+          if(nomArt == ""){
+
+            alert("Debe ingresar el nombre del artículo...");
+          }
+          if(descArt == ""){
+
+            alert("Debe ingresar la descripción del artículo...");
+          }
+          if(barCode == ""){
+
+            alert("Debe ingresar el codigo de barra del artículo...");
+          }
+
+          if (txtBarCode.value.length != 11) {
+            alert('El codigo de barra es incorrecto ya que tiene una longitud de ' + txtBarCode.value.length + ' y debe contener 11 caracteres...');
+            txtBarCode.focus();
+          }
+
+          if(modelArt == ""){
+
+            alert("Debe ingresar el modelo del artículo...");
+          }
+          if(marcaArt == 0){
+
+            alert("Debe seleccionar una marca...");
+          }
+          if(precioArt == "" && precioArt !=0){
+
+            alert("Debe ingresar el precio del artículo...");
+          }
+          if(categoria == 0){
+
+            alert("Debe seleccionar una categoría...");
+          }
+          if(subCatego == 0){
+
+            alert("Debe seleccionar una subcategoría...");
+          }
+          if(statusArt == 2){
+
+            alert("Debe seleccionar un estatus del artículo...");
+          }
+
+          if (validaImg == 0) {
+
+            alert("Debe cargar la imagen del artículo...");
+          }
+
+          if (nomArt != "" && descArt != "" && barCode != "" && txtBarCode.value.length == 11 && modelArt != "" && precioArt != "" && precioArt != 0 && nameArticulo != "" && marcaArt !=0 && statusArt !=2 && validaImg != 0){
+            guardarArt(nomArt,
+              descArt,
+              barCode,
+              modelArt,
+              marcaArt,
+              precioArt,
+              categoria,
+              subCatego,
+              statusArt,
+              nameArticulo);
+              validaImg=0;
+              nameArticulo = "";
+            }
+
+          });
+          $('#upload').on('click', function() {
+
+            var file_data = $('#sortpicture').prop('files')[0];
+            var form_data = new FormData();
+            form_data.append('file', file_data);
+            $.ajax({
+              url: 'cargaIMG.php', // point to server-side PHP script
+              dataType: 'text',  // what to expect back from the PHP script, if anything
+              cache: false,
+              contentType: false,
+              processData: false,
+              data: form_data,
+              type: 'post',
+              success: function(result){
+                if (result != "") {
+                  validaImg =1;
+                  nameArticulo = result;
+                  document.getElementById("sortpicture").value = "";
+                }else{
+                  validaImg=0;
+                  document.getElementById("sortpicture").value = "";
+                }
+              }
+            });
+          });
+
+          // Enter de inicio de sesion
+          var input = document.getElementById("txt_Pass");
+          input.addEventListener("keyup", function(event) {
+            // Number 13 is the "Enter" key on the keyboard
+            if (event.keyCode === 13) {
+              // Cancel the default action, if needed
+              event.preventDefault();
+              // Trigger the button element with a click
+              document.getElementById("btnEntrar").click();
+            }
+          });
+
+
+          $('#btnLogOut').click(function(){
+            vaciar = 1;
+
+            logOut(vaciar);
+          });
+
+          $('#btnEntrar').click(function(){
+
+            email= $('#txt_Email').val();
+            pass= $('#txt_Pass').val();
+
+            if(email == ""){
+
+              alert("Debe ingresar un E-mail...");
+            }
+            if(pass == ""){
+
+              alert("Debe ingresar una contraseña...");
+            }
+            if(email != "" && pass != ""){
+              login(email, pass);
+            }
+          });
+
+
+          $('#btnBus').click(function(){
+
+            nombreCliente = $('#txtBus').val();
+
+            if(nombreCliente == ""){
+              alert("Debe ingresar un nombre o apellido...");
+            }
+            if(nombreCliente != "" ){
+              busClienteConsigna(nombreCliente);
+            }
+          });
+
+          // Enter buscador
+          var txtBus = document.getElementById("txtBus");
+          txtBus.addEventListener("keyup", function(event) {
+            // Number 13 is the "Enter" key on the keyboard
+            if (event.keyCode === 13) {
+              // Cancel the default action, if needed
+              event.preventDefault();
+              // Trigger the button element with a click
+              document.getElementById("btnBus").click();
+            }
+          });
+
+
+        });
+
+        function mayus(e) {
+          e.value = e.value.toUpperCase();
+        }
+        function minus(e) {
+          e.value = e.value.toLowerCase();
+        }
+        function validar_email( email )
+        {
+          var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+          return regex.test(email) ? true : false;
+        }
+        </script>

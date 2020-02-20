@@ -14,8 +14,15 @@ $estado = $_POST['ESTADO'];
 $cel = $_POST['CEL'];
 $email = $_POST['EMAIL'];
 
-$ID = $_SESSION['ID_USER'];
+if ($_SESSION['ID_USER'] == 'ADMIN') {
+  $ID = $_SESSION['ID_USER'];
+}
+else{
+  $ID = $_SESSION['ID_CLIENTE'];
+}
+
 $MAIL = $_SESSION['Email'];
+$BD = '01';
 
 $sql = "UPDATE CLIE01 SET NOMBRE='$nombre',
 ADDENDAF='$nombre_recibe',
@@ -26,7 +33,7 @@ LOCALIDAD='$ciudad',
 MUNICIPIO = '$ciudad',
 ESTADO='$estado',
 TELEFONO='$cel'
-WHERE CLAVE='$ID' AND CRUZAMIENTOS_ENVIO='$MAIL'";
+WHERE CLAVE='$ID'";
 
 $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 if (0 !== sqlsrv_num_rows($res)){

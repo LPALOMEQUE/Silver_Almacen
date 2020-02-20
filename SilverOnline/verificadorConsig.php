@@ -81,36 +81,33 @@ $ID = $_SESSION['ID_USER'];
 $MAIL = $_SESSION['Email'];
 require_once "php/Conexion.php";
 $con = conexion();
-$ID = $_SESSION['ID_USER'];
-$MAIL = $_SESSION['Email'];
-
-
-
 
 require_once "php/Conexion.php";
 $con = conexion();
-$ID = $_SESSION['ID_USER'];
 $MAIL = $_SESSION['Email'];
+
 $sql = "SELECT
-CRUZAMIENTOS_ENVIO AS CORREO,
-NOMBRE,
--- ADDENDAF AS NOMBRE_RECIBE,
-CALLE,
-NUMEXT,
-CODIGO,
-LOCALIDAD,
-ESTADO,
-TELEFONO
-FROM CLIE" .$BD. "
-WHERE CLAVE='$id_cliente'";
+C.CLAVE,
+C.CRUZAMIENTOS_ENVIO AS CORREO,
+C.NOMBRE,
+SU.NOMBRE AS VENDEDOR,
+C.CALLE,
+C.NUMEXT,
+C.CODIGO,
+C.LOCALIDAD,
+C.ESTADO,
+C.TELEFONO
+FROM CLIE" .$BD. " C
+INNER JOIN SOUSUARIOS SU ON SU.VEND = C.CVE_VEND
+WHERE c.CLAVE='$id_cliente'";
+
 
 $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 if (0 !== sqlsrv_num_rows($res)){
   while ($user = sqlsrv_fetch_array($res)) {
     $email = $user['CORREO'];
     $nombre = $user['NOMBRE'];
-    // $nombreRecibe = $user['NOMBRE_RECIBE'];
-    // $apellidoM = $user[4];
+    $vendedor = $user['VENDEDOR'];
     $calle = $user['CALLE'];
     $numCalle = $user['NUMEXT'];
     $cp = $user['CODIGO'];
@@ -125,21 +122,17 @@ sqlsrv_close($con);
 
 require_once "php/Conexion.php";
 $con = conexion();
-$sql2 = "SELECT CVE_DOC FROM PAR_FACTP01 WHERE CVE_DOC LIKE 'WEBP%'";
+$sql2 = "SELECT MAX(CONVERT(INT,SUBSTRING(CONVERT(VARCHAR,CVE_DOC), 5, 500))) AS CVE_DOC FROM PAR_FACTP" .$BD. " WHERE CVE_DOC LIKE 'WEBP%' ORDER BY CVE_DOC DESC";
 $res2 =  sqlsrv_query($con, $sql2, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 if (0 !== sqlsrv_num_rows($res2)){
 
   while ($fila = sqlsrv_fetch_array($res2)) {
-    $EXIST_CVE_DOC = $fila['CVE_DOC'];
 
-    $str = $EXIST_CVE_DOC;
-    $array = (explode("P",$str));
 
-    $num = $array[1]+1;
-    //echo $num+1;
-    $claveOld = $array[0];
+    $num = $fila['CVE_DOC']+1;
+
     //echo $CVE;
-    $CVE_DOC = $claveOld .'P'. $num;
+    $CVE_DOC =  'WEBP'. $num;
 
   }
 }
@@ -179,10 +172,14 @@ $dataHTML .= '<img src="img/core-img/silverEvolution.png"><br/><br/>';
 
 $dataHTML .= '<h1>Comprobante de Pedido</h1>';
 
+$dataHTML .= '<br/>'.'<h3><i><strong>Vendedor:</strong></i></h3>';
+$dataHTML .= '' .$vendedor. '<br/>';
+
+
 $dataHTML .= '<br/>'.'<h3><i><strong>Cliente:</strong></i></h3>';
 $dataHTML .= '' .$nombre. '<br/>';
 
-$dataHTML .= '<br/>'.'<h3><i><strong>Información de envío...</strong></i></h3>';
+$dataHTML .= '<br/>'.'<h3><i><strong>Dirección del cliente...</strong></i></h3>';
 $dataHTML .= '
 <table style="width:100%">
 
@@ -309,10 +306,6 @@ $sendData = [
   'idVenta' => $CVE_DOC
 ];
 
-
-
-
-
 require_once "php/Conexion.php";
 $con = conexion();
 $i=1;
@@ -325,6 +318,15 @@ if (isset($_SESSION['ID_ARTICLES'])) {
     if (0 !== sqlsrv_num_rows($res)){
       while ($arti = sqlsrv_fetch_array($res)) {
 
+echo "----";
+        echo 'id_cliente:' .$id_cliente;
+        echo "----";
+          ECHO $CVE_DOC;
+          echo "----";
+         echo $ID;
+         echo "----";
+         echo $fecha_php;
+         echo "----";
         $SUPER_PRECIO_ART = $arti['COSTO_PROM'];
         $PRECIO_ART = $arti['COSTO_PROM']*3;
         $CANTIDAD_ART = $item['cantidad'];
@@ -467,8 +469,8 @@ if (isset($_SESSION['ID_ARTICLES'])) {
         '',--FECHA_DOC
         'P',--TIPO_DOC
         '$CVE_DOC',--REFER ES $CVE_DOC
-        '$ID',--CLAVE_CLPV ESTA ES LA CLAVE DEL CLIENTE
-        '1',--Vend														--VALOR FIJO
+        '$id_cliente',--CLAVE_CLPV ESTA ES LA CLAVE DEL CLIENTE
+        '$ID',--Vend														--VALOR FIJO
         '$CANTIDAD_ART',--Cant ES  LA CANTIDAD VENDIDA POR ARTICULO
         '0',--CANT_COST													--VALOR FIJO
         '$PRECIO_ART',--PREC ES EL PRECIO UNITARIO DEL PRODUCTO
@@ -507,18 +509,25 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 
   // PASO 5
 
-  $sql6 = "SELECT FOLIO FROM FACTP" .$BD. " where SERIE = 'WEBP'";
+  $sql6 = "SELECT isnull(MAX(FOLIO),1) AS FOLIO FROM FACTP" .$BD. " where SERIE = 'WEBP'";
 
   $res6 =  sqlsrv_query($con, $sql6, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
   if (0 !== sqlsrv_num_rows($res6)){
     while ($f = sqlsrv_fetch_array($res6)) {
-      $folio = $f['FOLIO'] + 1;
+
+
+      if($f['FOLIO'] != 1){
+        $folio= $folio +1;
+      }
+      else{
+        $folio = $f['FOLIO'];
+      }
     }
   }
-  else{
-    $folio = 1;
-
-  }
+  // else{
+  //   $folio = 1;
+  //
+  // }
 
   $sql7 = "IF NOT EXISTS (SELECT CVE_DOC FROM FACTP" .$BD. "
   WHERE CVE_DOC = '$CVE_DOC')
@@ -576,7 +585,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   DOC_ANT,
   CONDICION)
   VALUES
-  ('$ID',--CVE_CLPV ES LA CLAVE DEL CLIENTE
+  ('$id_cliente',--CVE_CLPV ES LA CLAVE DEL CLIENTE
   '',-- CVE_PEDI									---VALOR FIJO
   '$fecha_php',--FECHA_DOC  VARIABLE
   '$fecha_php',--FECHA_ENT  VARIABLE
@@ -602,7 +611,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   'P',--TIP_DOC									---VALOR FIJO
   '$CVE_DOC',--CVE_DOC
   '$TotalxArtGlobal',--CAN_TOT   ES LA CANTIDDA TOTAL DE LA VENTA VARIABLE
-  '1',--CVE_VEND									---VALOR FIJO
+  '$ID',--CVE_VEND									---VALOR FIJO
   NULL,--FECHA_CANCELA							---VALOR FIJO
   '0',--DES_TOT									---VALOR FIJO
   'O',--ENLAZADO
@@ -622,7 +631,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   '0',--DES_TOT_PORC								---VALOR FIJO
   '$TotalxArtGlobal',--Importe		CANTIDAD TOTAL DE VENTA VARIABLE
   '0',--COM_TOT_PORC								---VALOR FIJO
-  '$ID',--METODODEPAGO ACA SE LE PASARA LA CLAVE DEL CLIENTE (WEB-01)
+  '$id_cliente',--METODODEPAGO ACA SE LE PASARA LA CLAVE DEL CLIENTE (WEB-01)
   '$nombre',--NUMCTAPAGO				ACA IRA EL NOMBRE DE LA PERSONA QUE COMPRARA VARIABLE ($nombre)
   '',--TIP_DOC_ANT								---VALOR FIJO
   '',--DOC_ANT									---VALOR FIJO
@@ -644,7 +653,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   NOM_USUARIO)
   Values
   (ISNULL((SELECT MAX(CVE_BITA) + 1 FROM BITA" .$BD. " ),1),
-  '$ID',--CVE_CLIE
+  '$id_cliente',--CVE_CLIE
   'VENTA SILVER_ONLINE CONSIGNA',--CVE_CAMPANIA			--VALOR FIJO
   '11',--CVE_ACTIVIDAD									--VALOR FIJO
   GETDATE(),
@@ -667,7 +676,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 
   // paso 8
 
-  $sql10 = "INSERT INTO CUEN_M" .$BD. "
+    $sql10 = "INSERT INTO CUEN_M" .$BD. "
   (CVE_CLIE,
   REFER,
   NUM_CPTO,
@@ -696,7 +705,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   BENEFICIARIO,
   NUMCTAPAGO_ORIGEN)
   VALUES
-  ('$ID',--_CVE_CLIE
+  ('$id_cliente',--_CVE_CLIE
   '$CVE_DOC',--REFER
   '25',--NUM_CPTO									--VALOR FIJO
   '1',											--VALOR FIJO
@@ -722,7 +731,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   'P',--REF_SIST									--VALOR FIJO
   '0',--CVE_AUT									--VALOR FIJO
   '$nombre',--BENEFICIARIO		NOMBRE DEL CLIENTE
-  '$ID')--NUMCTAPAGO_ORIGEN						ES LA CLAVE DEL CLIENTE";
+  '$id_cliente')--NUMCTAPAGO_ORIGEN						ES LA CLAVE DEL CLIENTE";
 
   $res10=  sqlsrv_query($con, $sql10, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 
@@ -736,7 +745,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   FCH_ULTCOM = '$fecha_php',
   VENTAS = ISNULL(VENTAS,0) + $TotalxArtGlobal --EL 15557 ES LA VENTA TOTAL GLOBAL
   WHERE
-  CLAVE = '$ID' --ES LA CLAVE DEL CLIENTE";
+  CLAVE = '$id_cliente' --ES LA CLAVE DEL CLIENTE";
 
   $res11 =  sqlsrv_query($con, $sql11, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 
@@ -766,7 +775,7 @@ function sendEmail($pdf, $sendData){
     $mail->Host       = 'smtp.gmail.com';                    //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
     $mail->Username   = 'fernando18092105@gmail.com';                     // SMTP username  gerenciageneral@evolutionsilver.com
-    $mail->Password   = '********';                              // SMTP password
+    $mail->Password   = '******';                              // SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
     $mail->SMTPSecure = 'tls';
     $mail->Port  = 587;                                    // TCP port to connect to

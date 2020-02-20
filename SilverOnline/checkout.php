@@ -27,6 +27,8 @@ $email = '';
 $paymentToken = '';
 $paymentID = '';
 
+$ID = '';
+
 if (!isset($_SESSION["ID_USER"]) || !isset($_COOKIE['express'])) {
   header('Location: index.php');
 }
@@ -40,6 +42,8 @@ if (isset($_POST['VACIAR_LOGIN'])) {
   unset($_SESSION['ID_USER']);
   unset($_SESSION['Email']);
   unset($_SESSION['status']);
+  unset($_SESSION['ID_CLIENTE']);
+  unset($_SESSION['BUS_CLIENTE']);
 }
 
 //Vaciamos el carrito
@@ -305,12 +309,19 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 
           <form action="#" method="post">
             <?php
-            $ID = $_SESSION['ID_USER'];
+
+
+            if ($_SESSION['status'] == 'ADMIN') {
+              $ID = $_SESSION['ID_CLIENTE'];
+
+            }
+            else if($_SESSION['status'] == 'COMUN'){
+              $ID = $_SESSION["ID_USER"];
+            }
+
             $MAIL = $_SESSION['Email'];
             require_once "php/Conexion.php";
             $con = conexion();
-            $ID = $_SESSION['ID_USER'];
-            $MAIL = $_SESSION['Email'];
             $sql = "SELECT
             CRUZAMIENTOS_ENVIO AS CORREO,
             NOMBRE,
@@ -322,7 +333,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
             ESTADO,
             TELEFONO
             FROM CLIE" .$BD. "
-            WHERE CLAVE='$ID' AND CRUZAMIENTOS_ENVIO='$MAIL'";
+            WHERE CLAVE='$ID'";
 
             $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
             if (0 !== sqlsrv_num_rows($res)){

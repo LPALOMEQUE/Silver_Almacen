@@ -21,6 +21,20 @@ if(isset($_SESSION['status'])){
   }
 }
 
+// verifica si el vendedor selecciono un cliente, de lo contrario no permite agregar productos
+if (isset($_SESSION['status'])) {
+
+  if ($_SESSION['status'] == 'ADMIN' && !isset($_SESSION["ID_CLIENTE"])) {
+    // header('Location: index.php');
+
+    echo "
+    <script type='text/javascript'>
+    window.location= 'index.php';
+    alert('Debe seleccionar un cliente...');
+    </script>";
+  }
+}
+
 
 if (isset($_POST['VaciarFilterP'])) {
   unset($_SESSION['filtro_price']);
@@ -50,6 +64,8 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
     unset($_SESSION['ID_USER']);
     unset($_SESSION['Email']);
     unset($_SESSION['status']);
+    unset($_SESSION['ID_CLIENTE']);
+
   }
 
   //Imprimiendo datos globales del carrito
