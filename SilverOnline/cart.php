@@ -273,7 +273,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
 
     <div id="wrapper">
       <div class="row">
-        <div class="col-md-5 error">
+        <div class="col-md-4 error">
           <a class="center"> <strong>Usuario:</strong> <?php
           if (isset($_SESSION["Email"])) {
             echo $_SESSION["Email"];
@@ -301,7 +301,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
         echo $mostrar = 'inline';
       } ?>">
       <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
-      <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Registrate</button>
+      <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</button>
     </div>
   </div>
   <div class="col-md-2">
@@ -370,31 +370,153 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
 
               <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
                 <ul class="navbar-nav animated" id="nav">
-                  <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Paginas</a>
-                    <div class="dropdown-menu" aria-labelledby="karlDropdown">
-                      <a class="dropdown-item" href="index.php">Inicio</a>
-                      <a class="dropdown-item" href="shop.html">Compras</a>
-                      <a class="dropdown-item" href="product-details.html">Detalles de productos</a>
-                      <a class="dropdown-item" href="cart.html">Carrito</a>
-                      <a class="dropdown-item" href="checkout.html">Resiva</a>
-                    </div>
-                  </li>
-                </ul>
+                  <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                  <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                  <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                  <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+
+                  <div class="<?php
+                  if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
+                    echo $category = 'inline';
+                  }else {
+                    echo $category = 'none';
+                  } ?>">
+
+                  <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalViewClientes"><span class="karl-level">Seleccione</span>Cliente</a></li>
+                </div>
+                <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categorías</a>
+                  <div class="dropdown-menu" aria-labelledby="karlDropdown">
+                    <a class="dropdown-item" href="joyas-m.php">Joyería</a>
+                    <a class="dropdown-item" href="#">Bolsas</a>
+                    <a class="dropdown-item" href="#">Perfumes</a>
+                    <a class="dropdown-item" href="#">Ropa</a>
+                  </div>
+                </li>
+
+
+                <div class="<?php
+                if (isset($_SESSION["Email"])) {
+                  echo $ocultar = 'none';
+                }else {
+                  echo $mostrar = 'inline';
+                } ?> ">
+                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</a></li>
               </div>
-            </nav>
+
+              <div class="<?php
+              if (isset($_SESSION["status"]) && $_SESSION['status'] == 'ADMIN') {
+                echo $mostrar = 'inline';
+              }else {
+                echo $ocultar = 'none';
+              } ?> ">
+              <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroCliente">Registrar Cliente</a></li>
+            </div>
+
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Modal para registro de Usuarios -->
+    <div class="modal fade" id="ModalRegistroUsuarios" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroUsuarios" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ModalRegistroUsuarios">Registro de Usuario...</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="txtNombre">Nombre(s)</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtApellidoP">Apellido Paterno</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtApellidoM">Apellido Materno</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM" value="" required>
+              </div>
+            </div>
+            <h6>Datos de envío...</h6>
 
-
-          <!-- Help Line -->
-          <div class="help-line">
-            <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="txtCalle">Calle</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCalle" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtNumCalle">Núm(#)</label>
+                <input type="number" class="form-control" id="txtNumCalle" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtCp">C.P.</label>
+                <input type="number" class="form-control" id="txtCp" value="" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4" "mb-3">
+                <label for="txtCiudad">Ciudad</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudad" value="" required>
+              </div>
+              <div class="col-md-4" "mb-3">
+                <label for="txtEstado">Estado</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstado" value="" required>
+              </div>
+              <div class="col-md-4" "mb-3">
+                <label for="txtCel">Celular</label>
+                <input type="number" class="form-control" id="txtCel" value="" required>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="txtNombre">Nombre(s) quien recibe</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre_Recibe" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtApellidoP">Apellido P. Quien recibe</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP_Recibe" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtApellidoM">Apellido M. Quien recibe</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM_Recibe" value="" required>
+              </div>
+            </div>
+            <br/>
+            <h6>Datos de cuenta...</h6>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="txtEmail">E-MaiL</label>
+                <input type="email" onkeyup="minus(this);" class="form-control" id="txtEmail" value="" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="txtPass">Contraseña</label>
+                <input type="password" class="form-control" id="txtPass" value="" required>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" id="btnGuardar">Registrarse</button>
           </div>
         </div>
       </div>
     </div>
+    <!-- Help Line -->
+    <div class="help-line">
+      <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
+    </div>
   </div>
+</div>
+</div>
+</div>
 </header>
 <!-- ****** Header Area End ****** -->
 
@@ -720,6 +842,127 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
   <script type="text/javascript">
 
   $(document).ready(function(){
+
+    $('#btnGuardar').click(function(){
+      nombre = $('#txtNombre').val();
+      apellidoP = $('#txtApellidoP').val();
+      apellidoM = $('#txtApellidoM').val();
+      calle = $('#txtCalle').val();
+      numCalle = $('#txtNumCalle').val();
+      cp = $('#txtCp').val();
+      ciudad = $('#txtCiudad').val();
+      estado = $('#txtEstado').val();
+      cel = $('#txtCel').val();
+      nombre_Recibe = $('#txtNombre_Recibe').val();
+      apellidoP_Recibe = $('#txtApellidoP_Recibe').val();
+      apellidoM_Recibe = $('#txtApellidoM_Recibe').val();
+      email= $('#txtEmail').val();
+
+      if(validar_email( email ) )
+      {
+      }
+      else
+      {
+        alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+        email = 1;
+      }
+      pass= $('#txtPass').val();
+
+
+      roll = 'COMUN';
+
+      if(nombre == ""){
+
+        alert("Debe ingresar un nombrel...");
+      }
+      if(apellidoP == ""){
+
+        alert("Debe ingresar un apellido paterno...");
+      }if(apellidoM == ""){
+
+        alert("Debe ingresar un apellido Materno...");
+      }
+      if(calle == ""){
+
+        alert("Debe ingresar una calle...");
+      }if(numCalle == ""){
+
+        alert("Debe ingresar un número de la hubicación...");
+      }
+      if(cp == ""){
+
+        alert("Debe ingresar un código postal...");
+      }if(ciudad == ""){
+
+        alert("Debe ingresar una ciudad...");
+      }
+      if(estado == ""){
+
+        alert("Debe ingresar un estado...");
+      }
+      if(cel == ""){
+
+        alert("Debe ingresar un número de contacto...");
+      }
+
+      if(nombre_Recibe == ""){
+
+        alert("Debe ingresar un nombre de quien recibirá el producto...");
+      }
+      if(apellidoP_Recibe == ""){
+
+        alert("Debe ingresar un apellido paterno de quien recibirá el producto...");
+      }if(apellidoM_Recibe == ""){
+
+        alert("Debe ingresar un apellido Materno de quien recibirá el producto...");
+      }
+
+      if (txtCel.value.length != 10) {
+        alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
+        txtCel.focus();
+      }
+
+      if(email == ""){
+
+        alert("Debe ingresar un E-mail...");
+      }
+      if(pass == ""){
+
+        alert("Debe ingresar una contraseña...");
+      }
+      if(roll == 0){
+
+        alert("Debe seleccionar un roll de usuario...");
+      }
+      if(nombre != "" &&
+      apellidoP != "" &&
+      apellidoM != "" &&
+      calle != "" &&
+      numCalle != "" &&
+      cp != "" &&
+      ciudad != "" &&
+      estado != "" &&
+      cel != "" &&
+      nombre_Recibe != "" &&
+      apellidoP_Recibe != "" &&
+      apellidoM_Recibe != "" &&
+      txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
+        agregarUsuarios(nombre,
+          apellidoP,
+          apellidoM,
+          calle,
+          numCalle,
+          cp,ciudad,
+          estado,
+          cel,
+          nombre_Recibe,
+          apellidoP_Recibe,
+          apellidoM_Recibe,
+          email,
+          pass,
+          roll);
+        }
+      });
 
     $("input[name=rbDelivery]").change(function () {
       precioEnvio = $('input:radio[name=rbDelivery]:checked').val();

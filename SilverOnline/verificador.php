@@ -333,11 +333,14 @@ if ($state == 'approved') {
       $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
       if (0 !== sqlsrv_num_rows($res)){
         while ($arti = sqlsrv_fetch_array($res)) {
-          ECHO $CVE_DOC = 'WEB'.$idventa;
-           echo "----";
-           echo $ID;
-           echo "----";
-           echo $fecha_php;
+          // ECHO $CVE_DOC = 'WEB'.$idventa;
+          $CVE_DOC = 'WEB'.$idventa;
+           // echo "----";
+           // echo $ID;
+           $ID;
+           // echo "----";
+           // echo $fecha_php;
+           $fecha_php;
           $PRECIO_ART = $arti['COSTO_PROM'];
           $CANTIDAD_ART = $item['cantidad'];
           $TotalxArt = $arti['COSTO_PROM'] * $item['cantidad'];
@@ -869,8 +872,8 @@ if ($state == 'approved') {
   sendEmail($pdf, $sendData);
   echo "
   <script type='text/javascript'>
-  // window.location= 'index.php?vaciar=1';
-  alert('Pago aprobado');
+  window.location= 'index.php?vaciar=1';
+  alert('El pago se aprobó de forma correcta...');
   </script>";
 }
 
@@ -892,7 +895,7 @@ function sendEmail($pdf, $sendData){
     $mail->Host       = 'smtp.gmail.com';                    //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
     $mail->Username   = 'fernando18092105@gmail.com';                     // SMTP username  gerenciageneral@evolutionsilver.com
-    $mail->Password   = '*******';                               // SMTP password
+    $mail->Password   = '**********';                               // SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
     $mail->SMTPSecure = 'tls';
     $mail->Port  = 587;                                    // TCP port to connect to

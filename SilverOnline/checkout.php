@@ -166,42 +166,51 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   <div id="wrapper">
 
     <!-- ****** Header Area Start ****** -->
-    <header class="header_area bg-img background-overlay-white" style="background-image: url(img/bg-img/bg-1.jpg);">
-      <div class="row">
-        <div class="col-md-3 error">
-          <a class="center"> <strong>Usuario:</strong> <?php
-          if (isset($_SESSION["Email"])) {
-            echo $_SESSION["Email"];
-          }else {
-            echo $invitado = 'Invitado...';
-          } ?>
-        </a>
-      </div>
-      <div class="col-md-2 error">
-        <div class="<?php
+    <div class="row">
+      <div class="col-md-4 error">
+        <a class="center"> <strong>Usuario:</strong> <?php
         if (isset($_SESSION["Email"])) {
-
-          echo $mostrar = 'inline';
+          echo $_SESSION["Email"];
         }else {
-          echo $ocultar = 'none';
-        } ?> ">
-        <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
-      </div>
-
+          echo $invitado = 'Invitado...';
+        } ?>
+      </a>
     </div>
-    <div class="col-md-2">
+    <div class="col-md-2 error">
+      <div class="<?php
+      if (isset($_SESSION["Email"])) {
 
+        echo $mostrar = 'inline';
+      }else {
+        echo $ocultar = 'none';
+      } ?> ">
+      <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
     </div>
-    <!-- <div class="col-md-1">
 
-  </div> -->
-  <div class="col-md-3 right">
+    <div class="<?php
+    if (isset($_SESSION["Email"])) {
 
+      echo $ocultar = 'none';
+    }else {
+      echo $mostrar = 'inline';
+    } ?>">
+    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
+    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</button>
   </div>
+</div>
+<div class="col-md-2">
 
-  <div class="col-md-2">
+</div>
+<!-- <div class="col-md-1">
 
-  </div>
+</div> -->
+<div class="col-md-3 right">
+
+</div>
+
+<div class="col-md-2">
+
+</div>
 </div>
 <!-- Top Header Area Start -->
 <div class="top_header_area">
@@ -250,20 +259,33 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 
             <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
               <ul class="navbar-nav animated" id="nav">
-                <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Paginas</a>
-                  <div class="dropdown-menu" aria-labelledby="karlDropdown">
-                    <a class="dropdown-item" href="index.php">Inicio</a>
-                    <a class="dropdown-item" href="shop.html">Compras</a>
-                    <a class="dropdown-item" href="product-details.html">Detalles de productos</a>
-                    <a class="dropdown-item" href="cart.html">Carrito</a>
-                    <a class="dropdown-item" href="checkout.html">Resiva</a>
-                  </div>
-                </li>
-              </ul>
-            </div>
-          </nav>
+                <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+
+                <div class="<?php
+                if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
+                  echo $category = 'inline';
+                }else {
+                  echo $category = 'none';
+                } ?>">
+
+                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalViewClientes"><span class="karl-level">Seleccione</span>Cliente</a></li>
+              </div>
+              <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categorías</a>
+                <div class="dropdown-menu" aria-labelledby="karlDropdown">
+                  <a class="dropdown-item" href="joyas-m.php">Joyería</a>
+                  <a class="dropdown-item" href="#">Bolsas</a>
+                  <a class="dropdown-item" href="#">Perfumes</a>
+                  <a class="dropdown-item" href="#">Ropa</a>
+                </div>
+              </li>
+        </ul>
+      </div>
+    </nav>
         </div>
         <!-- Help Line -->
         <div class="help-line">
@@ -408,6 +430,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 
         <ul class="order-details-form mb-4">
           <li><span>Artículos</span> <span>Total</span></li>
+          <div class="scroll-divCheckout">
           <?php
           require_once "php/Conexion.php";
           $con = conexion();
@@ -429,6 +452,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
               }
             }
           }?>
+        </div>
           <li><strong><span>Subtotal</span></strong> <strong><span>$<?php echo number_format($TotalxArtGlobal,2) ?></span></span></li>
             <li><strong><span>Envio</span></span></strong> <strong><span>$<?php
             if (isset($_COOKIE['express'])) {

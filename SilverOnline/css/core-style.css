@@ -2170,3 +2170,10 @@ overflow-x: hidden;
 width: 783px;
 
 }
+
+.scroll-divCheckout{
+height:255px;
+overflow-y: scroll;
+overflow-x: hidden;
+width: 390px;
+}

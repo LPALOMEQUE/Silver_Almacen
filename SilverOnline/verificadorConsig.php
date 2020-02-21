@@ -318,15 +318,19 @@ if (isset($_SESSION['ID_ARTICLES'])) {
     if (0 !== sqlsrv_num_rows($res)){
       while ($arti = sqlsrv_fetch_array($res)) {
 
-echo "----";
-        echo 'id_cliente:' .$id_cliente;
-        echo "----";
-          ECHO $CVE_DOC;
-          echo "----";
-         echo $ID;
-         echo "----";
-         echo $fecha_php;
-         echo "----";
+        // echo "----";
+        // echo 'id_cliente:' .$id_cliente;
+        $id_cliente;
+        // echo "----";
+        // ECHO $CVE_DOC;
+        $CVE_DOC;
+        // echo "----";
+        // echo $ID;
+        $ID;
+        // echo "----";
+        // echo $fecha_php;
+        $fecha_php;
+        // echo "----";
         $SUPER_PRECIO_ART = $arti['COSTO_PROM'];
         $PRECIO_ART = $arti['COSTO_PROM']*3;
         $CANTIDAD_ART = $item['cantidad'];
@@ -672,7 +676,7 @@ echo "----";
 
   // paso 8
 
-    $sql10 = "INSERT INTO CUEN_M" .$BD. "
+  $sql10 = "INSERT INTO CUEN_M" .$BD. "
   (CVE_CLIE,
   REFER,
   NUM_CPTO,
@@ -748,16 +752,12 @@ echo "----";
 
 }
 
-
-
 sendEmail($pdf, $sendData);
 echo "
 <script type='text/javascript'>
-// window.location= 'index.php?vaciar=1';
-alert('Pago aprobado');
+window.location= 'index.php?vaciar=1';
+alert('La consigan se genero de forma correcta...');
 </script>";
-
-
 
 
 function sendEmail($pdf, $sendData){
@@ -771,7 +771,7 @@ function sendEmail($pdf, $sendData){
     $mail->Host       = 'smtp.gmail.com';                    //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
     $mail->Username   = 'fernando18092105@gmail.com';                     // SMTP username  gerenciageneral@evolutionsilver.com
-    $mail->Password   = '******';                              // SMTP password
+    $mail->Password   = '**********';                              // SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
     $mail->SMTPSecure = 'tls';
     $mail->Port  = 587;                                    // TCP port to connect to
