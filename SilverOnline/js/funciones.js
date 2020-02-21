@@ -241,7 +241,7 @@ function AddCart(id, cantidad){
     data:cadena,
     success:function(result){
 
-      $('#quickview' + id ).hide();
+      // $('#quickview' + id ).hide();
       location.reload();
 
     }

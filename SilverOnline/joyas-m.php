@@ -247,7 +247,18 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               <div class="header-cart-menu d-flex align-items-center ml-auto">
                 <!-- Cart Area -->
                 <div class="cart">
-                  <a href="cart.php"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i><strong> Carrito:</strong>  $<?php echo number_format($TotalxArtGlobal,2) ?></a>
+                  <a href="cart.php"><span class="cart_quantity"> <?php
+
+                  if(isset($_SESSION['ID_ARTICLES'])){
+
+                    $bagNumber = count($_SESSION['ID_ARTICLES']);
+
+                  }
+                  else{
+                    $bagNumber=0;
+                  }
+
+                   echo $bagNumber ?> </span> <i class="ti-bag"></i><strong> Carrito:</strong>  $<?php echo number_format($TotalxArtGlobal,2) ?></a>
                   <!-- Cart List Area Start -->
                 </div>
                 <div class="header-right-side-menu ml-15">
@@ -611,18 +622,6 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                         <input type="password" class="form-control" id="txtPass" value="" required>
                       </div>
                     </div>
-                    <!-- <div class="row">
-                    <div class="col-md-12 mb-3">
-                    <label id="lbRoll" for="cbmRoll">Roll</label>
-                    <select id="cbmRoll"  class="form-control" name="state">
-                    <option value="0">Selecciona...</option>
-                    ...
-                    <option value="ADMIN">ADMINISTRADOR</option>
-                    ...
-                    <option value="COMUN">COMÚN</option>form-control
-                  </select>
-                </div>
-              </div> -->
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

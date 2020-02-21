@@ -11,23 +11,11 @@ $cantidad = 0;
 $key = 1;
 $BD = '01';
 
-$filtroName = '*/+';
-
-
-
-
-
-
 
 if(isset($_POST['NOMBREC_Consigna'])){
 
   $_SESSION['BUS_CLIENTE'] = $_POST['NOMBREC_Consigna'];
 }
-
-
-
-
-
 
 if (isset($_POST['ID_CLIENTEPost'])) {
   $_SESSION['ID_CLIENTE'] = $_POST['ID_CLIENTEPost'];
@@ -45,17 +33,18 @@ if(isset($_SESSION['status'])){
 }
 
 if (isset($_SESSION['ID_ARTICLES'])) {
-  $bagNumber = count($_SESSION['ID_ARTICLES']);
+  // $bagNumber = count($_SESSION['ID_ARTICLES']);
   $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
 }
 
-if(isset($_GET['vaciar'])) {
+if (isset($_GET['vaciar']) && $_GET['vaciar'] == 2 ) {
   unset($_SESSION['ID_ARTICLES']);
   unset($_COOKIE['express']);
-  echo "
-  <script type='text/javascript'>
-  window.location= 'index.php';
-  </script>";
+}
+
+if (isset($_GET['vaciar']) && $_GET['vaciar'] == 3 ) {
+  unset($_SESSION['ID_ARTICLES']);
+  unset($_COOKIE['express']);
 }
 
 if (isset($_POST['VACIAR_LOGIN'])) {
@@ -257,7 +246,17 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
             <div class="header-cart-menu d-flex align-items-center ml-auto">
               <!-- Cart Area -->
               <div class="cart">
-                <a href="cart.php"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i><strong> Carrito:</strong>  $<?php echo number_format($TotalxArtGlobal,2) ?></a>
+                <a href="cart.php"><span class="cart_quantity"> <?php
+                if(isset($_SESSION['ID_ARTICLES'])){
+
+                  $bagNumber = count($_SESSION['ID_ARTICLES']);
+
+                }
+                else{
+                  $bagNumber=0;
+                }
+
+                echo $bagNumber ?> </span> <i class="ti-bag"></i><strong> Carrito:</strong>  $<?php echo number_format($TotalxArtGlobal,2) ?></a>
                 <!-- Cart List Area Start -->
                 <!-- <ul class="cart-list">
 
@@ -394,6 +393,59 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
     </nav>
   </div>
 
+  <!-- Modal para View Status -->
+  <div class="modal fade" id="ModalViewStatus" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatus" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalViewStatus">Mensaje del sistema...</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <br/>
+          <!-- <br/> -->
+          <!-- <br/> -->
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <h6><strong>Su pedido fue generado de forma correcta...</strong></h6>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para View Status remision -->
+  <div class="modal fade" id="ModalViewStatusRemision" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatusRemision" aria-hidden="true">
+    <div class="modal-dialog modal-smd" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalViewStatusRemision">Mensaje del sistema...</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <br/>
+          <!-- <br/> -->
+          <!-- <br/> -->
+          <div class="row">
+            <div class="col-md-12 mb-3">
+              <h5><strong>El pago se aprobó de forma correcta...</strong></h5>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Modal para View Clientes -->
   <div class="modal fade" id="ModalViewClientes" tabindex="-1" role="dialog" aria-labelledby="ModalViewClientes" aria-hidden="true">
@@ -1102,12 +1154,25 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
 
 $(document).ready(function(){
 
-  <?php if(isset($_SESSION['status']) && $_SESSION['status'] == 'ADMIN'){ ?>
+  <?php if(isset($_SESSION['status']) && $_SESSION['status'] == 'ADMIN' && !isset($_SESSION['BUS_CLIENTE'])){ ?>
 
     $('#ModalViewClientes').modal('toggle');
 
+    <?php } ?>
+
+    <?php if($_GET['vaciar'] == 2) {
+
+    ?>
+      $('#ModalViewStatus').modal('toggle');
+    <?php
+    }
+    elseif($_GET['vaciar'] == 3){
+    ?>
+    $('#ModalViewStatusRemision').modal('toggle');
 
     <?php } ?>
+
+
 
     var validaImg =0;
     var nameArticulo ="";
