@@ -331,7 +331,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
           <div class="top_single_area d-flex align-items-center">
             <!-- Logo Area -->
             <div class="top_logo">
-              <a href="#"><img src="img/core-img/logo_Silver.png" alt=""></a>
+              <a href="#"><img src="img/core-img/logo_silv.png" alt=""></a>
             </div>
             <!-- Cart & Menu Area -->
             <div class="header-cart-menu d-flex align-items-center ml-auto">
@@ -767,7 +767,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
           <div class="col-12 col-md-6 col-lg-3">
             <div class="single_footer_area">
               <div class="footer-logo">
-                <img src="img/core-img/logo.png" alt="">
+                <img src="img/core-img/logo_silv.png" alt="">
               </div>
               <div class="copywrite_text d-flex align-items-center">
                 <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
