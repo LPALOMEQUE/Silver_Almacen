@@ -258,7 +258,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                     $bagNumber=0;
                   }
 
-                   echo $bagNumber ?> </span> <i class="ti-bag"></i><strong> Carrito:</strong>  $<?php echo number_format($TotalxArtGlobal,2) ?></a>
+                  echo $bagNumber ?> </span> <i class="ti-bag"></i><strong> Carrito:</strong>  $<?php echo number_format($TotalxArtGlobal,2) ?></a>
                   <!-- Cart List Area Start -->
                 </div>
                 <div class="header-right-side-menu ml-15">
@@ -330,312 +330,312 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
             </ul>
           </div>
         </nav>
+      </div>
+      <!-- Modal para inicio de sesion -->
+      <div class="modal fade" id="ModalLogin" tabindex="-1" role="dialog" aria-labelledby="ModalLogin" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="ModalLogin">Inicio de sesión...</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             </div>
-            <!-- Modal para inicio de sesion -->
-            <div class="modal fade" id="ModalLogin" tabindex="-1" role="dialog" aria-labelledby="ModalLogin" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="ModalLogin">Inicio de sesión...</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
+            <div class="modal-body">
 
-                    <div class="row">
-                      <div class="col-md-12 mb-3">
-                        <label for="txtEmail">E-MaiL</label>
-                        <input type="email" class="form-control" id="txt_Email" value="" required>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12 mb-3">
-                        <label for="txtPass">Contraseña</label>
-                        <input type="password" class="form-control" id="txt_Pass" value="" required>
-                      </div>
-                    </div>
-
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="btnEntrar">Entrar</button>
-                  </div>
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <label for="txtEmail">E-MaiL</label>
+                  <input type="email" class="form-control" id="txt_Email" value="" required>
                 </div>
               </div>
-            </div>
-
-            <!-- Modal para View Clientes -->
-            <div class="modal fade" id="ModalViewClientes" tabindex="-1" role="dialog" aria-labelledby="ModalViewClientes" aria-hidden="true">
-              <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="ModalViewClientes">Clientes Registrados...</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row">
-                      <div class="col-md-5">
-                      </div>
-                      <div class="col-md-5">
-                        <input type="text" name="txtBusc" id="txtBus" value="" class="form-control" placeholder="Nombre del cliente">
-                      </div>
-                      <div class="col-md-2">
-                        <button type="button" class="btn btn-warning" id="btnBus" name="button">Buscar</button>
-                      </div>
-                    </div>
-                    <br/>
-                    <br/>
-                    <div class="<?php
-                    if ($_SESSION["status"] == 'ADMIN' && isset($_SESSION["BUS_CLIENTE"])) {
-                      echo 'inline';
-                    }else {
-                      echo 'none';
-                    } ?>">
-                    <div class="row">
-                      <div class="col-md-5 mb-3">
-                        <p id=""><strong>Cliente:</strong></p>
-                      </div>
-                      <div class="col-md-5 mb-3">
-                        <p><strong>E-MAIL:</strong></p>
-                      </div>
-                      <div class="col-md-1 mb-3">
-                      </div>
-                    </div>
-                  </div>
-                  <div class="scroll-div">
-                    <?php
-                    if ($_SESSION['status'] == 'ADMIN') {
-
-                      if(isset($_SESSION['BUS_CLIENTE'])){
-
-                        require_once "php/Conexion.php";
-                        $con = conexion();
-                        $ID = $_SESSION['ID_USER'];
-                        $sql = "SELECT
-                        CLAVE,
-                        rtrim(ltrim(CLAVE)) AS CLAVE2,
-                        CRUZAMIENTOS_ENVIO AS CORREO,
-                        NOMBRE
-                        FROM CLIE" .$BD. "
-                        WHERE CVE_VEND='$ID' AND NOMBRE LIKE '%".$_SESSION['BUS_CLIENTE']."%'";
-
-                        $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
-                        if (0 !== sqlsrv_num_rows($res)){
-                          while ($user = sqlsrv_fetch_array($res)) {
-                            ?>
-                            <div class="row">
-                              <div class="col-md-5 mb-3">
-                                <p><?php echo $user['NOMBRE'] ?></p>
-                              </div>
-
-                              <div class="col-md-5 mb-3">
-                                <p><?php echo $user['CORREO'] ?></p>
-                              </div>
-                              <div class="col-md-1 mb-3">
-                                <button type="button" class="btn btn-success" id="btnGetClient<?php echo $user['CLAVE2'] ?>"></button>
-                              </div>
-                              <input type="hidden" name="clave" value="<?php echo $user['CLAVE'] ?>" id="txtClave<?php echo $user['CLAVE2'] ?>" >
-                            </div>
-                            <script type="text/javascript">
-                            $(document).ready(function(){
-
-                              $('#btnGetClient<?php echo $user['CLAVE2'] ?>').click(function(){
-                                debugger;
-                                id_cliente = $('#txtClave<?php echo $user['CLAVE2'] ?>').val();
-                                getCliente(id_cliente);
-                              });
-                            });
-                            </script>
-                            <?php
-                          }
-                        }
-                        sqlsrv_close($con);
-                      }
-                    }
-                    ?>
-                  </div>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                  <!-- <button type="button" class="btn btn-primary" id="btnGuardarC">Registrarse</button> -->
+              <div class="row">
+                <div class="col-md-12 mb-3">
+                  <label for="txtPass">Contraseña</label>
+                  <input type="password" class="form-control" id="txt_Pass" value="" required>
                 </div>
               </div>
-            </div>
-            </div>
 
-            <!-- Modal para registro de Clientes -->
-            <div class="modal fade" id="ModalRegistroCliente" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroCliente" aria-hidden="true">
-              <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="ModalRegistroCliente">Registro de Cliente</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row">
-                      <div class="col-md-4 mb-3">
-                        <label for="txtNombreC">Nombre(s)</label>
-                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombreC" value="" required>
-                      </div>
-                      <div class="col-md-4 mb-3">
-                        <label for="txtApellidoPC">Apellido Paterno</label>
-                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoPC" value="" required>
-                      </div>
-                      <div class="col-md-4 mb-3">
-                        <label for="txtApellidoMC">Apellido Materno</label>
-                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoMC" value="" required>
-                      </div>
-                    </div>
-                    <h6>Datos de dirección...</h6>
-
-                    <div class="row">
-                      <div class="col-md-4 mb-3">
-                        <label for="txtCalleC">Calle</label>
-                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCalleC" value="" required>
-                      </div>
-                      <div class="col-md-4 mb-3">
-                        <label for="txtNumCalleC">Núm(#)</label>
-                        <input type="number" class="form-control" id="txtNumCalleC" value="" required>
-                      </div>
-                      <div class="col-md-4 mb-3">
-                        <label for="txtCpC">C.P.</label>
-                        <input type="number" class="form-control" id="txtCpC" value="" required>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-4" "mb-3">
-                        <label for="txtCiudadC">Ciudad</label>
-                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudadC" value="" required>
-                      </div>
-                      <div class="col-md-4" "mb-3">
-                        <label for="txtEstadoC">Estado</label>
-                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstadoC" value="" required>
-                      </div>
-                      <div class="col-md-4" "mb-3">
-                        <label for="txtCelC">Celular</label>
-                        <input type="number" class="form-control" id="txtCelC" value="" required>
-                      </div>
-                    </div>
-                    <br/>
-                    <br/>
-                    <h6>Datos de cuenta...</h6>
-                    <div class="row">
-                      <div class="col-md-12 mb-12">
-                        <label for="txtEmailC">E-MaiL</label>
-                        <input type="email" onkeyup="minus(this);" class="form-control" id="txtEmailC" value="" required>
-                      </div>
-
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary" id="btnGuardarC">Registrarse</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Modal para registro de Usuarios -->
-            <div class="modal fade" id="ModalRegistroUsuarios" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroUsuarios" aria-hidden="true">
-              <div class="modal-dialog modal-lg" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="ModalRegistroUsuarios">Registro de Usuario...</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <div class="row">
-                      <div class="col-md-4 mb-3">
-                        <label for="txtNombre">Nombre(s)</label>
-                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre" value="" required>
-                      </div>
-                      <div class="col-md-4 mb-3">
-                        <label for="txtApellidoP">Apellido Paterno</label>
-                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP" value="" required>
-                      </div>
-                      <div class="col-md-4 mb-3">
-                        <label for="txtApellidoM">Apellido Materno</label>
-                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM" value="" required>
-                      </div>
-                    </div>
-                    <h6>Datos de envío...</h6>
-
-                    <div class="row">
-                      <div class="col-md-4 mb-3">
-                        <label for="txtCalle">Calle</label>
-                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCalle" value="" required>
-                      </div>
-                      <div class="col-md-4 mb-3">
-                        <label for="txtNumCalle">Núm(#)</label>
-                        <input type="number" class="form-control" id="txtNumCalle" value="" required>
-                      </div>
-                      <div class="col-md-4 mb-3">
-                        <label for="txtCp">C.P.</label>
-                        <input type="number" class="form-control" id="txtCp" value="" required>
-                      </div>
-                    </div>
-                    <div class="row">
-                      <div class="col-md-4" "mb-3">
-                        <label for="txtCiudad">Ciudad</label>
-                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudad" value="" required>
-                      </div>
-                      <div class="col-md-4" "mb-3">
-                        <label for="txtEstado">Estado</label>
-                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstado" value="" required>
-                      </div>
-                      <div class="col-md-4" "mb-3">
-                        <label for="txtCel">Celular</label>
-                        <input type="number" class="form-control" id="txtCel" value="" required>
-                      </div>
-                    </div>
-                    <br/>
-                    <div class="row">
-                      <div class="col-md-4 mb-3">
-                        <label for="txtNombre">Nombre(s) quien recibe</label>
-                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre_Recibe" value="" required>
-                      </div>
-                      <div class="col-md-4 mb-3">
-                        <label for="txtApellidoP">Apellido P. Quien recibe</label>
-                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP_Recibe" value="" required>
-                      </div>
-                      <div class="col-md-4 mb-3">
-                        <label for="txtApellidoM">Apellido M. Quien recibe</label>
-                        <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM_Recibe" value="" required>
-                      </div>
-                    </div>
-                    <br/>
-                    <h6>Datos de cuenta...</h6>
-                    <div class="row">
-                      <div class="col-md-6 mb-3">
-                        <label for="txtEmail">E-MaiL</label>
-                        <input type="email" onkeyup="minus(this);" class="form-control" id="txtEmail" value="" required>
-                      </div>
-                      <div class="col-md-6 mb-3">
-                        <label for="txtPass">Contraseña</label>
-                        <input type="password" class="form-control" id="txtPass" value="" required>
-                      </div>
-                    </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-              <button type="button" class="btn btn-primary" id="btnGuardar">Registrarse</button>
+              <button type="button" class="btn btn-primary" id="btnEntrar">Entrar</button>
             </div>
           </div>
         </div>
       </div>
-      <!-- Help Line -->
-      <div class="help-line">
-        <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
+
+      <!-- Modal para View Clientes -->
+      <div class="modal fade" id="ModalViewClientes" tabindex="-1" role="dialog" aria-labelledby="ModalViewClientes" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="ModalViewClientes">Clientes Registrados...</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-md-5">
+                </div>
+                <div class="col-md-5">
+                  <input type="text" name="txtBusc" id="txtBus" value="" class="form-control" placeholder="Nombre del cliente">
+                </div>
+                <div class="col-md-2">
+                  <button type="button" class="btn btn-warning" id="btnBus" name="button">Buscar</button>
+                </div>
+              </div>
+              <br/>
+              <br/>
+              <div class="<?php
+              if ($_SESSION["status"] == 'ADMIN' && isset($_SESSION["BUS_CLIENTE"])) {
+                echo 'inline';
+              }else {
+                echo 'none';
+              } ?>">
+              <div class="row">
+                <div class="col-md-5 mb-3">
+                  <p id=""><strong>Cliente:</strong></p>
+                </div>
+                <div class="col-md-5 mb-3">
+                  <p><strong>E-MAIL:</strong></p>
+                </div>
+                <div class="col-md-1 mb-3">
+                </div>
+              </div>
+            </div>
+            <div class="scroll-div">
+              <?php
+              if ($_SESSION['status'] == 'ADMIN') {
+
+                if(isset($_SESSION['BUS_CLIENTE'])){
+
+                  require_once "php/Conexion.php";
+                  $con = conexion();
+                  $ID = $_SESSION['ID_USER'];
+                  $sql = "SELECT
+                  CLAVE,
+                  rtrim(ltrim(CLAVE)) AS CLAVE2,
+                  CRUZAMIENTOS_ENVIO AS CORREO,
+                  NOMBRE
+                  FROM CLIE" .$BD. "
+                  WHERE CVE_VEND='$ID' AND NOMBRE LIKE '%".$_SESSION['BUS_CLIENTE']."%'";
+
+                  $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+                  if (0 !== sqlsrv_num_rows($res)){
+                    while ($user = sqlsrv_fetch_array($res)) {
+                      ?>
+                      <div class="row">
+                        <div class="col-md-5 mb-3">
+                          <p><?php echo $user['NOMBRE'] ?></p>
+                        </div>
+
+                        <div class="col-md-5 mb-3">
+                          <p><?php echo $user['CORREO'] ?></p>
+                        </div>
+                        <div class="col-md-1 mb-3">
+                          <button type="button" class="btn btn-success" id="btnGetClient<?php echo $user['CLAVE2'] ?>"></button>
+                        </div>
+                        <input type="hidden" name="clave" value="<?php echo $user['CLAVE'] ?>" id="txtClave<?php echo $user['CLAVE2'] ?>" >
+                      </div>
+                      <script type="text/javascript">
+                      $(document).ready(function(){
+
+                        $('#btnGetClient<?php echo $user['CLAVE2'] ?>').click(function(){
+                          debugger;
+                          id_cliente = $('#txtClave<?php echo $user['CLAVE2'] ?>').val();
+                          getCliente(id_cliente);
+                        });
+                      });
+                      </script>
+                      <?php
+                    }
+                  }
+                  sqlsrv_close($con);
+                }
+              }
+              ?>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <!-- <button type="button" class="btn btn-primary" id="btnGuardarC">Registrarse</button> -->
+          </div>
+        </div>
       </div>
     </div>
+
+    <!-- Modal para registro de Clientes -->
+    <div class="modal fade" id="ModalRegistroCliente" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroCliente" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ModalRegistroCliente">Registro de Cliente</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="txtNombreC">Nombre(s)</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombreC" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtApellidoPC">Apellido Paterno</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoPC" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtApellidoMC">Apellido Materno</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoMC" value="" required>
+              </div>
+            </div>
+            <h6>Datos de dirección...</h6>
+
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="txtCalleC">Calle</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCalleC" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtNumCalleC">Núm(#)</label>
+                <input type="number" class="form-control" id="txtNumCalleC" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtCpC">C.P.</label>
+                <input type="number" class="form-control" id="txtCpC" value="" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4" "mb-3">
+                <label for="txtCiudadC">Ciudad</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudadC" value="" required>
+              </div>
+              <div class="col-md-4" "mb-3">
+                <label for="txtEstadoC">Estado</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstadoC" value="" required>
+              </div>
+              <div class="col-md-4" "mb-3">
+                <label for="txtCelC">Celular</label>
+                <input type="number" class="form-control" id="txtCelC" value="" required>
+              </div>
+            </div>
+            <br/>
+            <br/>
+            <h6>Datos de cuenta...</h6>
+            <div class="row">
+              <div class="col-md-12 mb-12">
+                <label for="txtEmailC">E-MaiL</label>
+                <input type="email" onkeyup="minus(this);" class="form-control" id="txtEmailC" value="" required>
+              </div>
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" id="btnGuardarC">Registrarse</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para registro de Usuarios -->
+    <div class="modal fade" id="ModalRegistroUsuarios" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroUsuarios" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ModalRegistroUsuarios">Registro de Usuario...</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="txtNombre">Nombre(s)</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtApellidoP">Apellido Paterno</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtApellidoM">Apellido Materno</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM" value="" required>
+              </div>
+            </div>
+            <h6>Datos de envío...</h6>
+
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="txtCalle">Calle</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCalle" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtNumCalle">Núm(#)</label>
+                <input type="number" class="form-control" id="txtNumCalle" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtCp">C.P.</label>
+                <input type="number" class="form-control" id="txtCp" value="" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4" "mb-3">
+                <label for="txtCiudad">Ciudad</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudad" value="" required>
+              </div>
+              <div class="col-md-4" "mb-3">
+                <label for="txtEstado">Estado</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstado" value="" required>
+              </div>
+              <div class="col-md-4" "mb-3">
+                <label for="txtCel">Celular</label>
+                <input type="number" class="form-control" id="txtCel" value="" required>
+              </div>
+            </div>
+            <br/>
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="txtNombre">Nombre(s) quien recibe</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre_Recibe" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtApellidoP">Apellido P. Quien recibe</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP_Recibe" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtApellidoM">Apellido M. Quien recibe</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM_Recibe" value="" required>
+              </div>
+            </div>
+            <br/>
+            <h6>Datos de cuenta...</h6>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="txtEmail">E-MaiL</label>
+                <input type="email" onkeyup="minus(this);" class="form-control" id="txtEmail" value="" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="txtPass">Contraseña</label>
+                <input type="password" class="form-control" id="txtPass" value="" required>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" id="btnGuardar">Registrarse</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Help Line -->
+    <div class="help-line">
+      <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
+    </div>
   </div>
+</div>
 </div>
 </div>
 </header>
@@ -1217,6 +1217,17 @@ if (0 !== sqlsrv_num_rows($res)){
       <!-- Single Footer Area Start -->
       <div class="col-12 col-md-6 col-lg-3">
         <div class="single_footer_area">
+
+        </div>
+      </div>
+      <!-- Single Footer Area Start -->
+      <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+        <div class="single_footer_area">
+        </div>
+      </div>
+      <!-- Single Footer Area Start -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="single_footer_area">
           <div class="footer-logo">
             <img src="img/core-img/logo.png" alt="">
           </div>
@@ -1228,40 +1239,8 @@ if (0 !== sqlsrv_num_rows($res)){
           </div>
         </div>
         <!-- Single Footer Area Start -->
-        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-          <div class="single_footer_area">
-            <ul class="footer_widget_menu">
-              <li><a href="#">About</a></li>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Faq</a></li>
-              <li><a href="#">Returns</a></li>
-              <li><a href="#">Contact</a></li>
-            </ul>
-          </div>
-        </div>
-        <!-- Single Footer Area Start -->
-        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-          <div class="single_footer_area">
-            <ul class="footer_widget_menu">
-              <li><a href="#">My Account</a></li>
-              <li><a href="#">Shipping</a></li>
-              <li><a href="#">Our Policies</a></li>
-              <li><a href="#">Afiliates</a></li>
-            </ul>
-          </div>
-        </div>
-        <!-- Single Footer Area Start -->
         <div class="col-12 col-lg-5">
           <div class="single_footer_area">
-            <div class="footer_heading mb-30">
-              <h6>Subscribe to our newsletter</h6>
-            </div>
-            <div class="subscribtion_form">
-              <form action="#" method="post">
-                <input type="email" name="mail" class="mail" placeholder="Your email here">
-                <button type="submit" class="submit">Subscribe</button>
-              </form>
-            </div>
           </div>
         </div>
       </div>
@@ -1438,284 +1417,284 @@ $(document).ready(function(){
       }
     });
 
-  $('#btnGuardar').click(function(){
-    nombre = $('#txtNombre').val();
-    apellidoP = $('#txtApellidoP').val();
-    apellidoM = $('#txtApellidoM').val();
-    calle = $('#txtCalle').val();
-    numCalle = $('#txtNumCalle').val();
-    cp = $('#txtCp').val();
-    ciudad = $('#txtCiudad').val();
-    estado = $('#txtEstado').val();
-    cel = $('#txtCel').val();
-    nombre_Recibe = $('#txtNombre_Recibe').val();
-    apellidoP_Recibe = $('#txtApellidoP_Recibe').val();
-    apellidoM_Recibe = $('#txtApellidoM_Recibe').val();
-    email= $('#txtEmail').val();
+    $('#btnGuardar').click(function(){
+      nombre = $('#txtNombre').val();
+      apellidoP = $('#txtApellidoP').val();
+      apellidoM = $('#txtApellidoM').val();
+      calle = $('#txtCalle').val();
+      numCalle = $('#txtNumCalle').val();
+      cp = $('#txtCp').val();
+      ciudad = $('#txtCiudad').val();
+      estado = $('#txtEstado').val();
+      cel = $('#txtCel').val();
+      nombre_Recibe = $('#txtNombre_Recibe').val();
+      apellidoP_Recibe = $('#txtApellidoP_Recibe').val();
+      apellidoM_Recibe = $('#txtApellidoM_Recibe').val();
+      email= $('#txtEmail').val();
 
-    if(validar_email( email ) )
-    {
-    }
-    else
-    {
-      alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
-      email = 1;
-    }
-    pass= $('#txtPass').val();
-
-    <?php
-    if (isset($_SESSION["status"])) {
-      if($_SESSION["status"] == 'ADMIN'){
-        ?>
-        roll = 'ADMIN';
-        <?php
+      if(validar_email( email ) )
+      {
       }
+      else
+      {
+        alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+        email = 1;
+      }
+      pass= $('#txtPass').val();
 
+      <?php
+      if (isset($_SESSION["status"])) {
+        if($_SESSION["status"] == 'ADMIN'){
+          ?>
+          roll = 'ADMIN';
+          <?php
+        }
+
+        else {
+          ?>
+
+          roll = 'COMUN';
+          <?php
+        }
+      }
       else {
         ?>
-
         roll = 'COMUN';
-        <?php
-      }
-    }
-    else {
-      ?>
-      roll = 'COMUN';
 
-      <?php } ?>
+        <?php } ?>
 
-      if(nombre == ""){
+        if(nombre == ""){
 
-        alert("Debe ingresar un nombrel...");
-      }
-      if(apellidoP == ""){
-
-        alert("Debe ingresar un apellido paterno...");
-      }if(apellidoM == ""){
-
-        alert("Debe ingresar un apellido Materno...");
-      }
-      if(calle == ""){
-
-        alert("Debe ingresar una calle...");
-      }if(numCalle == ""){
-
-        alert("Debe ingresar un número de la hubicación...");
-      }
-      if(cp == ""){
-
-        alert("Debe ingresar un código postal...");
-      }if(ciudad == ""){
-
-        alert("Debe ingresar una ciudad...");
-      }
-      if(estado == ""){
-
-        alert("Debe ingresar un estado...");
-      }
-      if(cel == ""){
-
-        alert("Debe ingresar un número de contacto...");
-      }
-
-      if(nombre_Recibe == ""){
-
-        alert("Debe ingresar un nombre de quien recibirá el producto...");
-      }
-      if(apellidoP_Recibe == ""){
-
-        alert("Debe ingresar un apellido paterno de quien recibirá el producto...");
-      }if(apellidoM_Recibe == ""){
-
-        alert("Debe ingresar un apellido Materno de quien recibirá el producto...");
-      }
-
-      if (txtCel.value.length != 10) {
-        alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
-        txtCel.focus();
-      }
-
-      if(email == ""){
-
-        alert("Debe ingresar un E-mail...");
-      }
-      if(pass == ""){
-
-        alert("Debe ingresar una contraseña...");
-      }
-      if(roll == 0){
-
-        alert("Debe seleccionar un roll de usuario...");
-      }
-      if(nombre != "" &&
-      apellidoP != "" &&
-      apellidoM != "" &&
-      calle != "" &&
-      numCalle != "" &&
-      cp != "" &&
-      ciudad != "" &&
-      estado != "" &&
-      cel != "" &&
-      nombre_Recibe != "" &&
-      apellidoP_Recibe != "" &&
-      apellidoM_Recibe != "" &&
-      txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
-        agregarUsuarios(nombre,
-          apellidoP,
-          apellidoM,
-          calle,
-          numCalle,
-          cp,ciudad,
-          estado,
-          cel,
-          nombre_Recibe,
-          apellidoP_Recibe,
-          apellidoM_Recibe,
-          email,
-          pass,
-          roll);
+          alert("Debe ingresar un nombrel...");
         }
+        if(apellidoP == ""){
+
+          alert("Debe ingresar un apellido paterno...");
+        }if(apellidoM == ""){
+
+          alert("Debe ingresar un apellido Materno...");
+        }
+        if(calle == ""){
+
+          alert("Debe ingresar una calle...");
+        }if(numCalle == ""){
+
+          alert("Debe ingresar un número de la hubicación...");
+        }
+        if(cp == ""){
+
+          alert("Debe ingresar un código postal...");
+        }if(ciudad == ""){
+
+          alert("Debe ingresar una ciudad...");
+        }
+        if(estado == ""){
+
+          alert("Debe ingresar un estado...");
+        }
+        if(cel == ""){
+
+          alert("Debe ingresar un número de contacto...");
+        }
+
+        if(nombre_Recibe == ""){
+
+          alert("Debe ingresar un nombre de quien recibirá el producto...");
+        }
+        if(apellidoP_Recibe == ""){
+
+          alert("Debe ingresar un apellido paterno de quien recibirá el producto...");
+        }if(apellidoM_Recibe == ""){
+
+          alert("Debe ingresar un apellido Materno de quien recibirá el producto...");
+        }
+
+        if (txtCel.value.length != 10) {
+          alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
+          txtCel.focus();
+        }
+
+        if(email == ""){
+
+          alert("Debe ingresar un E-mail...");
+        }
+        if(pass == ""){
+
+          alert("Debe ingresar una contraseña...");
+        }
+        if(roll == 0){
+
+          alert("Debe seleccionar un roll de usuario...");
+        }
+        if(nombre != "" &&
+        apellidoP != "" &&
+        apellidoM != "" &&
+        calle != "" &&
+        numCalle != "" &&
+        cp != "" &&
+        ciudad != "" &&
+        estado != "" &&
+        cel != "" &&
+        nombre_Recibe != "" &&
+        apellidoP_Recibe != "" &&
+        apellidoM_Recibe != "" &&
+        txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
+          agregarUsuarios(nombre,
+            apellidoP,
+            apellidoM,
+            calle,
+            numCalle,
+            cp,ciudad,
+            estado,
+            cel,
+            nombre_Recibe,
+            apellidoP_Recibe,
+            apellidoM_Recibe,
+            email,
+            pass,
+            roll);
+          }
+        });
+
+        $('#btnBusPrecio').click(function(){
+          query=0;
+          minval = parseInt($('#minVal').val());
+          maxval = parseInt($('#maxVal').val());
+          material = 1;
+          accesorio = 1;
+          if (minval != 0 && maxval != 0) {
+            query = 2;
+          }
+          if (minval > maxval) {
+            alert('El monto mínimo no puede ser mayor que el monto máximo.')
+          }
+          if (minval < maxval && maxval > minval ) {
+            filtrosMujer(minval,maxval,material,accesorio,query);
+          }
+        });
+
+        $('#btnLimpiarPriceFilter').click(function(){
+          vaciar=1;
+          limpiarPriceFilterM(vaciar);
+        });
+
+        $('#btnBusMaterial').click(function(){
+          minval = 0;
+          maxval = 100000;
+          material = $("#cbmMaterial option:selected").val();
+          accesorio = 1;
+          query = 0;
+
+          if(material == 0){
+            alert("Debe seleccionar un material...");
+          }else{
+            query = 2;
+            filtrosMujer(minval,maxval,material,accesorio,query);
+          }
+        });
+
+        $('#btnBusAcs').click(function(){
+          query = 0;
+
+          minval = 0;
+          maxval = 100000;
+          material = 1;
+          accesorio = $('#cbmAccesorio option:selected').val();
+          if(accesorio == 0){
+            alert("Debe seleccionar un accesorio...");
+          }else{
+            query = 2;
+            filtrosMujer(minval,maxval,material,accesorio,query);
+          }
+
+        });
+
+        // Enter de inicio de sesion
+        var input = document.getElementById("txt_Pass");
+        input.addEventListener("keyup", function(event) {
+          // Number 13 is the "Enter" key on the keyboard
+          if (event.keyCode === 13) {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("btnEntrar").click();
+          }
+        });
+
+        $('#btnBus').click(function(){
+
+          nombreCliente = $('#txtBus').val();
+
+          if(nombreCliente == ""){
+            alert("Debe ingresar un nombre o apellido...");
+          }
+          if(nombreCliente != "" ){
+            busClienteConsigna(nombreCliente);
+          }
+        });
+
+        // Enter buscador
+        var txtBus = document.getElementById("txtBus");
+        txtBus.addEventListener("keyup", function(event) {
+          // Number 13 is the "Enter" key on the keyboard
+          if (event.keyCode === 13) {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("btnBus").click();
+          }
+        });
+
+        // Enter guardar clientes Consigna
+        var txtEmailC = document.getElementById("txtEmailC");
+        txtEmailC.addEventListener("keyup", function(event) {
+          // Number 13 is the "Enter" key on the keyboard
+          if (event.keyCode === 13) {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("btnGuardarC").click();
+          }
+        });
+
+        // Enter guardar clientes
+        var txtEmail = document.getElementById("txtEmail");
+        txtEmail.addEventListener("keyup", function(event) {
+          // Number 13 is the "Enter" key on the keyboard
+          if (event.keyCode === 13) {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("btnGuardar").click();
+          }
+        });
+
       });
 
-      $('#btnBusPrecio').click(function(){
-        query=0;
-        minval = parseInt($('#minVal').val());
-        maxval = parseInt($('#maxVal').val());
-        material = 1;
-        accesorio = 1;
-        if (minval != 0 && maxval != 0) {
-          query = 2;
-        }
-        if (minval > maxval) {
-          alert('El monto mínimo no puede ser mayor que el monto máximo.')
-        }
-        if (minval < maxval && maxval > minval ) {
-          filtrosMujer(minval,maxval,material,accesorio,query);
-        }
-      });
+      function mayus(e) {
+        e.value = e.value.toUpperCase();
+      }
+      function minus(e) {
+        e.value = e.value.toLowerCase();
+      }
 
-      $('#btnLimpiarPriceFilter').click(function(){
-        vaciar=1;
-        limpiarPriceFilterM(vaciar);
-      });
+      function validar_email( email )
+      {
+        var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        return regex.test(email) ? true : false;
+      }
 
-      $('#btnBusMaterial').click(function(){
-        minval = 0;
-        maxval = 100000;
-        material = $("#cbmMaterial option:selected").val();
-        accesorio = 1;
-        query = 0;
+      var slider = document.getElementById("myRangeMin");
+      var sliderMax = document.getElementById("myRangeMax");
+      // $('#minVal').val(slider.value);
+      // $('#maxVal').val(sliderMax.value);
 
-        if(material == 0){
-          alert("Debe seleccionar un material...");
-        }else{
-          query = 2;
-          filtrosMujer(minval,maxval,material,accesorio,query);
-        }
-      });
-
-      $('#btnBusAcs').click(function(){
-        query = 0;
-
-        minval = 0;
-        maxval = 100000;
-        material = 1;
-        accesorio = $('#cbmAccesorio option:selected').val();
-        if(accesorio == 0){
-          alert("Debe seleccionar un accesorio...");
-        }else{
-          query = 2;
-          filtrosMujer(minval,maxval,material,accesorio,query);
-        }
-
-      });
-
-      // Enter de inicio de sesion
-      var input = document.getElementById("txt_Pass");
-      input.addEventListener("keyup", function(event) {
-        // Number 13 is the "Enter" key on the keyboard
-        if (event.keyCode === 13) {
-          // Cancel the default action, if needed
-          event.preventDefault();
-          // Trigger the button element with a click
-          document.getElementById("btnEntrar").click();
-        }
-      });
-
-      $('#btnBus').click(function(){
-
-        nombreCliente = $('#txtBus').val();
-
-        if(nombreCliente == ""){
-          alert("Debe ingresar un nombre o apellido...");
-        }
-        if(nombreCliente != "" ){
-          busClienteConsigna(nombreCliente);
-        }
-      });
-
-      // Enter buscador
-      var txtBus = document.getElementById("txtBus");
-      txtBus.addEventListener("keyup", function(event) {
-        // Number 13 is the "Enter" key on the keyboard
-        if (event.keyCode === 13) {
-          // Cancel the default action, if needed
-          event.preventDefault();
-          // Trigger the button element with a click
-          document.getElementById("btnBus").click();
-        }
-      });
-
-      // Enter guardar clientes Consigna
-      var txtEmailC = document.getElementById("txtEmailC");
-      txtEmailC.addEventListener("keyup", function(event) {
-        // Number 13 is the "Enter" key on the keyboard
-        if (event.keyCode === 13) {
-          // Cancel the default action, if needed
-          event.preventDefault();
-          // Trigger the button element with a click
-          document.getElementById("btnGuardarC").click();
-        }
-      });
-
-      // Enter guardar clientes
-      var txtEmail = document.getElementById("txtEmail");
-      txtEmail.addEventListener("keyup", function(event) {
-        // Number 13 is the "Enter" key on the keyboard
-        if (event.keyCode === 13) {
-          // Cancel the default action, if needed
-          event.preventDefault();
-          // Trigger the button element with a click
-          document.getElementById("btnGuardar").click();
-        }
-      });
-
-    });
-
-    function mayus(e) {
-      e.value = e.value.toUpperCase();
-    }
-    function minus(e) {
-      e.value = e.value.toLowerCase();
-    }
-
-    function validar_email( email )
-    {
-      var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-      return regex.test(email) ? true : false;
-    }
-
-    var slider = document.getElementById("myRangeMin");
-    var sliderMax = document.getElementById("myRangeMax");
-    // $('#minVal').val(slider.value);
-    // $('#maxVal').val(sliderMax.value);
-
-    slider.oninput = function() {
-      $('#minVal').val(slider.value);
-    }
-    sliderMax.oninput = function() {
-      $('#maxVal').val(sliderMax.value);
-    }
+      slider.oninput = function() {
+        $('#minVal').val(slider.value);
+      }
+      sliderMax.oninput = function() {
+        $('#maxVal').val(sliderMax.value);
+      }
 
 
-    </script>
+      </script>
