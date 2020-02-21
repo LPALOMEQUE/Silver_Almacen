@@ -1066,8 +1066,19 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
       <!-- Single Footer Area Start -->
       <div class="col-12 col-md-6 col-lg-3">
         <div class="single_footer_area">
+
+        </div>
+      </div>
+      <!-- Single Footer Area Start -->
+      <div class="col-12 col-sm-6 col-md-3 col-lg-2">
+        <div class="single_footer_area">
+        </div>
+      </div>
+      <!-- Single Footer Area Start -->
+      <div class="col-12 col-md-6 col-lg-3">
+        <div class="single_footer_area">
           <div class="footer-logo">
-            <img src="img/core-img/logo_Silver.png" alt="">
+            <img src="img/core-img/logo.png" alt="">
           </div>
           <div class="copywrite_text d-flex align-items-center">
             <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
@@ -1077,41 +1088,8 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
           </div>
         </div>
         <!-- Single Footer Area Start -->
-        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-          <div class="single_footer_area">
-            <ul class="footer_widget_menu">
-              <li><a href="#">About</a></li>
-              <li><a href="#">Blog</a></li>
-              <li><a href="#">Faq</a></li>
-              <li><a href="#">Returns</a></li>
-              <li><a href="#">Contact</a></li>
-              <li><a href="#">Sign Up</a></li>
-            </ul>
-          </div>
-        </div>
-        <!-- Single Footer Area Start -->
-        <div class="col-12 col-sm-6 col-md-3 col-lg-2">
-          <div class="single_footer_area">
-            <ul class="footer_widget_menu">
-              <li><a href="#">My Account</a></li>
-              <li><a href="#">Shipping</a></li>
-              <li><a href="#">Our Policies</a></li>
-              <li><a href="#">Afiliates</a></li>
-            </ul>
-          </div>
-        </div>
-        <!-- Single Footer Area Start -->
         <div class="col-12 col-lg-5">
           <div class="single_footer_area">
-            <div class="footer_heading mb-30">
-              <h6>Subscribe to our newsletter</h6>
-            </div>
-            <div class="subscribtion_form">
-              <form action="#" method="post">
-                <input type="email" name="mail" class="mail" placeholder="Your email here">
-                <button type="submit" class="submit">Subscribe</button>
-              </form>
-            </div>
           </div>
         </div>
       </div>
@@ -1123,7 +1101,7 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
           <div class="col-12">
             <div class="footer_social_area text-center">
               <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-              <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+              <a href="https://es-la.facebook.com/newsilverevolution/"><i class="fa fa-facebook" aria-hidden="true"></i></a>
               <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
               <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
             </div>
@@ -1152,25 +1130,30 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
 
 <script type="text/javascript">
 
+<?php if(isset($_SESSION['status']) && $_SESSION['status'] == 'ADMIN'  && !isset($_SESSION['BUS_CLIENTE'])){ ?>
+
+  $('#ModalViewClientes').modal('toggle');
+
+  <?php } ?>
+
+
+
+
+  <?php if(isset($_GET['vaciar']) && $_GET['vaciar'] == 2) {
+
+  ?>
+    $('#ModalViewStatus').modal('toggle');
+
+  <?php
+  }
+  elseif(isset($_GET['vaciar']) && $_GET['vaciar'] == 3){
+  ?>
+  $('#ModalViewStatusRemision').modal('toggle');
+
+  <?php } ?>
+
 $(document).ready(function(){
 
-  <?php if(isset($_SESSION['status']) && $_SESSION['status'] == 'ADMIN' && !isset($_SESSION['BUS_CLIENTE'])){ ?>
-
-    $('#ModalViewClientes').modal('toggle');
-
-    <?php } ?>
-
-    <?php if($_GET['vaciar'] == 2) {
-
-    ?>
-      $('#ModalViewStatus').modal('toggle');
-    <?php
-    }
-    elseif($_GET['vaciar'] == 3){
-    ?>
-    $('#ModalViewStatusRemision').modal('toggle');
-
-    <?php } ?>
 
 
 

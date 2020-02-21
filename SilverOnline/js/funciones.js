@@ -220,7 +220,8 @@ function login(email, pass){
         $('#txt_Pass').val('');
         $('#ModalLogin').hide();
 
-        location.reload();
+        location.href ="index.php";
+
       }
       else{
         alert("Usuario o contraseña incorrectos...");
@@ -316,7 +317,7 @@ function logOut(vaciar){
     url: "checkout.php",
     data: cadena,
     success: function(result){
-      location.reload();
+      location.href ="index.php";
     }
   });
 }
