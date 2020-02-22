@@ -144,8 +144,8 @@ function loginValidaCostoEnv(email, pass){
     data:cadena,
     success:function(result){
       if(result==1){
-
-        alert("Inicio de sesión correcto, ya puede continuar comprando...");
+debugger;
+        // alert("Inicio de sesión correcto, ya puede continuar comprando...");
         $('#txt_Email').val('');
         $('#txt_Pass').val('');
         $('#ModalLogin').hide();
@@ -162,10 +162,12 @@ function loginValidaCostoEnv(email, pass){
           }
           pruebas(x);
         }else{
-          alert('Debe seleccionar un metodo de envío.');
+          // alert('Debe seleccionar un metodo de envío.');
+          $('#ModalViewStatusEnvioError').modal('toggle');
+
         }
-        // location.reload();
-        location.href ="checkout.php";
+        location.reload();
+        // location.href ="checkout.php";
       }
       else{
         $('#ModalViewStatusLoginError').modal('toggle');
@@ -184,7 +186,7 @@ function login(email, pass){
     data:cadena,
     success:function(result){
       if(result==1){
-        location.href ="index.php";
+        location.reload();
       }
       else{
         $('#ModalViewStatusLoginError').modal('toggle');

@@ -19,9 +19,9 @@ if(isset($_SESSION['status'])){
 }
 
 // verifica si el vendedor selecciono un cliente, de lo contrario no permite agregar productos
-if (isset($_SESSION['status'])) {
+if (isset($_SESSION['status']) && $_SESSION['status'] == 'ADMIN') {
 
-  if ($_SESSION['status'] == 'ADMIN' && !isset($_SESSION["ID_CLIENTE"])) {
+  if (!isset($_SESSION["ID_CLIENTE"])) {
     // header('Location: index.php');
 
     echo "
@@ -149,34 +149,6 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
   </head>
 
   <body>
-
-    <!-- Modal para View StatusLoginError -->
-    <div class="modal fade" id="ModalViewStatusLoginError" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatusLoginError" aria-hidden="true">
-      <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="ModalViewStatusLoginError">Mensaje del sistema...</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <br/>
-            <!-- <br/> -->
-            <!-- <br/> -->
-            <div class="row">
-              <div class="col-md-12 mb-3">
-                <h6><strong>Usuario o contraseña incorrecto...</strong></h6>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Modal para inicio de sesion -->
     <div class="modal fade" id="ModalLogin" tabindex="-1" role="dialog" aria-labelledby="ModalLogin" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -211,6 +183,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
       </div>
     </div>
 
+
     <!-- Modal para inicio de sesion valida envio y location a checkout.php -->
     <div class="modal fade" id="ModalLoginVal" tabindex="-1" role="dialog" aria-labelledby="ModalLoginVal" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -244,7 +217,59 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
         </div>
       </div>
     </div>
+    <!-- Modal para View StatusLoginError -->
+    <div class="modal fade" id="ModalViewStatusLoginError" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatusLoginError" aria-hidden="true">
+      <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ModalViewStatusLoginError">Mensaje del sistema...</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <br/>
+            <!-- <br/> -->
+            <!-- <br/> -->
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <h6><strong>Usuario o contraseña incorrecto...</strong></h6>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <!-- Modal para View StatusEnvioError -->
+    <div class="modal fade" id="ModalViewStatusEnvioError" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatusEnvioError" aria-hidden="true">
+      <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ModalViewStatusEnvioError">Mensaje del sistema...</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <br/>
+            <!-- <br/> -->
+            <!-- <br/> -->
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <h6><strong>Debe seleccionar un método de envío....</strong></h6>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="catagories-side-menu">
       <!-- Close Icon -->
       <div id="sideMenuClose">
@@ -1065,7 +1090,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
         }
         pruebas(x);
       }else{
-        alert('Debe seleccionar un metodo de envío.');
+        $('#ModalViewStatusEnvioError').modal('toggle');
       }
 
     }

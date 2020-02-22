@@ -339,33 +339,6 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
       </nav>
     </div>
 
-    <!-- Modal para View StatusLoginError -->
-    <div class="modal fade" id="ModalViewStatusLoginError" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatusLoginError" aria-hidden="true">
-      <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="ModalViewStatusLoginError">Mensaje del sistema...</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <br/>
-            <!-- <br/> -->
-            <!-- <br/> -->
-            <div class="row">
-              <div class="col-md-12 mb-3">
-                <h6><strong>Usuario o contraseña incorrecto...</strong></h6>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- Modal para inicio de sesion -->
     <div class="modal fade" id="ModalLogin" tabindex="-1" role="dialog" aria-labelledby="ModalLogin" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -395,6 +368,33 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             <button type="button" class="btn btn-primary" id="btnEntrar">Entrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal para View StatusLoginError -->
+    <div class="modal fade" id="ModalViewStatusLoginError" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatusLoginError" aria-hidden="true">
+      <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ModalViewStatusLoginError">Mensaje del sistema...</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <br/>
+            <!-- <br/> -->
+            <!-- <br/> -->
+            <div class="row">
+              <div class="col-md-12 mb-3">
+                <h6><strong>Usuario o contraseña incorrecto...</strong></h6>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
           </div>
         </div>
       </div>
