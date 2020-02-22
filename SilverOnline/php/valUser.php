@@ -7,7 +7,7 @@ $con = conexion();
 
 $email = $_POST['EMAIL'];
 $pass = $_POST['PASS'];
-
+$BD = '01';
 
 
 $sql = "SELECT
@@ -15,7 +15,7 @@ CLAVE,
 CRUZAMIENTOS_ENVIO AS CORREO,
 CRUZAMIENTOS_ENVIO2 AS PASS,
 MODELO AS ROLL
- FROM CLIE01
+ FROM CLIE" .$BD. "
  WHERE CRUZAMIENTOS_ENVIO ='$email' AND CRUZAMIENTOS_ENVIO2='$pass'";
 
 $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
