@@ -44,7 +44,7 @@ function busClienteConsigna(nombreCliente){
 
       location.reload();
 
-      }
+    }
 
   });
 
@@ -125,36 +125,6 @@ function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
 
         alert("Se registro el usuario de forma correcta...");
         location.reload();
-        // CONTROLES USUARIO
-        // $('#txtNombre').val('');
-        // $('#txtApellidoP').val('');
-        // $('#txtApellidoM').val('');
-        // $('#txtCalle').val('');
-        // $('#txtNumCalle').val('');
-        // $('#txtCp').val('');
-        // $('#txtCiudad').val('');
-        // $('#txtEstado').val('');
-        // $('#txtCel').val('');
-        // $('#txtEmail').val('');
-        // $('#txtPass').val('');
-        // $("#cbmRoll option[value=0]").attr("selected",true);
-
-        // CONTROLES CLIENTE
-        // $('#txtNombreC').val('');
-        // $('#txtApellidoPC').val('');
-        // $('#txtApellidoMC').val('');
-        // $('#txtCalleC').val('');
-        // $('#txtNumCalleC').val('');
-        // $('#txtCpC').val('');
-        // $('#txtCiudadC').val('');
-        // $('#txtEstadoC').val('');
-        // $('#txtCelC').val('');
-        // $('#txtEmailC').val('');
-        // $('#txtPass').val('');
-        // // $("#cbmRoll option[value=0]").attr("selected",true);
-        //
-        // $('#ModalRegistroUsuarios').hide();
-        // $('#ModalRegistroCliente').hide();
       }
       else{
         alert("Error...");
@@ -198,7 +168,7 @@ function loginValidaCostoEnv(email, pass){
         location.href ="checkout.php";
       }
       else{
-        alert("Usuario o contraseña incorrectos...");
+        $('#ModalViewStatusLoginError').modal('toggle');
       }
 
     }
@@ -214,21 +184,12 @@ function login(email, pass){
     data:cadena,
     success:function(result){
       if(result==1){
-
-        alert("Inicio de sesión correcto, ya puede continuar comprando...");
-        $('#txt_Email').val('');
-        $('#txt_Pass').val('');
-        $('#ModalLogin').hide();
-
         location.href ="index.php";
-
       }
       else{
-        alert("Usuario o contraseña incorrectos...");
+        $('#ModalViewStatusLoginError').modal('toggle');
       }
-
     }
-
   });
 }
 
