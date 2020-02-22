@@ -379,8 +379,6 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
           </div>
           <div class="modal-body">
             <br/>
-            <!-- <br/> -->
-            <!-- <br/> -->
             <div class="row">
               <div class="col-md-12 mb-3">
                 <h6><strong>Usuario o contraseña incorrecto...</strong></h6>
@@ -712,7 +710,6 @@ $Reg_Ignorados = $pagina * $cantidadRegistros;
 
 
 if($queryVal == 2) {
-  // if (isset($_SESSION['filtro_price'])) {
   $valMin = $_SESSION['filtro_price'][0]['min'];
   $valMax = $_SESSION['filtro_price'][0]['max'];
   $material = $_SESSION['filtro_price'][0]['material'];
@@ -768,7 +765,6 @@ else {
   FETCH NEXT  $cantidadRegistros ROWS ONLY";
 
 }
-// print_r($sql);
 $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
 if (0 !== sqlsrv_num_rows($res)){
   while ($category = sqlsrv_fetch_array($res)) {
@@ -1086,7 +1082,6 @@ if (0 !== sqlsrv_num_rows($res)){
           $Reg_Ignorados = $pagina * $cantidadRegistros;
 
           if($queryVal == 2) {
-            // if (isset($_SESSION['filtro_price'])) {
             $valMin = $_SESSION['filtro_price'][0]['min'];
             $valMax = $_SESSION['filtro_price'][0]['max'];
             $material = $_SESSION['filtro_price'][0]['material'];
