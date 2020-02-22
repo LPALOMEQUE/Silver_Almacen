@@ -25,13 +25,7 @@ if(isset($_SESSION['status'])){
 if (isset($_SESSION['status'])) {
 
   if ($_SESSION['status'] == 'ADMIN' && !isset($_SESSION["ID_CLIENTE"])) {
-    // header('Location: index.php');
-
-    echo "
-    <script type='text/javascript'>
-    window.location= 'index.php';
-    alert('Debe seleccionar un cliente...');
-    </script>";
+    header('Location: index.php?Vcs=4');
   }
 }
 
@@ -843,8 +837,8 @@ if (0 !== sqlsrv_num_rows($res)){
                             else {
                               alert("No hay stock disponible, solo puede agregar la cantidad maxima de: " + <?php echo $EXISTENCIA ?>)
                             }
-
                           });
+
                           $('#btnMenos<?php echo $category['CVE_ART'] ?>').click(function(){
                             valor = document.getElementById("qty<?php echo $category['CVE_ART'] ?>");
                             valor.value --;

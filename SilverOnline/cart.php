@@ -19,16 +19,10 @@ if(isset($_SESSION['status'])){
 }
 
 // verifica si el vendedor selecciono un cliente, de lo contrario no permite agregar productos
-if (isset($_SESSION['status']) && $_SESSION['status'] == 'ADMIN') {
+if (isset($_SESSION['status'])) {
 
-  if (!isset($_SESSION["ID_CLIENTE"])) {
-    // header('Location: index.php');
-
-    echo "
-    <script type='text/javascript'>
-    window.location= 'index.php';
-    alert('Debe seleccionar un cliente...');
-    </script>";
+  if ($_SESSION['status'] == 'ADMIN' && !isset($_SESSION["ID_CLIENTE"])) {
+    header('Location: index.php?Vcs=4');
   }
 }
 

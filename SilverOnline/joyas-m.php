@@ -24,13 +24,13 @@ if(isset($_SESSION['status'])){
 if (isset($_SESSION['status'])) {
 
   if ($_SESSION['status'] == 'ADMIN' && !isset($_SESSION["ID_CLIENTE"])) {
-    // header('Location: index.php');
+    header('Location: index.php?Vcs=4');
 
-    echo "
-    <script type='text/javascript'>
-    window.location= 'index.php';
-    alert('Debe seleccionar un cliente...');
-    </script>";
+    // echo "
+    // <script type='text/javascript'>
+    // window.location= 'index.php';
+    // alert('Debe seleccionar un cliente...');
+    // </script>";
   }
 }
 

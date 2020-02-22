@@ -42,7 +42,7 @@ function busClienteConsigna(nombreCliente){
     success:function(result){
       debugger;
 
-      location.reload();
+      location.href = 'index.php?o_cli=1';
 
     }
 
@@ -88,8 +88,9 @@ function getCliente(id_cliente){
     data:cadena,
     success:function(result){
       debugger;
-      $('#ModalViewClientes').hide();
-      location.href = 'joyas-m.php'
+      // $('#ModalViewClientes').hide();
+      location.href = 'joyas-m.php';
+
     }
 
   });
@@ -144,8 +145,6 @@ function loginValidaCostoEnv(email, pass){
     data:cadena,
     success:function(result){
       if(result==1){
-debugger;
-        // alert("Inicio de sesión correcto, ya puede continuar comprando...");
         $('#txt_Email').val('');
         $('#txt_Pass').val('');
         $('#ModalLogin').hide();
@@ -162,19 +161,15 @@ debugger;
           }
           pruebas(x);
         }else{
-          // alert('Debe seleccionar un metodo de envío.');
           $('#ModalViewStatusEnvioError').modal('toggle');
 
         }
         location.reload();
-        // location.href ="checkout.php";
       }
       else{
         $('#ModalViewStatusLoginError').modal('toggle');
       }
-
     }
-
   });
 }
 
@@ -204,12 +199,8 @@ function AddCart(id, cantidad){
     url: "joyas-h.php",
     data:cadena,
     success:function(result){
-
-      // $('#quickview' + id ).hide();
       location.reload();
-
     }
-
   });
 }
 
