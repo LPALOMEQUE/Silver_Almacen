@@ -199,412 +199,412 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
             <a href="#" data-toggle="modal" data-target="#ModalViewAccount"><i class="ti-user"></i><strong> Mi cuenta</strong></a>
           </div>
         </div>
-<!-- ****** Header Area Start ****** -->
-<header class="header_area bg-img background-overlay-white" style="background-image: url(img/bg-img/bg-1.jpg);">
+        <!-- ****** Header Area Start ****** -->
+        <header class="header_area bg-img background-overlay-white" style="background-image: url(img/bg-img/bg-1.jpg);">
 
-  <!-- Top Header Area Start -->
-  <div class="top_header_area">
-    <div class="container h-100">
-      <div class="row h-100 align-items-center justify-content-end">
+          <!-- Top Header Area Start -->
+          <div class="top_header_area">
+            <div class="container h-100">
+              <div class="row h-100 align-items-center justify-content-end">
 
-        <div class="col-12 col-lg-7">
-          <div class="top_single_area d-flex align-items-center">
-            <!-- Logo Area -->
-            <div class="top_logo">
-              <a href="#"><img src="img/core-img/logo_silv.png" alt=""></a>
-            </div>
-            <!-- Cart & Menu Area -->
-            <div class="header-cart-menu d-flex align-items-center ml-auto">
-              <!-- Cart Area -->
-              <div class="cart">
-                <a href="cart.php"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i><strong> Carrito:</strong>  $<?php echo number_format($TotalxArtGlobal,2) ?></a>
-                <!-- Cart List Area Start -->
-
-              </div>
-              <div class="header-right-side-menu ml-15">
-                <a href="#" id="sideMenuBtn"><i class="ti-menu" aria-hidden="true"></i></a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- Top Header Area End -->
-  <div class="main_header_area">
-    <div class="container h-100">
-      <div class="row h-100">
-        <div class="col-12 d-md-flex justify-content-between">
-          <!-- Header Social Area -->
-          <div class="header-social-area">
-            <a href="#"><span class="karl-level">Share</span> <i class="fa fa-pinterest" aria-hidden="true"></i></a>
-            <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-            <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-            <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-          </div>
-          <!-- Menu Area -->
-          <div class="main-menu-area">
-            <nav class="navbar navbar-expand-lg align-items-start">
-
-              <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#karl-navbar" aria-controls="karl-navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="ti-menu"></i></span></button>
-
-              <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
-                <ul class="navbar-nav animated" id="nav">
-                  <li class="nav-item active"><a class="nav-link" href="#"></a></li>
-                  <li class="nav-item active"><a class="nav-link" href="#"></a></li>
-                  <li class="nav-item active"><a class="nav-link" href="#"></a></li>
-                  <li class="nav-item active"><a class="nav-link" href="#"></a></li>
-                  <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
-                  <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categorías</a>
-                    <div class="dropdown-menu" aria-labelledby="karlDropdown">
-                      <a class="dropdown-item" href="joyas-m.php">Joyería</a>
-                      <a class="dropdown-item" href="#">Bolsas</a>
-                      <a class="dropdown-item" href="#">Perfumes</a>
-                      <a class="dropdown-item" href="#">Ropa</a>
+                <div class="col-12 col-lg-7">
+                  <div class="top_single_area d-flex align-items-center">
+                    <!-- Logo Area -->
+                    <div class="top_logo">
+                      <a href="#"><img src="img/core-img/logo_silv.png" alt=""></a>
                     </div>
-                  </li>
+                    <!-- Cart & Menu Area -->
+                    <div class="header-cart-menu d-flex align-items-center ml-auto">
+                      <!-- Cart Area -->
+                      <div class="cart">
+                        <a href="cart.php"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i><strong> Carrito:</strong>  $<?php echo number_format($TotalxArtGlobal,2) ?></a>
+                        <!-- Cart List Area Start -->
 
+                      </div>
+                      <div class="header-right-side-menu ml-15">
+                        <a href="#" id="sideMenuBtn"><i class="ti-menu" aria-hidden="true"></i></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Header Area End -->
+          <div class="main_header_area">
+            <div class="container h-100">
+              <div class="row h-100">
+                <div class="col-12 d-md-flex justify-content-between">
+                  <!-- Header Social Area -->
+                  <div class="header-social-area">
+                    <a href="#"><span class="karl-level">Share</span> <i class="fa fa-pinterest" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                    <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                  </div>
+                  <!-- Menu Area -->
+                  <div class="main-menu-area">
+                    <nav class="navbar navbar-expand-lg align-items-start">
+
+                      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#karl-navbar" aria-controls="karl-navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="ti-menu"></i></span></button>
+
+                      <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
+                        <ul class="navbar-nav animated" id="nav">
+                          <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                          <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                          <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                          <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                          <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
+                          <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categorías</a>
+                            <div class="dropdown-menu" aria-labelledby="karlDropdown">
+                              <a class="dropdown-item" href="joyas-m.php">Joyería</a>
+                              <a class="dropdown-item" href="#">Bolsas</a>
+                              <a class="dropdown-item" href="#">Perfumes</a>
+                              <a class="dropdown-item" href="#">Ropa</a>
+                            </div>
+                          </li>
+
+
+                          <div class="<?php
+                          if (isset($_SESSION["Email"])) {
+                            echo $ocultar = 'none';
+                          }else {
+                            echo $mostrar = 'inline';
+                          } ?> ">
+                          <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</a></li>
+                        </div>
+
+                        <div class="<?php
+                        if (isset($_SESSION["status"]) && $_SESSION['status'] == 'ADMIN') {
+                          echo $mostrar = 'inline';
+                        }else {
+                          echo $ocultar = 'none';
+                        } ?> ">
+                        <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroCliente">Registrar Cliente</a></li>
+                      </div>
+
+                    </ul>
+                  </div>
+                </nav>
+              </div>
+
+              <!-- Modal para inicio de sesion -->
+              <div class="modal fade" id="ModalLogin" tabindex="-1" role="dialog" aria-labelledby="ModalLogin" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ModalLogin">Inicio de sesión...</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+
+                      <div class="row">
+                        <div class="col-md-12 mb-3">
+                          <label for="txtEmail">E-MaiL</label>
+                          <input type="email" class="form-control" id="txt_Email" value="" required>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12 mb-3">
+                          <label for="txtPass">Contraseña</label>
+                          <input type="password" class="form-control" id="txt_Pass" value="" required>
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                      <button type="button" class="btn btn-primary" id="btnEntrar">Entrar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal para View StatusLoginError -->
+              <div class="modal fade" id="ModalViewStatusLoginError" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatusLoginError" aria-hidden="true">
+                <div class="modal-dialog modal-md" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ModalViewStatusLoginError">Mensaje del sistema...</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <br/>
+                      <div class="row">
+                        <div class="col-md-12 mb-3">
+                          <h6><strong>Usuario o contraseña incorrecto...</strong></h6>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal para registro de Clientes -->
+              <div class="modal fade" id="ModalRegistroCliente" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroCliente" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ModalRegistroCliente">Registro de Cliente</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-md-4 mb-3">
+                          <label for="txtNombreC">Nombre(s)</label>
+                          <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombreC" value="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="txtApellidoPC">Apellido Paterno</label>
+                          <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoPC" value="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="txtApellidoMC">Apellido Materno</label>
+                          <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoMC" value="" required>
+                        </div>
+                      </div>
+                      <h6>Datos de dirección...</h6>
+
+                      <div class="row">
+                        <div class="col-md-4 mb-3">
+                          <label for="txtCalleC">Calle</label>
+                          <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCalleC" value="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="txtNumCalleC">Núm(#)</label>
+                          <input type="number" class="form-control" id="txtNumCalleC" value="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="txtCpC">C.P.</label>
+                          <input type="number" class="form-control" id="txtCpC" value="" required>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4" "mb-3">
+                          <label for="txtCiudadC">Ciudad</label>
+                          <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudadC" value="" required>
+                        </div>
+                        <div class="col-md-4" "mb-3">
+                          <label for="txtEstadoC">Estado</label>
+                          <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstadoC" value="" required>
+                        </div>
+                        <div class="col-md-4" "mb-3">
+                          <label for="txtCelC">Celular</label>
+                          <input type="number" class="form-control" id="txtCelC" value="" required>
+                        </div>
+                      </div>
+                      <br/>
+                      <br/>
+                      <h6>Datos de cuenta...</h6>
+                      <div class="row">
+                        <div class="col-md-12 mb-12">
+                          <label for="txtEmailC">E-MaiL</label>
+                          <input type="email" onkeyup="minus(this);" class="form-control" id="txtEmailC" value="" required>
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                      <button type="button" class="btn btn-primary" id="btnGuardarC">Registrarse</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- Modal para registro de Usuarios -->
+              <div class="modal fade" id="ModalRegistroUsuarios" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroUsuarios" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ModalRegistroUsuarios">Registro de Usuario...</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="row">
+                        <div class="col-md-4 mb-3">
+                          <label for="txtNombre">Nombre(s)</label>
+                          <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre" value="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="txtApellidoP">Apellido Paterno</label>
+                          <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP" value="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="txtApellidoM">Apellido Materno</label>
+                          <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM" value="" required>
+                        </div>
+                      </div>
+                      <h6>Datos de envío...</h6>
+
+                      <div class="row">
+                        <div class="col-md-4 mb-3">
+                          <label for="txtCalle">Calle</label>
+                          <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCalle" value="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="txtNumCalle">Núm(#)</label>
+                          <input type="number" class="form-control" id="txtNumCalle" value="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="txtCp">C.P.</label>
+                          <input type="number" class="form-control" id="txtCp" value="" required>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-4" "mb-3">
+                          <label for="txtCiudad">Ciudad</label>
+                          <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudad" value="" required>
+                        </div>
+                        <div class="col-md-4" "mb-3">
+                          <label for="txtEstado">Estado</label>
+                          <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstado" value="" required>
+                        </div>
+                        <div class="col-md-4" "mb-3">
+                          <label for="txtCel">Celular</label>
+                          <input type="number" class="form-control" id="txtCel" value="" required>
+                        </div>
+                      </div>
+                      <br/>
+                      <div class="row">
+                        <div class="col-md-4 mb-3">
+                          <label for="txtNombre">Nombre(s) quien recibe</label>
+                          <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre_Recibe" value="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="txtApellidoP">Apellido P. Quien recibe</label>
+                          <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP_Recibe" value="" required>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <label for="txtApellidoM">Apellido M. Quien recibe</label>
+                          <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM_Recibe" value="" required>
+                        </div>
+                      </div>
+                      <br/>
+                      <h6>Datos de cuenta...</h6>
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <label for="txtEmail">E-MaiL</label>
+                          <input type="email" onkeyup="minus(this);" class="form-control" id="txtEmail" value="" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <label for="txtPass">Contraseña</label>
+                          <input type="password" class="form-control" id="txtPass" value="" required>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-12 mb-3">
+                          <label id="lbRoll" for="cbmRoll">Roll</label>
+                          <select id="cbmRoll"  class="form-control" name="state">
+                            <option value="0">Selecciona...</option>
+                            ...
+                            <option value="ADMIN">ADMINISTRADOR</option>
+                            ...
+                            <option value="COMUN">COMÚN</option>form-control
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                      <button type="button" class="btn btn-primary" id="btnGuardar">Registrarse</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- Modal view account -->
+              <div class="modal fade" id="ModalViewAccount" tabindex="-1" role="dialog" aria-labelledby="ModalViewAccount" aria-hidden="true">
+                <div class="modal-dialog modal-md" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="ModalViewAccount">Datos de mi cuenta...</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <br/>
+                      <div class="row">
+                        <div class="col-md-12 mb-3">
+                          <h4>Usuario:</h4>
+                          <p><?php
+                          if (isset($_SESSION["Email"])) {
+                            echo $_SESSION["Email"];
+                          }else {
+                            echo $invitado = 'Invitado...';
+                          } ?></p>
+                        </div>
+
+                      </div>
+                      <div class="<?php
+                      if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN' && isset($_SESSION["BUS_CLIENTE"]) && strlen($_SESSION['BUS_CLIENTE']) > 9) {
+                        echo 'inline';
+                      }else {
+                        echo 'none';
+                      } ?>">
+                      <h4>Seleccionó el cliente:</h4>
+                      <a class="center"><?php
+                      if (isset($_SESSION["BUS_CLIENTE"]) && strlen($_SESSION['BUS_CLIENTE']) > 9) {
+                        echo $_SESSION["BUS_CLIENTE"];
+                      }?>
+                    </a>
+                  </div>
+                </div>
+                <div class="modal-footer">
 
                   <div class="<?php
                   if (isset($_SESSION["Email"])) {
-                    echo $ocultar = 'none';
-                  }else {
+
                     echo $mostrar = 'inline';
+                  }else {
+                    echo $ocultar = 'none';
                   } ?> ">
-                  <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</a></li>
+                  <button type="button" class="btn btn-warning" id="btnLogOut">Salir</button>
                 </div>
 
                 <div class="<?php
-                if (isset($_SESSION["status"]) && $_SESSION['status'] == 'ADMIN') {
-                  echo $mostrar = 'inline';
-                }else {
+                if (isset($_SESSION["Email"])) {
+
                   echo $ocultar = 'none';
-                } ?> ">
-                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalRegistroCliente">Registrar Cliente</a></li>
-              </div>
-
-            </ul>
-          </div>
-        </nav>
-      </div>
-
-      <!-- Modal para inicio de sesion -->
-      <div class="modal fade" id="ModalLogin" tabindex="-1" role="dialog" aria-labelledby="ModalLogin" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="ModalLogin">Inicio de sesión...</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-
-              <div class="row">
-                <div class="col-md-12 mb-3">
-                  <label for="txtEmail">E-MaiL</label>
-                  <input type="email" class="form-control" id="txt_Email" value="" required>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12 mb-3">
-                  <label for="txtPass">Contraseña</label>
-                  <input type="password" class="form-control" id="txt_Pass" value="" required>
-                </div>
-              </div>
-
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-              <button type="button" class="btn btn-primary" id="btnEntrar">Entrar</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Modal para View StatusLoginError -->
-      <div class="modal fade" id="ModalViewStatusLoginError" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatusLoginError" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="ModalViewStatusLoginError">Mensaje del sistema...</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <br/>
-              <div class="row">
-                <div class="col-md-12 mb-3">
-                  <h6><strong>Usuario o contraseña incorrecto...</strong></h6>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Modal para registro de Clientes -->
-      <div class="modal fade" id="ModalRegistroCliente" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroCliente" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="ModalRegistroCliente">Registro de Cliente</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label for="txtNombreC">Nombre(s)</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombreC" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtApellidoPC">Apellido Paterno</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoPC" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtApellidoMC">Apellido Materno</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoMC" value="" required>
-                </div>
-              </div>
-              <h6>Datos de dirección...</h6>
-
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label for="txtCalleC">Calle</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCalleC" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtNumCalleC">Núm(#)</label>
-                  <input type="number" class="form-control" id="txtNumCalleC" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtCpC">C.P.</label>
-                  <input type="number" class="form-control" id="txtCpC" value="" required>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-4" "mb-3">
-                  <label for="txtCiudadC">Ciudad</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudadC" value="" required>
-                </div>
-                <div class="col-md-4" "mb-3">
-                  <label for="txtEstadoC">Estado</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstadoC" value="" required>
-                </div>
-                <div class="col-md-4" "mb-3">
-                  <label for="txtCelC">Celular</label>
-                  <input type="number" class="form-control" id="txtCelC" value="" required>
-                </div>
-              </div>
-              <br/>
-              <br/>
-              <h6>Datos de cuenta...</h6>
-              <div class="row">
-                <div class="col-md-12 mb-12">
-                  <label for="txtEmailC">E-MaiL</label>
-                  <input type="email" onkeyup="minus(this);" class="form-control" id="txtEmailC" value="" required>
-                </div>
-
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-              <button type="button" class="btn btn-primary" id="btnGuardarC">Registrarse</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-      <!-- Modal para registro de Usuarios -->
-      <div class="modal fade" id="ModalRegistroUsuarios" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroUsuarios" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="ModalRegistroUsuarios">Registro de Usuario...</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label for="txtNombre">Nombre(s)</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtApellidoP">Apellido Paterno</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtApellidoM">Apellido Materno</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM" value="" required>
-                </div>
-              </div>
-              <h6>Datos de envío...</h6>
-
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label for="txtCalle">Calle</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCalle" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtNumCalle">Núm(#)</label>
-                  <input type="number" class="form-control" id="txtNumCalle" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtCp">C.P.</label>
-                  <input type="number" class="form-control" id="txtCp" value="" required>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-4" "mb-3">
-                  <label for="txtCiudad">Ciudad</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudad" value="" required>
-                </div>
-                <div class="col-md-4" "mb-3">
-                  <label for="txtEstado">Estado</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstado" value="" required>
-                </div>
-                <div class="col-md-4" "mb-3">
-                  <label for="txtCel">Celular</label>
-                  <input type="number" class="form-control" id="txtCel" value="" required>
-                </div>
-              </div>
-              <br/>
-              <div class="row">
-                <div class="col-md-4 mb-3">
-                  <label for="txtNombre">Nombre(s) quien recibe</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombre_Recibe" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtApellidoP">Apellido P. Quien recibe</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoP_Recibe" value="" required>
-                </div>
-                <div class="col-md-4 mb-3">
-                  <label for="txtApellidoM">Apellido M. Quien recibe</label>
-                  <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoM_Recibe" value="" required>
-                </div>
-              </div>
-              <br/>
-              <h6>Datos de cuenta...</h6>
-              <div class="row">
-                <div class="col-md-6 mb-3">
-                  <label for="txtEmail">E-MaiL</label>
-                  <input type="email" onkeyup="minus(this);" class="form-control" id="txtEmail" value="" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                  <label for="txtPass">Contraseña</label>
-                  <input type="password" class="form-control" id="txtPass" value="" required>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-12 mb-3">
-                  <label id="lbRoll" for="cbmRoll">Roll</label>
-                  <select id="cbmRoll"  class="form-control" name="state">
-                    <option value="0">Selecciona...</option>
-                    ...
-                    <option value="ADMIN">ADMINISTRADOR</option>
-                    ...
-                    <option value="COMUN">COMÚN</option>form-control
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-              <button type="button" class="btn btn-primary" id="btnGuardar">Registrarse</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Modal view account -->
-      <div class="modal fade" id="ModalViewAccount" tabindex="-1" role="dialog" aria-labelledby="ModalViewAccount" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="ModalViewAccount">Datos de mi cuenta...</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <br/>
-              <div class="row">
-                <div class="col-md-12 mb-3">
-                  <h4>Usuario:</h4>
-                  <p><?php
-                  if (isset($_SESSION["Email"])) {
-                    echo $_SESSION["Email"];
-                  }else {
-                    echo $invitado = 'Invitado...';
-                  } ?></p>
-                </div>
-
+                }else {
+                  echo $mostrar = 'inline';
+                } ?>">
+                <button type="button" id="btnEntrarModal" class="btn btn-success" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
               </div>
               <div class="<?php
-              if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN' && isset($_SESSION["BUS_CLIENTE"]) && strlen($_SESSION['BUS_CLIENTE']) > 9) {
-                echo 'inline';
+              if (isset($_SESSION["Email"])) {
+
+                echo $ocultar = 'none';
               }else {
-                echo 'none';
+                echo $mostrar = 'inline';
               } ?>">
-              <h4>Seleccionó el cliente:</h4>
-              <a class="center"><?php
-              if (isset($_SESSION["BUS_CLIENTE"]) && strlen($_SESSION['BUS_CLIENTE']) > 9) {
-                echo $_SESSION["BUS_CLIENTE"];
-              }?>
-            </a>
+              <button type="button" id="btnRegistrateModal" class="btn btn-info" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</button>
+            </div>
           </div>
         </div>
-        <div class="modal-footer">
-
-          <div class="<?php
-          if (isset($_SESSION["Email"])) {
-
-            echo $mostrar = 'inline';
-          }else {
-            echo $ocultar = 'none';
-          } ?> ">
-          <button type="button" class="btn btn-warning" id="btnLogOut">Salir</button>
-        </div>
-
-        <div class="<?php
-        if (isset($_SESSION["Email"])) {
-
-          echo $ocultar = 'none';
-        }else {
-          echo $mostrar = 'inline';
-        } ?>">
-        <button type="button" id="btnEntrarModal" class="btn btn-success" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
-      </div>
-      <div class="<?php
-      if (isset($_SESSION["Email"])) {
-
-        echo $ocultar = 'none';
-      }else {
-        echo $mostrar = 'inline';
-      } ?>">
-      <button type="button" id="btnRegistrateModal" class="btn btn-info" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</button>
-      </div>
-      </div>
-      </div>
-      </div>
-      </div>
-      <!-- Help Line -->
-      <div class="help-line">
-        <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
       </div>
     </div>
+    <!-- Help Line -->
+    <div class="help-line">
+      <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
+    </div>
   </div>
+</div>
 </div>
 </div>
 </header>
@@ -740,38 +740,31 @@ if (0 !== sqlsrv_num_rows($res)){
                     </div>
                     <div class="row">
                       <div class="quantity">
-                        <button type="button" class="qty-minus" id="btnMenos<?php echo $category['CVE_ART'] ?>">-</button>
-                        <input type="number" class="qty-text" id="qty<?php echo $category['CVE_ART'] ?>" name="CANTIDAD" value="1">
-                        <button type="button" class="qty-minus" id="btnMas<?php echo $category['CVE_ART'] ?>">+</button>
+                        <!-- <button type="button" class="qty-minus" id="btnMenos<?php echo $category['CVE_ART'] ?>" minVal="1">-</button> -->
+                        <input type="number" class="qty-text" id="qty<?php echo $category['CVE_ART'] ?>" name="CANTIDAD" min="1" value="1">
+                        <!-- <button type="button" class="qty-minus" id="btnMas<?php echo $category['CVE_ART'] ?>">+</button> -->
 
                       </div>
 
                       <button type="button" class="btn cart-submit" id="btnSendPost<?php echo $category['CVE_ART'] ?>"> + CARRITO</button>
                       <script type="text/javascript">
                       $(document).ready(function(){
+
+
                         $('#btnSendPost<?php echo $category['CVE_ART'] ?>').click(function(){
 
                           id= "<?php echo $category['CVE_ART'] ?>";
                           cantidad= $('#qty<?php echo $category['CVE_ART'] ?>').val();
+                          debugger;
+                          newCantidad = Math.abs(cantidad);
 
-                          if (cantidad <= <?php echo $EXISTENCIA ?>) {
+                          if (newCantidad <= <?php echo $EXISTENCIA ?>) {
                             AddCart(id,
-                              cantidad);
+                              newCantidad);
                             }
                             else {
                               $('#ModalViewStatusStock<?php echo $category['CVE_ART'] ?>').modal('toggle');
                             }
-                          });
-
-                          $('#btnMenos<?php echo $category['CVE_ART'] ?>').click(function(){
-                            valor = document.getElementById("qty<?php echo $category['CVE_ART'] ?>");
-                            valor.value --;
-
-                          });
-                          $('#btnMas<?php echo $category['CVE_ART'] ?>').click(function(){
-                            valor = document.getElementById("qty<?php echo $category['CVE_ART'] ?>");
-                            valor.value ++;
-
                           });
 
 

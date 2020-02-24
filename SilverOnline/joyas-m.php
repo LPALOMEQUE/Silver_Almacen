@@ -725,15 +725,9 @@ if (0 !== sqlsrv_num_rows($res)){
                       <p style="color: #ff084e;"><strong>STOCK DISPONIBLE: <?php echo $category['EXIST'] ?></strong></p>
                     </div>
                     <div class="row">
-                      <!-- Add to Cart Form -->
-                      <!-- <form id="formEnvio" class="cart" method="post"> -->
                       <div class="quantity">
-                        <button type="button" class="qty-minus" id="btnMenos<?php echo $category['CVE_ART'] ?>">-</button>
-                        <input type="number" class="qty-text" id="qty<?php echo $category['CVE_ART'] ?>" name="CANTIDAD" value="1">
-                        <button type="button" class="qty-minus" id="btnMas<?php echo $category['CVE_ART'] ?>">+</button>
-
+                        <input type="number" class="qty-text" id="qty<?php echo $category['CVE_ART'] ?>" name="CANTIDAD" min="1" value="1">
                       </div>
-
                       <button type="button" class="btn cart-submit" id="btnSendPost<?php echo $category['CVE_ART'] ?>"> + CARRITO</button>
                       <script type="text/javascript">
                       $(document).ready(function(){
@@ -742,24 +736,15 @@ if (0 !== sqlsrv_num_rows($res)){
                           id= "<?php echo $category['CVE_ART'] ?>";
                           cantidad= $('#qty<?php echo $category['CVE_ART'] ?>').val();
 
-                          if (cantidad <= <?php echo $EXISTENCIA ?>) {
+                          newCantidad = Math.abs(cantidad);
+
+                          if (newCantidad <= <?php echo $EXISTENCIA ?>) {
                             AddCart(id,
-                              cantidad);
+                              newCantidad);
                             }
                             else {
                               $('#ModalViewStatusStock<?php echo $category['CVE_ART'] ?>').modal('toggle');
                             }
-
-                          });
-                          $('#btnMenos<?php echo $category['CVE_ART'] ?>').click(function(){
-                            valor = document.getElementById("qty<?php echo $category['CVE_ART'] ?>");
-                            valor.value --;
-
-                          });
-                          $('#btnMas<?php echo $category['CVE_ART'] ?>').click(function(){
-                            valor = document.getElementById("qty<?php echo $category['CVE_ART'] ?>");
-                            valor.value ++;
-
                           });
 
                           var input = document.getElementById("qty<?php echo $category['CVE_ART'] ?>");
