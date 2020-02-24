@@ -14,7 +14,6 @@ function ModDatosUsuarios(nombre,nombre_recibe,calle,numCalle,cp,ciudad,estado,c
     url: "php/modUsuarios.php",
     data:cadena,
     success:function(result){
-      debugger;
       if(result==1){
 
         alert("Se actualizarón los datos de forma correcta...");
@@ -40,14 +39,9 @@ function busClienteConsigna(nombreCliente){
     url: "index.php",
     data:cadena,
     success:function(result){
-      debugger;
-
       location.href = 'index.php?o_cli=1';
-
     }
-
   });
-
 }
 
 
@@ -78,16 +72,14 @@ function envioDatosEmail(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
 
 }
 
-function getCliente(id_cliente){
-  debugger;
-  cadena = "ID_CLIENTEPost=" + id_cliente ;
+function getCliente(id_cliente,nombre){
+  cadena = "ID_CLIENTEPost=" + id_cliente + "&NombreHide=" + nombre ;
 
   $.ajax({
     type:"POST",
     url: "index.php",
     data:cadena,
     success:function(result){
-      debugger;
       // $('#ModalViewClientes').hide();
       location.href = 'joyas-m.php';
 
@@ -98,7 +90,6 @@ function getCliente(id_cliente){
 }
 
 function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,nombre_Recibe,apellidoP_Recibe,apellidoM_Recibe,email,pass,roll){
-  debugger;
   cadena = "NOMBRE=" +nombre +
   "&apellidoP=" + apellidoP +
   "&apellidoM=" +apellidoM +
@@ -121,7 +112,6 @@ function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
     url: "php/agregarUsuarios.php",
     data:cadena,
     success:function(result){
-      debugger;
       if(result==1){
 
         alert("Se registro el usuario de forma correcta...");

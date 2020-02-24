@@ -32,6 +32,25 @@ $ID = '';
 if (!isset($_SESSION["ID_USER"]) || !isset($_COOKIE['express'])) {
   header('Location: index.php');
 }
+
+// verifica si el vendedor selecciono un cliente, de lo contrario no permite agregar productos
+if (isset($_SESSION['status'])) {
+
+  if ($_SESSION['status'] == 'ADMIN' && !isset($_SESSION["ID_CLIENTE"])) {
+    header('Location: index.php?Vcs=4');
+  }
+  elseif(isset($_SESSION["ID_CLIENTE"]) && strlen($_SESSION['BUS_CLIENTE']) <= 10 ){
+    header('Location: index.php?Vcs=4');
+
+  }
+}
+
+if(!isset($_SESSION['ID_ARTICLES'])){
+  header('Location: index.php');
+
+}
+
+
 if (isset($_SESSION['ID_ARTICLES'])) {
   $bagNumber = count($_SESSION['ID_ARTICLES']);
   $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
@@ -164,136 +183,165 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   </div>
 
   <div id="wrapper">
-
-    <!-- ****** Header Area Start ****** -->
     <div class="row">
-      <div class="col-md-4 error">
-        <a class="center"> <strong>Usuario:</strong> <?php
-        if (isset($_SESSION["Email"])) {
-          echo $_SESSION["Email"];
-        }else {
-          echo $invitado = 'Invitado...';
-        } ?>
-      </a>
-    </div>
-    <div class="col-md-2 error">
-      <div class="<?php
-      if (isset($_SESSION["Email"])) {
-
-        echo $mostrar = 'inline';
-      }else {
-        echo $ocultar = 'none';
-      } ?> ">
-      <button type="button" class="btn btn-link" id="btnLogOut">Salir</button>
-    </div>
-
-    <div class="<?php
-    if (isset($_SESSION["Email"])) {
-
-      echo $ocultar = 'none';
-    }else {
-      echo $mostrar = 'inline';
-    } ?>">
-    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
-    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</button>
-  </div>
-</div>
-<div class="col-md-2">
-
-</div>
-<!-- <div class="col-md-1">
-
-</div> -->
-<div class="col-md-3 right">
-
-</div>
-
-<div class="col-md-2">
-
-</div>
-</div>
-<!-- Top Header Area Start -->
-<div class="top_header_area">
-  <div class="container h-100">
-    <div class="row h-100 align-items-center justify-content-end">
-
-      <div class="col-12 col-lg-7">
-        <div class="top_single_area d-flex align-items-center">
-          <!-- Logo Area -->
-          <div class="top_logo">
-            <a href="#"><img src="img/core-img/logo_silv.png" alt=""></a>
-          </div>
-          <!-- Cart & Menu Area -->
-          <div class="header-cart-menu d-flex align-items-center ml-auto">
-            <!-- Cart Area -->
-            <div class="cart">
-              <a href="cart.php"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i><strong> Carrito:</strong>  $<?php echo number_format($TotalxArtGlobal,2) ?></a>
-            </div>
-            <div class="header-right-side-menu ml-15">
-              <a href="#" id="sideMenuBtn"><i class="ti-menu" aria-hidden="true"></i></a>
-            </div>
-          </div>
-        </div>
+      <div class="col-md-2">
+        <a href="#" data-toggle="modal" data-target="#ModalViewAccount"><i class="ti-user"></i><strong> Mi cuenta</strong></a>
       </div>
     </div>
-  </div>
-</div>
+    <!-- Top Header Area Start -->
+    <div class="top_header_area">
+      <div class="container h-100">
+        <div class="row h-100 align-items-center justify-content-end">
 
-<!-- Top Header Area End -->
-<div class="main_header_area">
-  <div class="container h-100">
-    <div class="row h-100">
-      <div class="col-12 d-md-flex justify-content-between">
-        <!-- Header Social Area -->
-        <div class="header-social-area">
-          <a href="#"><span class="karl-level">Share</span> <i class="fa fa-pinterest" aria-hidden="true"></i></a>
-          <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-          <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-          <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-        </div>
-        <!-- Menu Area -->
-        <div class="main-menu-area">
-          <nav class="navbar navbar-expand-lg align-items-start">
-
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#karl-navbar" aria-controls="karl-navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="ti-menu"></i></span></button>
-
-            <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
-              <ul class="navbar-nav animated" id="nav">
-                <li class="nav-item active"><a class="nav-link" href="#"></a></li>
-                <li class="nav-item active"><a class="nav-link" href="#"></a></li>
-                <li class="nav-item active"><a class="nav-link" href="#"></a></li>
-                <li class="nav-item active"><a class="nav-link" href="#"></a></li>
-
-                <div class="<?php
-                if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
-                  echo $category = 'inline';
-                }else {
-                  echo $category = 'none';
-                } ?>">
-
-                <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalViewClientes"><span class="karl-level">Seleccione</span>Cliente</a></li>
+          <div class="col-12 col-lg-7">
+            <div class="top_single_area d-flex align-items-center">
+              <!-- Logo Area -->
+              <div class="top_logo">
+                <a href="#"><img src="img/core-img/logo_silv.png" alt=""></a>
               </div>
-              <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categorías</a>
-                <div class="dropdown-menu" aria-labelledby="karlDropdown">
-                  <a class="dropdown-item" href="joyas-m.php">Joyería</a>
-                  <a class="dropdown-item" href="#">Bolsas</a>
-                  <a class="dropdown-item" href="#">Perfumes</a>
-                  <a class="dropdown-item" href="#">Ropa</a>
+              <!-- Cart & Menu Area -->
+              <div class="header-cart-menu d-flex align-items-center ml-auto">
+                <!-- Cart Area -->
+                <div class="cart">
+                  <a href="cart.php"><span class="cart_quantity"> <?php echo $bagNumber ?> </span> <i class="ti-bag"></i><strong> Carrito:</strong>  $<?php echo number_format($TotalxArtGlobal,2) ?></a>
                 </div>
-              </li>
-        </ul>
-      </div>
-    </nav>
+                <div class="header-right-side-menu ml-15">
+                  <a href="#" id="sideMenuBtn"><i class="ti-menu" aria-hidden="true"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- Help Line -->
-        <div class="help-line">
-          <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
+      </div>
+    </div>
+
+    <!-- Top Header Area End -->
+    <div class="main_header_area">
+      <div class="container h-100">
+        <div class="row h-100">
+          <div class="col-12 d-md-flex justify-content-between">
+            <!-- Header Social Area -->
+            <div class="header-social-area">
+              <a href="#"><span class="karl-level">Share</span> <i class="fa fa-pinterest" aria-hidden="true"></i></a>
+              <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+              <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+              <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+            </div>
+            <!-- Menu Area -->
+            <div class="main-menu-area">
+              <nav class="navbar navbar-expand-lg align-items-start">
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#karl-navbar" aria-controls="karl-navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="ti-menu"></i></span></button>
+
+                <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
+                  <ul class="navbar-nav animated" id="nav">
+                    <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                    <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                    <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                    <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+
+                    <div class="<?php
+                    if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
+                      echo $category = 'inline';
+                    }else {
+                      echo $category = 'none';
+                    } ?>">
+
+                    <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalViewClientes"><span class="karl-level">Seleccione</span>Cliente</a></li>
+                  </div>
+                  <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categorías</a>
+                    <div class="dropdown-menu" aria-labelledby="karlDropdown">
+                      <a class="dropdown-item" href="joyas-m.php">Joyería</a>
+                      <a class="dropdown-item" href="#">Bolsas</a>
+                      <a class="dropdown-item" href="#">Perfumes</a>
+                      <a class="dropdown-item" href="#">Ropa</a>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+          <!-- Modal view account -->
+          <div class="modal fade" id="ModalViewAccount" tabindex="-1" role="dialog" aria-labelledby="ModalViewAccount" aria-hidden="true">
+            <div class="modal-dialog modal-md" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="ModalViewAccount">Datos de mi cuenta...</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <br/>
+                  <div class="row">
+                    <div class="col-md-12 mb-3">
+                      <h4>Usuario:</h4>
+                      <p><?php
+                      if (isset($_SESSION["Email"])) {
+                        echo $_SESSION["Email"];
+                      }else {
+                        echo $invitado = 'Invitado...';
+                      } ?></p>
+                    </div>
+
+                  </div>
+                  <div class="<?php
+                  if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN' && isset($_SESSION["BUS_CLIENTE"]) && strlen($_SESSION['BUS_CLIENTE']) > 9) {
+                    echo 'inline';
+                  }else {
+                    echo 'none';
+                  } ?>">
+                  <h4>Seleccionó el cliente:</h4>
+                  <a class="center"><?php
+                  if (isset($_SESSION["BUS_CLIENTE"]) && strlen($_SESSION['BUS_CLIENTE']) > 9) {
+                    echo $_SESSION["BUS_CLIENTE"];
+                  }?>
+                </a>
+              </div>
+            </div>
+            <div class="modal-footer">
+
+              <div class="<?php
+              if (isset($_SESSION["Email"])) {
+
+                echo $mostrar = 'inline';
+              }else {
+                echo $ocultar = 'none';
+              } ?> ">
+              <button type="button" class="btn btn-warning" id="btnLogOut">Salir</button>
+            </div>
+
+            <div class="<?php
+            if (isset($_SESSION["Email"])) {
+
+              echo $ocultar = 'none';
+            }else {
+              echo $mostrar = 'inline';
+            } ?>">
+            <button type="button" id="btnEntrarModal" class="btn btn-success" data-toggle="modal" data-target="#ModalLogin">Entrar</button>
+          </div>
+          <div class="<?php
+          if (isset($_SESSION["Email"])) {
+
+            echo $ocultar = 'none';
+          }else {
+            echo $mostrar = 'inline';
+          } ?>">
+          <button type="button" id="btnRegistrateModal" class="btn btn-info" data-toggle="modal" data-target="#ModalRegistroUsuarios">Regístrate</button>
         </div>
       </div>
     </div>
   </div>
+</div>
+<!-- Help Line -->
+<div class="help-line">
+  <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
+</div>
+</div>
+</div>
+</div>
 </div>
 </header>
 <!-- ****** Header Area End ****** -->
@@ -431,28 +479,28 @@ if (isset($_SESSION['ID_ARTICLES'])) {
         <ul class="order-details-form mb-4">
           <li><span>Artículos</span> <span>Total</span></li>
           <div class="scroll-divCheckout">
-          <?php
-          require_once "php/Conexion.php";
-          $con = conexion();
-          if (isset($_SESSION['ID_ARTICLES'])) {
-            foreach ($ID_ARTICLES as $key => $item) {
-              $id= $item['id'];
-              $sql = "SELECT DESCR as Nombre,COSTO_PROM FROM INVE" .$BD. " where CVE_ART='$id'";
+            <?php
+            require_once "php/Conexion.php";
+            $con = conexion();
+            if (isset($_SESSION['ID_ARTICLES'])) {
+              foreach ($ID_ARTICLES as $key => $item) {
+                $id= $item['id'];
+                $sql = "SELECT DESCR as Nombre,COSTO_PROM FROM INVE" .$BD. " where CVE_ART='$id'";
 
-              $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
-              if (0 !== sqlsrv_num_rows($res)){
-                while ($arti = sqlsrv_fetch_array($res)) {
+                $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+                if (0 !== sqlsrv_num_rows($res)){
+                  while ($arti = sqlsrv_fetch_array($res)) {
 
 
-                  $TotalxArt = $arti['COSTO_PROM'] * $item['cantidad'];
-                  ?>
-                  <li><span><?php echo $arti['Nombre'] ?></span> <span>$<?php echo number_format($TotalxArt,2) ?></span></li>
+                    $TotalxArt = $arti['COSTO_PROM'] * $item['cantidad'];
+                    ?>
+                    <li><span><?php echo $arti['Nombre'] ?></span> <span>$<?php echo number_format($TotalxArt,2) ?></span></li>
 
-                <?php }
+                  <?php }
+                }
               }
-            }
-          }?>
-        </div>
+            }?>
+          </div>
           <li><strong><span>Subtotal</span></strong> <strong><span>$<?php echo number_format($TotalxArtGlobal,2) ?></span></span></li>
             <li><strong><span>Envio</span></span></strong> <strong><span>$<?php
             if (isset($_COOKIE['express'])) {
@@ -527,18 +575,18 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                 </div>
               </div>
             </div>
-              <div class="<?php
-              if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
-                echo 'inline';
-              }else {
-                echo 'none';
-              } ?>">
-              <div class="card">
-                <div class="card-header" role="tab" id="headingTwo">
-                  <h6 class="mb-0">
-                    <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-circle-o mr-3"></i>Consigna</a>
-                  </h6>
-                </div>
+            <div class="<?php
+            if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
+              echo 'inline';
+            }else {
+              echo 'none';
+            } ?>">
+            <div class="card">
+              <div class="card-header" role="tab" id="headingTwo">
+                <h6 class="mb-0">
+                  <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-circle-o mr-3"></i>Consigna</a>
+                </h6>
+              </div>
 
               <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
                 <div class="card-body">
@@ -656,103 +704,109 @@ $(document).ready(function(){
     );
   });
 
+  $('#btnEntrarModal').click(function(){
 
-
-
-$('#btnConsigna').click(function(){
-debugger;
-<?php if (isset($_SESSION["ID_USER"]) && isset($_SESSION['Email'])){ ?>
-
-location.href = 'verificadorConsig.php'
-
-<?php } ?>
-});
-
-
-
-
-  $('#btnActualizarDatos').click(function(){
-
-    nombre = $('#txtName').val();
-    debugger;
-    nombre_recibe = $('#txtName_Recibe').val();
-    calle = $('#txtCalle').val();
-    numCalle = $('#txtNumCalle').val();
-    cp = $('#txtCp').val();
-    ciudad = $('#txtCiudad').val();
-    estado = $('#txtEstado').val();
-    cel = $('#txtCel').val();
-    email= $('#txtEmail').val();
-
-    if(validar_email( email ) )
-    {
-    }
-    else
-    {
-      alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
-      email = 1;
-    }
-
-    pass= $('#txtPass').val();
-
-    if(nombre == ""){
-
-      alert("Debe ingresar un nombre...");
-    }
-    if(nombre_recibe == ""){
-
-      alert("Debe ingresar nombre de la persona que recibbirá el producto...");
-    }
-    if(calle == ""){
-
-      alert("Debe ingresar una calle...");
-    }if(numCalle == ""){
-
-      alert("Debe ingresar un número de la hubicación...");
-    }
-    if(cp == ""){
-
-      alert("Debe ingresar un código postal...");
-    }if(ciudad == ""){
-
-      alert("Debe ingresar una ciudad...");
-    }
-    if(estado == ""){
-
-      alert("Debe ingresar un estado...");
-    }
-    if(cel == ""){
-
-      alert("Debe ingresar un número de contacto...");
-    }
-    if(email == ""){
-
-      alert("Debe ingresar un E-mail...");
-    }
-    if(pass == ""){
-
-      alert("Debe ingresar una contraseña...");
-    }
-
-    if(nombre != "" && nombre_recibe != ""  && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && pass != ""){
-      ModDatosUsuarios(nombre,nombre_recibe,calle,numCalle,cp,ciudad,estado,cel,email, pass);
-    }
+    $('#ModalViewAccount').hide();
 
   });
 
 
+  $('#btnRegistrateModal').click(function(){
 
-  function validar_email( email )
-  {
-    var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    return regex.test(email) ? true : false;
+    $('#ModalViewAccount').hide();
+
+  });
+
+
+  $('#btnConsigna').click(function(){
+    <?php if (isset($_SESSION["ID_USER"]) && isset($_SESSION['Email'])){ ?>
+
+      location.href = 'verificadorConsig.php'
+
+      <?php } ?>
+    });
+
+
+    $('#btnActualizarDatos').click(function(){
+
+      nombre = $('#txtName').val();
+      nombre_recibe = $('#txtName_Recibe').val();
+      calle = $('#txtCalle').val();
+      numCalle = $('#txtNumCalle').val();
+      cp = $('#txtCp').val();
+      ciudad = $('#txtCiudad').val();
+      estado = $('#txtEstado').val();
+      cel = $('#txtCel').val();
+      email= $('#txtEmail').val();
+
+      if(validar_email( email ) )
+      {
+      }
+      else
+      {
+        alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+        email = 1;
+      }
+
+      pass= $('#txtPass').val();
+
+      if(nombre == ""){
+
+        alert("Debe ingresar un nombre...");
+      }
+      if(nombre_recibe == ""){
+
+        alert("Debe ingresar nombre de la persona que recibbirá el producto...");
+      }
+      if(calle == ""){
+
+        alert("Debe ingresar una calle...");
+      }if(numCalle == ""){
+
+        alert("Debe ingresar un número de la hubicación...");
+      }
+      if(cp == ""){
+
+        alert("Debe ingresar un código postal...");
+      }if(ciudad == ""){
+
+        alert("Debe ingresar una ciudad...");
+      }
+      if(estado == ""){
+
+        alert("Debe ingresar un estado...");
+      }
+      if(cel == ""){
+
+        alert("Debe ingresar un número de contacto...");
+      }
+      if(email == ""){
+
+        alert("Debe ingresar un E-mail...");
+      }
+      if(pass == ""){
+
+        alert("Debe ingresar una contraseña...");
+      }
+
+      if(nombre != "" && nombre_recibe != ""  && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && pass != ""){
+        ModDatosUsuarios(nombre,nombre_recibe,calle,numCalle,cp,ciudad,estado,cel,email, pass);
+      }
+
+    });
+
+
+    function validar_email( email )
+    {
+      var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      return regex.test(email) ? true : false;
+    }
+
+  });
+  function mayus(e) {
+    e.value = e.value.toUpperCase();
   }
-
-});
-function mayus(e) {
-  e.value = e.value.toUpperCase();
-}
-function minus(e) {
-  e.value = e.value.toLowerCase();
-}
+  function minus(e) {
+    e.value = e.value.toLowerCase();
+  }
 </script>

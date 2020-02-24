@@ -3,6 +3,27 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 require_once __DIR__ . '/vendor/autoload.php';
 
+if (!isset($_SESSION["ID_USER"]) || !isset($_COOKIE['express'])) {
+  header('Location: index.php');
+}
+
+// verifica si el vendedor selecciono un cliente, de lo contrario no permite agregar productos
+if (isset($_SESSION['status'])) {
+
+  if ($_SESSION['status'] == 'ADMIN' && !isset($_SESSION["ID_CLIENTE"])) {
+    header('Location: index.php?Vcs=4');
+  }
+  elseif(isset($_SESSION["ID_CLIENTE"]) && strlen($_SESSION['BUS_CLIENTE']) <= 10 ){
+    header('Location: index.php?Vcs=4');
+
+  }
+}
+
+if(!isset($_SESSION['ID_ARTICLES'])){
+  header('Location: index.php');
+
+}
+
 setlocale(LC_ALL,"es_ES");
 $anio = date("Y");
 $mes = date("m");
@@ -335,12 +356,12 @@ if ($state == 'approved') {
         while ($arti = sqlsrv_fetch_array($res)) {
           // ECHO $CVE_DOC = 'WEB'.$idventa;
           $CVE_DOC = 'WEB'.$idventa;
-           // echo "----";
-           // echo $ID;
-           $ID;
-           // echo "----";
-           // echo $fecha_php;
-           $fecha_php;
+          // echo "----";
+          // echo $ID;
+          $ID;
+          // echo "----";
+          // echo $fecha_php;
+          $fecha_php;
           $PRECIO_ART = $arti['COSTO_PROM'];
           $CANTIDAD_ART = $item['cantidad'];
           $TotalxArt = $arti['COSTO_PROM'] * $item['cantidad'];
