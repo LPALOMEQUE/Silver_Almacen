@@ -762,7 +762,6 @@ if (0 !== sqlsrv_num_rows($res)){
 
                           id= "<?php echo $category['CVE_ART'] ?>";
                           cantidad= $('#qty<?php echo $category['CVE_ART'] ?>').val();
-                          debugger;
                           newCantidad = Math.abs(cantidad);
 
                           if (newCantidad <= <?php echo $EXISTENCIA ?>) {
@@ -1278,6 +1277,8 @@ if (0 !== sqlsrv_num_rows($res)){
 
 $(document).ready(function(){
 
+  alertify.set('notifier','position', 'top-right');
+
   <?php
   if (isset($ID_ARTICLES)) {
     foreach($ID_ARTICLES as $key => $item){
@@ -1293,13 +1294,11 @@ $(document).ready(function(){
     email= $('#txt_Email').val();
     pass= $('#txt_Pass').val();
     if(email == ""){
-
-      alert("Debe ingresar un E-mail...");
+      alertify.error("Debe ingresar un E-mail.");
       return false;
     }
     if(pass == ""){
-
-      alert("Debe ingresar una contraseña...");
+      alertify.error("Debe ingresar una contraseña.");
       return false;
     }
     if(email != "" && pass != ""){
@@ -1332,87 +1331,219 @@ $(document).ready(function(){
     pass= $('#txtPass').val();
     roll = 'COMUN';
 
+    if(nombre == ""){
+
+      alertify.error("Debe ingresar un nombre.");
+
+      return false;
+    }
+    if(apellidoP == ""){
+
+      alertify.error("Debe ingresar un apellido paterno.");
+
+      return false;
+
+    }if(apellidoM == ""){
+
+      alertify.error("Debe ingresar un apellido Materno.");
+
+      return false;
+    }
+    if(calle == ""){
+      alertify.error("Debe ingresar una calle.");
+
+      return false;
+
+    }if(numCalle == ""){
+      alertify.error("Debe ingresar un número de la ubicación.");
+
+      return false;
+    }
+    if(cp == ""){
+      alertify.error("Debe ingresar un código postal.");
+
+      return false;
+    }
+    if(ciudad == ""){
+      alertify.error("Debe ingresar una ciudad.");
+
+      return false;
+    }
+    if(estado == ""){
+      alertify.error("Debe ingresar un estado.");
+
+      return false;
+    }
+    if(cel == ""){
+      alertify.error("Debe ingresar un número de contacto.");
+
+      return false;
+    }
+
+    if (txtCel.value.length != 10) {
+      alertify.error("El número celular es incorrecto ya que tiene " + txtCel.value.length + " caracteres y debe contener 10.");
+      txtCel.focus();
+      return false;
+    }
+
+    if(nombre_Recibe == ""){
+      alertify.error("Debe ingresar un nombre de quien recibirá el producto.");
+
+      return false;
+    }
+    if(apellidoP_Recibe == ""){
+      alertify.error("Debe ingresar un apellido paterno de quien recibirá el producto.");
+
+      return false;
+    }
+
+    if(apellidoM_Recibe == ""){
+      alertify.error("Debe ingresar un apellido Materno de quien recibirá el producto.");
+
+      return false;
+    }
+
+    if(email == ""){
+      alertify.error("Debe ingresar un E-mail.");
+
+      return false;
+    }
+    if(validar_email( email ) )
+    {
+    }
+    else
+    {
+      alertify.error("El correo: " + email + " no contiene el formato correcto, verifíquelo.");
+
+      email = 1;
+      return false;
+    }
+
+    if(pass == ""){
+      alertify.error("Debe ingresar una contraseña.");
+
+      return false;
+    }
+
+    if(roll == 0){
+      alertify.error("Debe seleccionar un roll de usuario.");
+
+      return false;
+    }
+    if(nombre != "" &&
+    apellidoP != "" &&
+    apellidoM != "" &&
+    calle != "" &&
+    numCalle != "" &&
+    cp != "" &&
+    ciudad != "" &&
+    estado != "" &&
+    cel != "" &&
+    nombre_Recibe != "" &&
+    apellidoP_Recibe != "" &&
+    apellidoM_Recibe != "" &&
+    txtCel.value.length == 10  &&
+    email != "" &&
+    email !=1 &&
+    pass != "" &&
+    roll !=0){
+      agregarUsuarios(nombre,
+        apellidoP,
+        apellidoM,
+        calle,
+        numCalle,
+        cp,ciudad,
+        estado,
+        cel,
+        nombre_Recibe,
+        apellidoP_Recibe,
+        apellidoM_Recibe,
+        email,
+        pass,
+        roll);
+      }
+    });
+
+
+    $('#btnGuardarC').click(function(){
+      nombre = $('#txtNombreC').val();
+      apellidoP = $('#txtApellidoPC').val();
+      apellidoM = $('#txtApellidoMC').val();
+      calle = $('#txtCalleC').val();
+      numCalle = $('#txtNumCalleC').val();
+      cp = $('#txtCpC').val();
+      ciudad = $('#txtCiudadC').val();
+      estado = $('#txtEstadoC').val();
+      cel = $('#txtCelC').val();
+      nombre_Recibe = ' ';
+      apellidoP_Recibe = ' ';
+      apellidoM_Recibe = ' ';
+      email= $('#txtEmailC').val();
+
+      // =================================================
+      pass= 'Silver2020';
+      roll = 'COMUN';
+      // =================================================
+
       if(nombre == ""){
 
-        alertify.error("Debe ingresar un nombre...");
+        alertify.error("Debe ingresar un nombre.");
 
         return false;
       }
       if(apellidoP == ""){
 
-        msj = '<?php echo $mensaje = "Debe ingresar un apellido paterno..." ?>';
-
-        $('#ModalViewCamposFaltantes').modal('toggle');
+        alertify.error("Debe ingresar un apellido paterno.");
 
         return false;
 
       }if(apellidoM == ""){
-        <?php $mensaje = "Debe ingresar un apellido Materno..." ?>
 
-        $('#ModalViewCamposFaltantes').modal('toggle');
+        alertify.error("Debe ingresar un apellido Materno.");
 
         return false;
       }
       if(calle == ""){
-        <?php $mensaje = "Debe ingresar una calle..." ?>
-
-        $('#ModalViewCamposFaltantes').modal('toggle');
+        alertify.error("Debe ingresar una calle.");
 
         return false;
 
       }if(numCalle == ""){
-        <?php $mensaje = "Debe ingresar un número de la ubicación..." ?>
-
-        $('#ModalViewCamposFaltantes').modal('toggle');
+        alertify.error("Debe ingresar un número de la ubicación.");
 
         return false;
       }
       if(cp == ""){
-        <?php $mensaje = "Debe ingresar un código postal..." ?>
-
-        $('#ModalViewCamposFaltantes').modal('toggle');
+        alertify.error("Debe ingresar un código postal.");
 
         return false;
-      }if(ciudad == ""){
+      }
 
-        alert("Debe ingresar una ciudad...");
+      if(ciudad == ""){
+        alertify.error("Debe ingresar una ciudad.");
+
         return false;
       }
       if(estado == ""){
+        alertify.error("Debe ingresar un estado.");
 
-        alert("Debe ingresar un estado...");
         return false;
       }
       if(cel == ""){
+        alertify.error("Debe ingresar un número de contacto.");
 
-        alert("Debe ingresar un número de contacto...");
         return false;
       }
 
-      if(nombre_Recibe == ""){
-
-        alert("Debe ingresar un nombre de quien recibirá el producto...");
-        return false;
-      }
-      if(apellidoP_Recibe == ""){
-
-        alert("Debe ingresar un apellido paterno de quien recibirá el producto...");
-        return false;
-      }if(apellidoM_Recibe == ""){
-
-        alert("Debe ingresar un apellido Materno de quien recibirá el producto...");
-        return false;
-      }
-
-      if (txtCel.value.length != 10) {
-        alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
-        txtCel.focus();
+      if (txtCelC.value.length != 10) {
+        alertify.error("El número celular es incorrecto ya que tiene " + txtCelC.value.length + " caracteres y debe contener 10.");
+        txtCelC.focus();
         return false;
       }
 
       if(email == ""){
+        alertify.error("Debe ingresar un E-mail.");
 
-        alert("Debe ingresar un E-mail...");
         return false;
       }
       if(validar_email( email ) )
@@ -1420,22 +1551,13 @@ $(document).ready(function(){
       }
       else
       {
-        alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+        alertify.error("El correo: " + email + " no contiene el formato correcto, verifíquelo.");
+
         email = 1;
         return false;
       }
 
-      if(pass == ""){
 
-        alert("Debe ingresar una contraseña...");
-        return false;
-      }
-
-      if(roll == 0){
-
-        alert("Debe seleccionar un roll de usuario...");
-        return false;
-      }
       if(nombre != "" &&
       apellidoP != "" &&
       apellidoM != "" &&
@@ -1445,10 +1567,9 @@ $(document).ready(function(){
       ciudad != "" &&
       estado != "" &&
       cel != "" &&
-      nombre_Recibe != "" &&
-      apellidoP_Recibe != "" &&
-      apellidoM_Recibe != "" &&
-      txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
+      txtCelC.value.length == 10  &&
+      email != "" &&
+      email !=1){
         agregarUsuarios(nombre,
           apellidoP,
           apellidoM,
@@ -1466,234 +1587,141 @@ $(document).ready(function(){
         }
       });
 
+      $('#btnEntrarModal').click(function(){
 
-      $('#btnGuardarC').click(function(){
-        nombre = $('#txtNombreC').val();
-        apellidoP = $('#txtApellidoPC').val();
-        apellidoM = $('#txtApellidoMC').val();
-        calle = $('#txtCalleC').val();
-        numCalle = $('#txtNumCalleC').val();
-        cp = $('#txtCpC').val();
-        ciudad = $('#txtCiudadC').val();
-        estado = $('#txtEstadoC').val();
-        cel = $('#txtCelC').val();
-        nombre_Recibe = ' ';
-        apellidoP_Recibe = ' ';
-        apellidoM_Recibe = ' ';
-        email= $('#txtEmailC').val();
-
-        if(validar_email( email ))
-        {
-        }
-        else
-        {
-          alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
-          email = 1;
-        }
-        pass= 'Silver2020';
-
-
-        roll = 'COMUN';
-
-        if(nombre == ""){
-
-          alert("Debe ingresar un nombrel...");
-        }
-        if(apellidoP == ""){
-
-          alert("Debe ingresar un apellido paterno...");
-        }if(apellidoM == ""){
-
-          alert("Debe ingresar un apellido Materno...");
-        }
-        if(calle == ""){
-
-          alert("Debe ingresar una calle...");
-        }if(numCalle == ""){
-
-          alert("Debe ingresar un número de la hubicación...");
-        }
-        if(cp == ""){
-
-          alert("Debe ingresar un código postal...");
-        }if(ciudad == ""){
-
-          alert("Debe ingresar una ciudad...");
-        }
-        if(estado == ""){
-
-          alert("Debe ingresar un estado...");
-        }
-        if(cel == ""){
-
-          alert("Debe ingresar un número de contacto...");
-        }
-
-        if (txtCelC.value.length != 10) {
-          alert('El número celular es incorrecto ya que tiene ' + txtCelC.value.length + ' caracteres y debe contener 10...');
-          txtCelC.focus();
-        }
-
-        if(email == ""){
-
-          alert("Debe ingresar un E-mail...");
-        }
-
-        if(nombre != "" &&
-        apellidoP != "" &&
-        apellidoM != "" &&
-        calle != "" &&
-        numCalle != "" &&
-        cp != "" &&
-        ciudad != "" &&
-        estado != "" &&
-        cel != "" &&
-        txtCelC.value.length == 10  && email != "" && email !=1){
-          agregarUsuarios(nombre,
-            apellidoP,
-            apellidoM,
-            calle,
-            numCalle,
-            cp,ciudad,
-            estado,
-            cel,
-            nombre_Recibe,
-            apellidoP_Recibe,
-            apellidoM_Recibe,
-            email,
-            pass,
-            roll);
-          }
-        });
-
-        $('#btnEntrarModal').click(function(){
-
-          $('#ModalViewAccount').hide();
-
-        });
-
-
-        $('#btnRegistrateModal').click(function(){
-
-          $('#ModalViewAccount').hide();
-
-        });
-
-        $('#btnBusPrecio').click(function(){
-          query=0;
-          minval = parseInt($('#minVal').val());
-          maxval = parseInt($('#maxVal').val());
-          material = 1;
-          accesorio = 1;
-          if (minval != 0 && maxval != 0) {
-            query = 2;
-          }
-          if (minval > maxval) {
-            alert('El monto mínimo no puede ser mayor que el monto máximo.')
-          }
-          if (minval < maxval && maxval > minval ) {
-            filtros(minval,maxval,material,accesorio,query);
-          }
-        });
-
-        $('#btnLimpiarPriceFilter').click(function(){
-          vaciar=1;
-          limpiarPriceFilter(vaciar);
-        });
-
-        $('#btnBusMaterial').click(function(){
-          minval = 0;
-          maxval = 100000;
-          material = $("#cbmMaterial option:selected").val();
-          accesorio = 1;
-          query = 0;
-
-          if(material == 0){
-            alert("Debe seleccionar un material...");
-          }else{
-            query = 2;
-            filtros(minval,maxval,material,accesorio,query);
-          }
-        });
-
-        $('#btnBusAcs').click(function(){
-          query = 0;
-
-          minval = 0;
-          maxval = 100000;
-          material = 1;
-          accesorio = $('#cbmAccesorio option:selected').val();
-          if(accesorio == 0){
-            alert("Debe seleccionar un accesorio...");
-          }else{
-            query = 2;
-            filtros(minval,maxval,material,accesorio,query);
-          }
-
-        });
-
-        // Enter de inicio de sesion
-        var input = document.getElementById("txt_Pass");
-        input.addEventListener("keyup", function(event) {
-          // Number 13 is the "Enter" key on the keyboard
-          if (event.keyCode === 13) {
-            // Cancel the default action, if needed
-            event.preventDefault();
-            // Trigger the button element with a click
-            document.getElementById("btnEntrar").click();
-          }
-        });
-
-        // Enter guardar clientes Consigna
-        var txtEmailC = document.getElementById("txtEmailC");
-        txtEmailC.addEventListener("keyup", function(event) {
-          // Number 13 is the "Enter" key on the keyboard
-          if (event.keyCode === 13) {
-            // Cancel the default action, if needed
-            event.preventDefault();
-            // Trigger the button element with a click
-            document.getElementById("btnGuardarC").click();
-          }
-        });
-
-        // Enter guardar clientes
-        var txtEmail = document.getElementById("txtEmail");
-        txtEmail.addEventListener("keyup", function(event) {
-          // Number 13 is the "Enter" key on the keyboard
-          if (event.keyCode === 13) {
-            // Cancel the default action, if needed
-            event.preventDefault();
-            // Trigger the button element with a click
-            document.getElementById("btnGuardar").click();
-          }
-        });
-
+        $('#ModalViewAccount').hide();
 
       });
 
-      function mayus(e) {
-        e.value = e.value.toUpperCase();
-      }
-      function minus(e) {
-        e.value = e.value.toLowerCase();
-      }
 
-      function validar_email( email )
-      {
-        var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-        return regex.test(email) ? true : false;
-      }
+      $('#btnRegistrateModal').click(function(){
 
-      var slider = document.getElementById("myRangeMin");
-      var sliderMax = document.getElementById("myRangeMax");
-      // $('#minVal').val(slider.value);
-      // $('#maxVal').val(sliderMax.value);
+        $('#ModalViewAccount').hide();
 
-      slider.oninput = function() {
-        $('#minVal').val(slider.value);
-      }
-      sliderMax.oninput = function() {
-        $('#maxVal').val(sliderMax.value);
-      }
+      });
 
-      </script>
+      $('#btnBusPrecio').click(function(){
+        query=0;
+        minval = parseInt($('#minVal').val());
+        maxval = parseInt($('#maxVal').val());
+        material = 1;
+        accesorio = 1;
+        if (minval != 0 && maxval != 0) {
+          query = 2;
+        }
+        if (minval > maxval) {
+
+          alertify.error("El monto mínimo no puede ser mayor que el monto máximo.");
+          return false;
+        }
+        if (minval < maxval && maxval > minval ) {
+          filtros(minval,maxval,material,accesorio,query);
+        }
+      });
+
+      $('#btnLimpiarPriceFilter').click(function(){
+        vaciar=1;
+        limpiarPriceFilter(vaciar);
+      });
+
+      $('#btnBusMaterial').click(function(){
+        minval = 0;
+        maxval = 100000;
+        material = $("#cbmMaterial option:selected").val();
+        accesorio = 1;
+        query = 0;
+
+        if(material == 0){
+
+          alertify.error("Debe seleccionar un material.");
+          return false;
+        }
+        else{
+          query = 2;
+          filtros(minval,maxval,material,accesorio,query);
+        }
+      });
+
+      $('#btnBusAcs').click(function(){
+        query = 0;
+
+        minval = 0;
+        maxval = 100000;
+        material = 1;
+        accesorio = $('#cbmAccesorio option:selected').val();
+        if(accesorio == 0){
+          alertify.error("Debe seleccionar un accesorio.");
+          return false;
+        }
+        else{
+          query = 2;
+          filtros(minval,maxval,material,accesorio,query);
+        }
+
+      });
+
+      // Enter de inicio de sesion
+      var input = document.getElementById("txt_Pass");
+      input.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnEntrar").click();
+        }
+      });
+
+      // Enter guardar clientes Consigna
+      var txtEmailC = document.getElementById("txtEmailC");
+      txtEmailC.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnGuardarC").click();
+        }
+      });
+
+      // Enter guardar clientes
+      var txtEmail = document.getElementById("txtEmail");
+      txtEmail.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnGuardar").click();
+        }
+      });
+
+
+    });
+
+    function mayus(e) {
+      e.value = e.value.toUpperCase();
+    }
+    function minus(e) {
+      e.value = e.value.toLowerCase();
+    }
+
+    function validar_email( email )
+    {
+      var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      return regex.test(email) ? true : false;
+    }
+
+    var slider = document.getElementById("myRangeMin");
+    var sliderMax = document.getElementById("myRangeMax");
+    // $('#minVal').val(slider.value);
+    // $('#maxVal').val(sliderMax.value);
+
+    slider.oninput = function() {
+      $('#minVal').val(slider.value);
+    }
+    sliderMax.oninput = function() {
+      $('#maxVal').val(sliderMax.value);
+    }
+
+    </script>
