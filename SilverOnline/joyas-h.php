@@ -9,7 +9,7 @@ $valMin =1;
 $valMax = 1;
 $queryVal=0;
 $BD = '01';
-$mensaje = '';
+
 // PRECIO CON DESCUENTO (SUPER PRECIO)
 $ID_PRECIO = 2;
 
@@ -726,7 +726,7 @@ if (0 !== sqlsrv_num_rows($res)){
                               newCantidad);
                             }
                             else {
-                              $('#ModalViewStatusStock<?php echo $category['CVE_ART'] ?>').modal('toggle');
+                              alertify.error("No hay stock disponible, solo puede agregar la cantidad maxima de: <?php echo $EXISTENCIA ?>");
                             }
                           });
 
@@ -765,37 +765,12 @@ if (0 !== sqlsrv_num_rows($res)){
           </div>
         </div>
       </div>
-      <!-- Modal View STOCK -->
-      <div class="modal fade" id="ModalViewStatusStock<?php echo $category['CVE_ART'] ?>" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatusStock" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="ModalViewStatusStock">Mensaje del sistema...</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <br/>
-              <div class="row">
-                <div class="col-md-12 mb-3">
-                  <h6><strong>No hay stock disponible, solo puede agregar la cantidad maxima de: <?php echo $EXISTENCIA ?></strong></h6>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-            </div>
-          </div>
-        </div>
-      </div>
       <?php
     }
     sqlsrv_close($con);
   }
   ?>
   <!-- ****** Quick View Modal Area End ****** -->
-
   <section class="shop_grid_area section_padding_100">
     <div class="container">
       <div class="row">

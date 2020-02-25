@@ -324,33 +324,6 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                 </div>
               </div>
 
-              <!-- Modal para View StatusLoginError -->
-              <div class="modal fade" id="ModalViewStatusLoginError" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatusLoginError" aria-hidden="true">
-                <div class="modal-dialog modal-md" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="ModalViewStatusLoginError">Mensaje del sistema...</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <br/>
-                      <!-- <br/> -->
-                      <!-- <br/> -->
-                      <div class="row">
-                        <div class="col-md-12 mb-3">
-                          <h6><strong>Usuario o contraseña incorrecto...</strong></h6>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
               <!-- Modal para registro de Clientes -->
               <div class="modal fade" id="ModalRegistroCliente" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroCliente" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
@@ -743,7 +716,7 @@ if (0 !== sqlsrv_num_rows($res)){
                               newCantidad);
                             }
                             else {
-                              $('#ModalViewStatusStock<?php echo $category['CVE_ART'] ?>').modal('toggle');
+                              alertify.error("No hay stock disponible, solo puede agregar la cantidad maxima de: <?php echo $EXISTENCIA ?>");
                             }
                           });
 
@@ -777,30 +750,6 @@ if (0 !== sqlsrv_num_rows($res)){
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Modal View STOCK -->
-      <div class="modal fade" id="ModalViewStatusStock<?php echo $category['CVE_ART'] ?>" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatusStock" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="ModalViewStatusStock">Mensaje del sistema...</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <br/>
-              <div class="row">
-                <div class="col-md-12 mb-3">
-                  <h6><strong>No hay stock disponible, solo puede agregar la cantidad maxima de: <?php echo $EXISTENCIA ?></strong></h6>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
           </div>
         </div>
@@ -1250,6 +1199,8 @@ if (0 !== sqlsrv_num_rows($res)){
 
 $(document).ready(function(){
 
+  alertify.set('notifier','position', 'top-right');
+
   <?php
   if (isset($ID_ARTICLES)) {
     foreach($ID_ARTICLES as $key => $item){
@@ -1557,134 +1508,134 @@ $(document).ready(function(){
         }
       });
 
-        $('#btnEntrarModal').click(function(){
+      $('#btnEntrarModal').click(function(){
 
-          $('#ModalViewAccount').hide();
-
-        });
-
-
-        $('#btnRegistrateModal').click(function(){
-
-          $('#ModalViewAccount').hide();
-
-        });
-
-        $('#btnBusPrecio').click(function(){
-          query=0;
-          minval = parseInt($('#minVal').val());
-          maxval = parseInt($('#maxVal').val());
-          material = 1;
-          accesorio = 1;
-          if (minval != 0 && maxval != 0) {
-            query = 2;
-          }
-          if (minval > maxval) {
-            alertify.error("El monto mínimo no puede ser mayor que el monto máximo.");
-          }
-          if (minval < maxval && maxval > minval ) {
-            filtrosMujer(minval,maxval,material,accesorio,query);
-          }
-        });
-
-        $('#btnLimpiarPriceFilter').click(function(){
-          vaciar=1;
-          limpiarPriceFilterM(vaciar);
-        });
-
-        $('#btnBusMaterial').click(function(){
-          minval = 0;
-          maxval = 100000;
-          material = $("#cbmMaterial option:selected").val();
-          accesorio = 1;
-          query = 0;
-
-          if(material == 0){
-            alertify.error("Debe seleccionar un material.");
-          }else{
-            query = 2;
-            filtrosMujer(minval,maxval,material,accesorio,query);
-          }
-        });
-
-        $('#btnBusAcs').click(function(){
-          query = 0;
-
-          minval = 0;
-          maxval = 100000;
-          material = 1;
-          accesorio = $('#cbmAccesorio option:selected').val();
-          if(accesorio == 0){
-            alertify.error("Debe seleccionar un accesorio.");
-          }else{
-            query = 2;
-            filtrosMujer(minval,maxval,material,accesorio,query);
-          }
-
-        });
-
-        // Enter de inicio de sesion
-        var input = document.getElementById("txt_Pass");
-        input.addEventListener("keyup", function(event) {
-          // Number 13 is the "Enter" key on the keyboard
-          if (event.keyCode === 13) {
-            // Cancel the default action, if needed
-            event.preventDefault();
-            // Trigger the button element with a click
-            document.getElementById("btnEntrar").click();
-          }
-        });
-
-        // Enter guardar clientes Consigna
-        var txtEmailC = document.getElementById("txtEmailC");
-        txtEmailC.addEventListener("keyup", function(event) {
-          // Number 13 is the "Enter" key on the keyboard
-          if (event.keyCode === 13) {
-            // Cancel the default action, if needed
-            event.preventDefault();
-            // Trigger the button element with a click
-            document.getElementById("btnGuardarC").click();
-          }
-        });
-
-        // Enter guardar clientes
-        var txtEmail = document.getElementById("txtEmail");
-        txtEmail.addEventListener("keyup", function(event) {
-          // Number 13 is the "Enter" key on the keyboard
-          if (event.keyCode === 13) {
-            // Cancel the default action, if needed
-            event.preventDefault();
-            // Trigger the button element with a click
-            document.getElementById("btnGuardar").click();
-          }
-        });
+        $('#ModalViewAccount').hide();
 
       });
 
-      function mayus(e) {
-        e.value = e.value.toUpperCase();
-      }
-      function minus(e) {
-        e.value = e.value.toLowerCase();
-      }
 
-      function validar_email( email )
-      {
-        var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-        return regex.test(email) ? true : false;
-      }
+      $('#btnRegistrateModal').click(function(){
 
-      var slider = document.getElementById("myRangeMin");
-      var sliderMax = document.getElementById("myRangeMax");
-      // $('#minVal').val(slider.value);
-      // $('#maxVal').val(sliderMax.value);
+        $('#ModalViewAccount').hide();
 
-      slider.oninput = function() {
-        $('#minVal').val(slider.value);
-      }
-      sliderMax.oninput = function() {
-        $('#maxVal').val(sliderMax.value);
-      }
+      });
+
+      $('#btnBusPrecio').click(function(){
+        query=0;
+        minval = parseInt($('#minVal').val());
+        maxval = parseInt($('#maxVal').val());
+        material = 1;
+        accesorio = 1;
+        if (minval != 0 && maxval != 0) {
+          query = 2;
+        }
+        if (minval > maxval) {
+          alertify.error("El monto mínimo no puede ser mayor que el monto máximo.");
+        }
+        if (minval < maxval && maxval > minval ) {
+          filtrosMujer(minval,maxval,material,accesorio,query);
+        }
+      });
+
+      $('#btnLimpiarPriceFilter').click(function(){
+        vaciar=1;
+        limpiarPriceFilterM(vaciar);
+      });
+
+      $('#btnBusMaterial').click(function(){
+        minval = 0;
+        maxval = 100000;
+        material = $("#cbmMaterial option:selected").val();
+        accesorio = 1;
+        query = 0;
+
+        if(material == 0){
+          alertify.error("Debe seleccionar un material.");
+        }else{
+          query = 2;
+          filtrosMujer(minval,maxval,material,accesorio,query);
+        }
+      });
+
+      $('#btnBusAcs').click(function(){
+        query = 0;
+
+        minval = 0;
+        maxval = 100000;
+        material = 1;
+        accesorio = $('#cbmAccesorio option:selected').val();
+        if(accesorio == 0){
+          alertify.error("Debe seleccionar un accesorio.");
+        }else{
+          query = 2;
+          filtrosMujer(minval,maxval,material,accesorio,query);
+        }
+
+      });
+
+      // Enter de inicio de sesion
+      var input = document.getElementById("txt_Pass");
+      input.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnEntrar").click();
+        }
+      });
+
+      // Enter guardar clientes Consigna
+      var txtEmailC = document.getElementById("txtEmailC");
+      txtEmailC.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnGuardarC").click();
+        }
+      });
+
+      // Enter guardar clientes
+      var txtEmail = document.getElementById("txtEmail");
+      txtEmail.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnGuardar").click();
+        }
+      });
+
+    });
+
+    function mayus(e) {
+      e.value = e.value.toUpperCase();
+    }
+    function minus(e) {
+      e.value = e.value.toLowerCase();
+    }
+
+    function validar_email( email )
+    {
+      var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      return regex.test(email) ? true : false;
+    }
+
+    var slider = document.getElementById("myRangeMin");
+    var sliderMax = document.getElementById("myRangeMax");
+    // $('#minVal').val(slider.value);
+    // $('#maxVal').val(sliderMax.value);
+
+    slider.oninput = function() {
+      $('#minVal').val(slider.value);
+    }
+    sliderMax.oninput = function() {
+      $('#maxVal').val(sliderMax.value);
+    }
 
 
-      </script>
+    </script>
