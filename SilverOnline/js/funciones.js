@@ -1,4 +1,8 @@
+
+
 function ModDatosUsuarios(nombre,nombre_recibe,calle,numCalle,cp,ciudad,estado,cel,email){
+  alertify.set('notifier','position', 'top-right');
+
   cadena = "NOMBRE=" +nombre +
   "&NOMBRE_RECIBE=" +nombre_recibe +
   "&CALLE=" + calle +
@@ -90,6 +94,7 @@ function getCliente(id_cliente,nombre){
 }
 
 function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,estado,cel,nombre_Recibe,apellidoP_Recibe,apellidoM_Recibe,email,pass,roll){
+
   cadena = "NOMBRE=" +nombre +
   "&apellidoP=" + apellidoP +
   "&apellidoM=" +apellidoM +
@@ -114,15 +119,44 @@ function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
     success:function(result){
       if(result==1){
 
-        alert("Se registro el usuario de forma correcta...");
-        location.reload();
+        // CLIENTES REMISION
+        $('#txtNombre').val('');
+        $('#txtApellidoP').val('');
+        $('#txtApellidoM').val('');
+        $('#txtCalle').val('');
+        $('#txtNumCalle').val('');
+        $('#txtCp').val('');
+        $('#txtCiudad').val('');
+        $('#txtEstado').val('');
+        $('#txtCel').val('');
+        $('#txtNombre_Recibe').val('');
+        $('#txtApellidoP_Recibe').val('');
+        $('#txtApellidoM_Recibe').val('');
+        $('#txtEmail').val('');
+        $('#txtPass').val('');
+
+        // CLIENTES CONSIGNA
+        $('#txtNombreC').val('');
+        $('#txtApellidoPC').val('');
+        $('#txtApellidoMC').val('');
+        $('#txtCalleC').val('');
+        $('#txtNumCalleC').val('');
+        $('#txtCpC').val('');
+        $('#txtCiudadC').val('');
+        $('#txtEstadoC').val('');
+        $('#txtCelC').val('');
+        $('#txtEmailC').val('');
+
+        $('#ModalRegistroUsuarios').hide();
+
+        alertify.success("Se registro el usuario de forma correcta.");
+        
+        // location.reload();
       }
       else{
-        alert("Error...");
+        alertify.error("Error.");
       }
-
     }
-
   });
 }
 
@@ -164,6 +198,7 @@ function loginValidaCostoEnv(email, pass){
 }
 
 function login(email, pass){
+
   cadena = "EMAIL=" + email + "&PASS=" + pass;
   $.ajax({
     type:"POST",
@@ -171,10 +206,12 @@ function login(email, pass){
     data:cadena,
     success:function(result){
       if(result==1){
+        alertify.success("Inicio de sesión correcto.");
+
         location.reload();
       }
       else{
-        $('#ModalViewStatusLoginError').modal('toggle');
+        alertify.error("Usuario o contraseña incorrecto.");
       }
     }
   });

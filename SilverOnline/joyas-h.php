@@ -326,49 +326,6 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                 </div>
               </div>
 
-              <!-- Modal para View StatusLoginError -->
-              <div class="modal fade" id="ModalViewStatusLoginError" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatusLoginError" aria-hidden="true">
-                <div class="modal-dialog modal-md" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="ModalViewStatusLoginError">Mensaje del sistema...</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <br/>
-                      <div class="row">
-                        <div class="col-md-12 mb-3">
-                          <h6><strong>Usuario o contraseña incorrecto...</strong></h6>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
               <!-- Modal para registro de Clientes -->
               <div class="modal fade" id="ModalRegistroCliente" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroCliente" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
@@ -1590,14 +1547,12 @@ $(document).ready(function(){
       $('#btnEntrarModal').click(function(){
 
         $('#ModalViewAccount').hide();
-
       });
 
 
       $('#btnRegistrateModal').click(function(){
 
         $('#ModalViewAccount').hide();
-
       });
 
       $('#btnBusPrecio').click(function(){

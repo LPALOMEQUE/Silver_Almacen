@@ -1265,12 +1265,12 @@ $(document).ready(function(){
     email= $('#txt_Email').val();
     pass= $('#txt_Pass').val();
     if(email == ""){
-
-      alert("Debe ingresar un E-mail...");
+      alertify.error("Debe ingresar un E-mail.");
+      return false;
     }
     if(pass == ""){
-
-      alert("Debe ingresar una contraseña...");
+      alertify.error("Debe ingresar una contraseña.");
+      return false;
     }
     if(email != "" && pass != ""){
       login(email, pass);
@@ -1298,62 +1298,83 @@ $(document).ready(function(){
     apellidoM_Recibe = ' ';
     email= $('#txtEmailC').val();
 
-    if(validar_email( email ))
+    // =================================================
+    pass= 'Silver2020';
+    roll = 'COMUN';
+    // =================================================
+
+    if(nombre == ""){
+
+      alertify.error("Debe ingresar un nombre.");
+
+      return false;
+    }
+    if(apellidoP == ""){
+
+      alertify.error("Debe ingresar un apellido paterno.");
+
+      return false;
+
+    }if(apellidoM == ""){
+
+      alertify.error("Debe ingresar un apellido Materno.");
+
+      return false;
+    }
+    if(calle == ""){
+      alertify.error("Debe ingresar una calle.");
+
+      return false;
+
+    }if(numCalle == ""){
+      alertify.error("Debe ingresar un número de la ubicación.");
+
+      return false;
+    }
+    if(cp == ""){
+      alertify.error("Debe ingresar un código postal.");
+
+      return false;
+    }
+
+    if(ciudad == ""){
+      alertify.error("Debe ingresar una ciudad.");
+
+      return false;
+    }
+    if(estado == ""){
+      alertify.error("Debe ingresar un estado.");
+
+      return false;
+    }
+    if(cel == ""){
+      alertify.error("Debe ingresar un número de contacto.");
+
+      return false;
+    }
+
+    if (txtCelC.value.length != 10) {
+      alertify.error("El número celular es incorrecto ya que tiene " + txtCelC.value.length + " caracteres y debe contener 10.");
+      txtCelC.focus();
+      return false;
+    }
+
+    if(email == ""){
+      alertify.error("Debe ingresar un E-mail.");
+
+      return false;
+    }
+    if(validar_email( email ) )
     {
     }
     else
     {
-      alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+      alertify.error("El correo: " + email + " no contiene el formato correcto, verifíquelo.");
+
       email = 1;
-    }
-    pass= 'Silver2020';
-
-
-    roll = 'COMUN';
-
-    if(nombre == ""){
-
-      alert("Debe ingresar un nombrel...");
-    }
-    if(apellidoP == ""){
-
-      alert("Debe ingresar un apellido paterno...");
-    }if(apellidoM == ""){
-
-      alert("Debe ingresar un apellido Materno...");
-    }
-    if(calle == ""){
-
-      alert("Debe ingresar una calle...");
-    }if(numCalle == ""){
-
-      alert("Debe ingresar un número de la hubicación...");
-    }
-    if(cp == ""){
-
-      alert("Debe ingresar un código postal...");
-    }if(ciudad == ""){
-
-      alert("Debe ingresar una ciudad...");
-    }
-    if(estado == ""){
-
-      alert("Debe ingresar un estado...");
-    }
-    if(cel == ""){
-
-      alert("Debe ingresar un número de contacto...");
+      return false;
     }
 
-    if (txtCelC.value.length != 10) {
-      alert('El número celular es incorrecto ya que tiene ' + txtCelC.value.length + ' caracteres y debe contener 10...');
-      txtCelC.focus();
-    }
-
-    if(email == ""){
-
-      alert("Debe ingresar un E-mail...");
-    }
 
     if(nombre != "" &&
     apellidoP != "" &&
@@ -1364,7 +1385,9 @@ $(document).ready(function(){
     ciudad != "" &&
     estado != "" &&
     cel != "" &&
-    txtCelC.value.length == 10  && email != "" && email !=1){
+    txtCelC.value.length == 10  &&
+    email != "" &&
+    email !=1){
       agregarUsuarios(nombre,
         apellidoP,
         apellidoM,
@@ -1383,6 +1406,8 @@ $(document).ready(function(){
     });
 
     $('#btnGuardar').click(function(){
+
+
       nombre = $('#txtNombre').val();
       apellidoP = $('#txtApellidoP').val();
       apellidoM = $('#txtApellidoM').val();
@@ -1396,130 +1421,141 @@ $(document).ready(function(){
       apellidoP_Recibe = $('#txtApellidoP_Recibe').val();
       apellidoM_Recibe = $('#txtApellidoM_Recibe').val();
       email= $('#txtEmail').val();
+      pass= $('#txtPass').val();
+      roll = 'COMUN';
 
+      if(nombre == ""){
+
+        alertify.error("Debe ingresar un nombre.");
+
+        return false;
+      }
+      if(apellidoP == ""){
+
+        alertify.error("Debe ingresar un apellido paterno.");
+
+        return false;
+
+      }if(apellidoM == ""){
+
+        alertify.error("Debe ingresar un apellido Materno.");
+
+        return false;
+      }
+      if(calle == ""){
+        alertify.error("Debe ingresar una calle.");
+
+        return false;
+
+      }if(numCalle == ""){
+        alertify.error("Debe ingresar un número de la ubicación.");
+
+        return false;
+      }
+      if(cp == ""){
+        alertify.error("Debe ingresar un código postal.");
+
+        return false;
+      }
+      if(ciudad == ""){
+        alertify.error("Debe ingresar una ciudad.");
+
+        return false;
+      }
+      if(estado == ""){
+        alertify.error("Debe ingresar un estado.");
+
+        return false;
+      }
+      if(cel == ""){
+        alertify.error("Debe ingresar un número de contacto.");
+
+        return false;
+      }
+
+      if (txtCel.value.length != 10) {
+        alertify.error("El número celular es incorrecto ya que tiene " + txtCel.value.length + " caracteres y debe contener 10.");
+        txtCel.focus();
+        return false;
+      }
+
+      if(nombre_Recibe == ""){
+        alertify.error("Debe ingresar un nombre de quien recibirá el producto.");
+
+        return false;
+      }
+      if(apellidoP_Recibe == ""){
+        alertify.error("Debe ingresar un apellido paterno de quien recibirá el producto.");
+
+        return false;
+      }
+
+      if(apellidoM_Recibe == ""){
+        alertify.error("Debe ingresar un apellido Materno de quien recibirá el producto.");
+
+        return false;
+      }
+
+      if(email == ""){
+        alertify.error("Debe ingresar un E-mail.");
+
+        return false;
+      }
       if(validar_email( email ) )
       {
       }
       else
       {
-        alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+        alertify.error("El correo: " + email + " no contiene el formato correcto, verifíquelo.");
+
         email = 1;
+        return false;
       }
-      pass= $('#txtPass').val();
 
-      <?php
-      if (isset($_SESSION["status"])) {
-        if($_SESSION["status"] == 'ADMIN'){
-          ?>
-          roll = 'ADMIN';
-          <?php
-        }
+      if(pass == ""){
+        alertify.error("Debe ingresar una contraseña.");
 
-        else {
-          ?>
-
-          roll = 'COMUN';
-          <?php
-        }
+        return false;
       }
-      else {
-        ?>
-        roll = 'COMUN';
 
-        <?php } ?>
+      if(roll == 0){
+        alertify.error("Debe seleccionar un roll de usuario.");
 
-        if(nombre == ""){
-
-          alert("Debe ingresar un nombrel...");
+        return false;
+      }
+      if(nombre != "" &&
+      apellidoP != "" &&
+      apellidoM != "" &&
+      calle != "" &&
+      numCalle != "" &&
+      cp != "" &&
+      ciudad != "" &&
+      estado != "" &&
+      cel != "" &&
+      nombre_Recibe != "" &&
+      apellidoP_Recibe != "" &&
+      apellidoM_Recibe != "" &&
+      txtCel.value.length == 10  &&
+      email != "" &&
+      email !=1 &&
+      pass != "" &&
+      roll !=0){
+        agregarUsuarios(nombre,
+          apellidoP,
+          apellidoM,
+          calle,
+          numCalle,
+          cp,ciudad,
+          estado,
+          cel,
+          nombre_Recibe,
+          apellidoP_Recibe,
+          apellidoM_Recibe,
+          email,
+          pass,
+          roll);
         }
-        if(apellidoP == ""){
-
-          alert("Debe ingresar un apellido paterno...");
-        }if(apellidoM == ""){
-
-          alert("Debe ingresar un apellido Materno...");
-        }
-        if(calle == ""){
-
-          alert("Debe ingresar una calle...");
-        }if(numCalle == ""){
-
-          alert("Debe ingresar un número de la hubicación...");
-        }
-        if(cp == ""){
-
-          alert("Debe ingresar un código postal...");
-        }if(ciudad == ""){
-
-          alert("Debe ingresar una ciudad...");
-        }
-        if(estado == ""){
-
-          alert("Debe ingresar un estado...");
-        }
-        if(cel == ""){
-
-          alert("Debe ingresar un número de contacto...");
-        }
-
-        if(nombre_Recibe == ""){
-
-          alert("Debe ingresar un nombre de quien recibirá el producto...");
-        }
-        if(apellidoP_Recibe == ""){
-
-          alert("Debe ingresar un apellido paterno de quien recibirá el producto...");
-        }if(apellidoM_Recibe == ""){
-
-          alert("Debe ingresar un apellido Materno de quien recibirá el producto...");
-        }
-
-        if (txtCel.value.length != 10) {
-          alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
-          txtCel.focus();
-        }
-
-        if(email == ""){
-
-          alert("Debe ingresar un E-mail...");
-        }
-        if(pass == ""){
-
-          alert("Debe ingresar una contraseña...");
-        }
-        if(roll == 0){
-
-          alert("Debe seleccionar un roll de usuario...");
-        }
-        if(nombre != "" &&
-        apellidoP != "" &&
-        apellidoM != "" &&
-        calle != "" &&
-        numCalle != "" &&
-        cp != "" &&
-        ciudad != "" &&
-        estado != "" &&
-        cel != "" &&
-        nombre_Recibe != "" &&
-        apellidoP_Recibe != "" &&
-        apellidoM_Recibe != "" &&
-        txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
-          agregarUsuarios(nombre,
-            apellidoP,
-            apellidoM,
-            calle,
-            numCalle,
-            cp,ciudad,
-            estado,
-            cel,
-            nombre_Recibe,
-            apellidoP_Recibe,
-            apellidoM_Recibe,
-            email,
-            pass,
-            roll);
-          }
-        });
+      });
 
         $('#btnEntrarModal').click(function(){
 
@@ -1544,7 +1580,7 @@ $(document).ready(function(){
             query = 2;
           }
           if (minval > maxval) {
-            alert('El monto mínimo no puede ser mayor que el monto máximo.')
+            alertify.error("El monto mínimo no puede ser mayor que el monto máximo.");
           }
           if (minval < maxval && maxval > minval ) {
             filtrosMujer(minval,maxval,material,accesorio,query);
@@ -1564,7 +1600,7 @@ $(document).ready(function(){
           query = 0;
 
           if(material == 0){
-            alert("Debe seleccionar un material...");
+            alertify.error("Debe seleccionar un material.");
           }else{
             query = 2;
             filtrosMujer(minval,maxval,material,accesorio,query);
@@ -1579,7 +1615,7 @@ $(document).ready(function(){
           material = 1;
           accesorio = $('#cbmAccesorio option:selected').val();
           if(accesorio == 0){
-            alert("Debe seleccionar un accesorio...");
+            alertify.error("Debe seleccionar un accesorio.");
           }else{
             query = 2;
             filtrosMujer(minval,maxval,material,accesorio,query);
