@@ -9,7 +9,7 @@ $valMin =1;
 $valMax = 1;
 $queryVal=0;
 $BD = '01';
-
+$mensaje = '';
 // PRECIO CON DESCUENTO (SUPER PRECIO)
 $ID_PRECIO = 2;
 
@@ -125,14 +125,16 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
       <link href="css/responsive.css" rel="stylesheet">
 
       <!-- css LFPO -->
-      <link rel="stylesheet" type="text/css" href="librerias/alertify/css/alertify.css" >
-      <link rel="stylesheet" type="text/css" href="librerias/alertify/css/themes/default.css" >
+      <link rel="stylesheet" type="text/css" href="alertifyjs/css/alertify.css">
+      <link rel="stylesheet" type="text/css" href="alertifyjs/css/themes/default.css">
       <!-- end -->
 
       <!-- scripts LFPO -->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
       <script src="js/jquery/jquery-2.2.4.min.js"></script>
+      <script src="alertifyjs/alertify.js"></script>
+
       <script src="js/funciones.js"></script>
       <script src="librerias/alertify/alertify.js"></script>
       <!-- end -->
@@ -350,6 +352,24 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                 </div>
               </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
               <!-- Modal para registro de Clientes -->
               <div class="modal fade" id="ModalRegistroCliente" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroCliente" aria-hidden="true">
                 <div class="modal-dialog modal-lg" role="document">
@@ -505,18 +525,6 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                         <div class="col-md-6 mb-3">
                           <label for="txtPass">Contraseña</label>
                           <input type="password" class="form-control" id="txtPass" value="" required>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-12 mb-3">
-                          <label id="lbRoll" for="cbmRoll">Roll</label>
-                          <select id="cbmRoll"  class="form-control" name="state">
-                            <option value="0">Selecciona...</option>
-                            ...
-                            <option value="ADMIN">ADMINISTRADOR</option>
-                            ...
-                            <option value="COMUN">COMÚN</option>form-control
-                          </select>
                         </div>
                       </div>
                     </div>
@@ -1288,10 +1296,12 @@ $(document).ready(function(){
     if(email == ""){
 
       alert("Debe ingresar un E-mail...");
+      return false;
     }
     if(pass == ""){
 
       alert("Debe ingresar una contraseña...");
+      return false;
     }
     if(email != "" && pass != ""){
       login(email, pass);
@@ -1320,99 +1330,112 @@ $(document).ready(function(){
     apellidoP_Recibe = $('#txtApellidoP_Recibe').val();
     apellidoM_Recibe = $('#txtApellidoM_Recibe').val();
     email= $('#txtEmail').val();
-
-    if(validar_email( email ) )
-    {
-    }
-    else
-    {
-      alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
-      email = 1;
-    }
     pass= $('#txtPass').val();
-    <?php
-    if (isset($_SESSION["status"])) {
-      if($_SESSION["status"] == 'ADMIN'){
-        ?>
-        roll = 'ADMIN';
-        <?php
-      }
-
-      else {
-        ?>
-
-        roll = 'COMUN';
-        <?php
-      }
-    }
-    else {
-      ?>
-      roll = 'COMUN';
-
-      <?php } ?>
+    roll = 'COMUN';
 
       if(nombre == ""){
 
-        alert("Debe ingresar un nombrel...");
+        alertify.warning("Debe ingresar un nombre...");
+
+        return false;
       }
       if(apellidoP == ""){
 
-        alert("Debe ingresar un apellido paterno...");
-      }if(apellidoM == ""){
+        msj = '<?php echo $mensaje = "Debe ingresar un apellido paterno..." ?>';
 
-        alert("Debe ingresar un apellido Materno...");
+        $('#ModalViewCamposFaltantes').modal('toggle');
+
+        return false;
+
+      }if(apellidoM == ""){
+        <?php $mensaje = "Debe ingresar un apellido Materno..." ?>
+
+        $('#ModalViewCamposFaltantes').modal('toggle');
+
+        return false;
       }
       if(calle == ""){
+        <?php $mensaje = "Debe ingresar una calle..." ?>
 
-        alert("Debe ingresar una calle...");
+        $('#ModalViewCamposFaltantes').modal('toggle');
+
+        return false;
+
       }if(numCalle == ""){
+        <?php $mensaje = "Debe ingresar un número de la ubicación..." ?>
 
-        alert("Debe ingresar un número de la hubicación...");
+        $('#ModalViewCamposFaltantes').modal('toggle');
+
+        return false;
       }
       if(cp == ""){
+        <?php $mensaje = "Debe ingresar un código postal..." ?>
 
-        alert("Debe ingresar un código postal...");
+        $('#ModalViewCamposFaltantes').modal('toggle');
+
+        return false;
       }if(ciudad == ""){
 
         alert("Debe ingresar una ciudad...");
+        return false;
       }
       if(estado == ""){
 
         alert("Debe ingresar un estado...");
+        return false;
       }
       if(cel == ""){
 
         alert("Debe ingresar un número de contacto...");
+        return false;
       }
 
       if(nombre_Recibe == ""){
 
         alert("Debe ingresar un nombre de quien recibirá el producto...");
+        return false;
       }
       if(apellidoP_Recibe == ""){
 
         alert("Debe ingresar un apellido paterno de quien recibirá el producto...");
+        return false;
       }if(apellidoM_Recibe == ""){
 
         alert("Debe ingresar un apellido Materno de quien recibirá el producto...");
+        return false;
       }
 
       if (txtCel.value.length != 10) {
         alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
         txtCel.focus();
+        return false;
       }
 
       if(email == ""){
 
         alert("Debe ingresar un E-mail...");
+        return false;
       }
+      if(validar_email( email ) )
+      {
+      }
+      else
+      {
+        alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+        email = 1;
+        return false;
+      }
+
       if(pass == ""){
 
         alert("Debe ingresar una contraseña...");
+        return false;
       }
+
       if(roll == 0){
 
         alert("Debe seleccionar un roll de usuario...");
+        return false;
       }
       if(nombre != "" &&
       apellidoP != "" &&
@@ -1622,30 +1645,6 @@ $(document).ready(function(){
           }
         });
 
-        // $('#btnBus').click(function(){
-        //
-        //   nombreCliente = $('#txtBus').val();
-        //
-        //   if(nombreCliente == ""){
-        //     alert("Debe ingresar un nombre o apellido...");
-        //   }
-        //   if(nombreCliente != "" ){
-        //     busClienteConsigna(nombreCliente);
-        //   }
-        // });
-        //
-        // // Enter buscador
-        // var txtBus = document.getElementById("txtBus");
-        // txtBus.addEventListener("keyup", function(event) {
-        //   // Number 13 is the "Enter" key on the keyboard
-        //   if (event.keyCode === 13) {
-        //     // Cancel the default action, if needed
-        //     event.preventDefault();
-        //     // Trigger the button element with a click
-        //     document.getElementById("btnBus").click();
-        //   }
-        // });
-
         // Enter guardar clientes Consigna
         var txtEmailC = document.getElementById("txtEmailC");
         txtEmailC.addEventListener("keyup", function(event) {
@@ -1697,6 +1696,5 @@ $(document).ready(function(){
       sliderMax.oninput = function() {
         $('#maxVal').val(sliderMax.value);
       }
-
 
       </script>
