@@ -716,7 +716,7 @@ if (0 !== sqlsrv_num_rows($res)){
                               newCantidad);
                             }
                             else {
-                              alertify.error("No hay stock disponible, solo puede agregar la cantidad maxima de: <?php echo $EXISTENCIA ?>");
+                              alertify.error("No hay stock disponible, solo puede agregar la cantidad máxima de: <?php echo $EXISTENCIA ?>");
                             }
                           });
 

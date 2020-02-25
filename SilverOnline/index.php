@@ -356,87 +356,6 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
       </div>
     </div>
   </div>
-  <!-- Modal para View Status -->
-  <div class="modal fade" id="ModalViewStatus" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatus" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="ModalViewStatus">Mensaje del sistema...</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <br/>
-          <!-- <br/> -->
-          <!-- <br/> -->
-          <div class="row">
-            <div class="col-md-12 mb-3">
-              <h6><strong>Su pedido fue generado de forma correcta...</strong></h6>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-
-  <!-- Modal para View StatusLoginError -->
-  <div class="modal fade" id="ModalViewStatusLoginError" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatusLoginError" aria-hidden="true">
-    <div class="modal-dialog modal-md" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="ModalViewStatusLoginError">Mensaje del sistema...</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <br/>
-          <div class="row">
-            <div class="col-md-12 mb-3">
-              <h6><strong>Usuario o contraseña incorrecto...</strong></h6>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- Modal para View Status remision -->
-  <div class="modal fade" id="ModalViewStatusRemision" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatusRemision" aria-hidden="true">
-    <div class="modal-dialog modal-smd" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="ModalViewStatusRemision">Mensaje del sistema...</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <br/>
-          <!-- <br/> -->
-          <!-- <br/> -->
-          <div class="row">
-            <div class="col-md-12 mb-3">
-              <h5><strong>El pago se aprobó de forma correcta...</strong></h5>
-            </div>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Modal para View Clientes -->
   <div class="modal fade" id="ModalViewClientes" tabindex="-1" role="dialog" aria-labelledby="ModalViewClientes" aria-hidden="true">
@@ -450,10 +369,15 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
         </div>
         <div class="modal-body">
           <div class="row">
-            <div class="col-md-5">
+            <div class="col-md-4">
+
             </div>
-            <div class="col-md-5">
-              <input type="text" name="txtBusc" id="txtBus" value="" class="form-control" placeholder="Nombre del cliente">
+            <div class="col-md-3">
+              <input type="text" name="txtBuscName" id="txtBusName" value="" class="form-control" placeholder="Nombre">
+
+            </div>
+            <div class="col-md-3">
+              <input type="text" name="txtBuscApe" id="txtBusApe" value="" class="form-control" placeholder="Apellido">
             </div>
             <div class="col-md-2">
               <button type="button" class="btn btn-warning" id="btnBus" name="button">Buscar</button>
@@ -538,31 +462,6 @@ if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         <!-- <button type="button" class="btn btn-primary" id="btnGuardarC">Registrarse</button> -->
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Modal para View Status $_SESSION BUS_CLIENTE -->
-<div class="modal fade" id="ModalViewStatusBUS_CLIENTE" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatusBUS_CLIENTE" aria-hidden="true">
-  <div class="modal-dialog modal-smd" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="ModalViewStatusBUS_CLIENTE">Mensaje del sistema...</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <br/>
-        <div class="row">
-          <div class="col-md-12 mb-3">
-            <h5><strong>Debe seleccionar un cliente......</strong></h5>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
@@ -1120,7 +1019,7 @@ if (isset($_SESSION["Email"])) {
   <?php if(isset($_GET['Vcs']) && $_GET['Vcs'] == 4) {
 
     ?>
-    $('#ModalViewStatusBUS_CLIENTE').modal('toggle');
+    alertify.error("Debe seleccionar un cliente.");
 
     <?php
   }
@@ -1134,6 +1033,7 @@ if (isset($_SESSION["Email"])) {
   <?php if(isset($_GET['o_cli']) && $_GET['o_cli'] == 1) {
 
     ?>
+    // MUESTRA LOS CLIENTES QUE LE CORRESPONDEN A ESE VENDEDOR
     $('#ModalViewClientes').modal('toggle');
 
     <?php
@@ -1144,28 +1044,30 @@ if (isset($_SESSION["Email"])) {
 
 
 
-
   // =========================================================================
   <?php if(isset($_GET['vaciar']) && $_GET['vaciar'] == 2) {
 
     ?>
-    $('#ModalViewStatus').modal('toggle');
+    alertify.success("Su pedido fue generado de forma correcta.");
 
     <?php
   }
   elseif(isset($_GET['vaciar']) && $_GET['vaciar'] == 3){
     ?>
-    $('#ModalViewStatusRemision').modal('toggle');
+    alertify.success("El pago se aprobó de forma correcta.");
 
     <?php } ?>
     // =========================================================================
 
     $(document).ready(function(){
+      alertify.set('notifier','position', 'top-right');
 
 
       var validaImg =0;
       var nameArticulo ="";
+
       $('#btnGuardar').click(function(){
+
         nombre = $('#txtNombre').val();
         apellidoP = $('#txtApellidoP').val();
         apellidoM = $('#txtApellidoM').val();
@@ -1179,82 +1081,107 @@ if (isset($_SESSION["Email"])) {
         apellidoP_Recibe = $('#txtApellidoP_Recibe').val();
         apellidoM_Recibe = $('#txtApellidoM_Recibe').val();
         email= $('#txtEmail').val();
+        pass= $('#txtPass').val();
+        roll = 'COMUN';
 
+        if(nombre == ""){
+
+          alertify.error("Debe ingresar un nombre.");
+
+          return false;
+        }
+        if(apellidoP == ""){
+
+          alertify.error("Debe ingresar un apellido paterno.");
+
+          return false;
+
+        }if(apellidoM == ""){
+
+          alertify.error("Debe ingresar un apellido Materno.");
+
+          return false;
+        }
+        if(calle == ""){
+          alertify.error("Debe ingresar una calle.");
+
+          return false;
+
+        }if(numCalle == ""){
+          alertify.error("Debe ingresar un número de la ubicación.");
+
+          return false;
+        }
+        if(cp == ""){
+          alertify.error("Debe ingresar un código postal.");
+
+          return false;
+        }
+        if(ciudad == ""){
+          alertify.error("Debe ingresar una ciudad.");
+
+          return false;
+        }
+        if(estado == ""){
+          alertify.error("Debe ingresar un estado.");
+
+          return false;
+        }
+        if(cel == ""){
+          alertify.error("Debe ingresar un número de contacto.");
+
+          return false;
+        }
+
+        if (txtCel.value.length != 10) {
+          alertify.error("El número celular es incorrecto ya que tiene " + txtCel.value.length + " caracteres y debe contener 10.");
+          txtCel.focus();
+          return false;
+        }
+
+        if(nombre_Recibe == ""){
+          alertify.error("Debe ingresar un nombre de quien recibirá el producto.");
+
+          return false;
+        }
+        if(apellidoP_Recibe == ""){
+          alertify.error("Debe ingresar un apellido paterno de quien recibirá el producto.");
+
+          return false;
+        }
+
+        if(apellidoM_Recibe == ""){
+          alertify.error("Debe ingresar un apellido Materno de quien recibirá el producto.");
+
+          return false;
+        }
+
+        if(email == ""){
+          alertify.error("Debe ingresar un E-mail.");
+
+          return false;
+        }
         if(validar_email( email ) )
         {
         }
         else
         {
-          alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+          alertify.error("El correo: " + email + " no contiene el formato correcto, verifíquelo.");
+
           email = 1;
-        }
-        pass= $('#txtPass').val();
-
-
-        roll = 'COMUN';
-
-        if(nombre == ""){
-
-          alert("Debe ingresar un nombrel...");
-        }
-        if(apellidoP == ""){
-
-          alert("Debe ingresar un apellido paterno...");
-        }if(apellidoM == ""){
-
-          alert("Debe ingresar un apellido Materno...");
-        }
-        if(calle == ""){
-
-          alert("Debe ingresar una calle...");
-        }if(numCalle == ""){
-
-          alert("Debe ingresar un número de la hubicación...");
-        }
-        if(cp == ""){
-
-          alert("Debe ingresar un código postal...");
-        }if(ciudad == ""){
-
-          alert("Debe ingresar una ciudad...");
-        }
-        if(estado == ""){
-
-          alert("Debe ingresar un estado...");
-        }
-        if(cel == ""){
-
-          alert("Debe ingresar un número de contacto...");
+          return false;
         }
 
-        if(nombre_Recibe == ""){
-
-          alert("Debe ingresar un nombre de quien recibirá el producto...");
-        }
-        if(apellidoP_Recibe == ""){
-
-          alert("Debe ingresar un apellido paterno de quien recibirá el producto...");
-        }if(apellidoM_Recibe == ""){
-
-          alert("Debe ingresar un apellido Materno de quien recibirá el producto...");
-        }
-
-        if (txtCel.value.length != 10) {
-          alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
-          txtCel.focus();
-        }
-
-        if(email == ""){
-
-          alert("Debe ingresar un E-mail...");
-        }
         if(pass == ""){
+          alertify.error("Debe ingresar una contraseña.");
 
-          alert("Debe ingresar una contraseña...");
+          return false;
         }
-        if(roll == 0){
 
-          alert("Debe seleccionar un roll de usuario...");
+        if(roll == 0){
+          alertify.error("Debe seleccionar un roll de usuario.");
+
+          return false;
         }
         if(nombre != "" &&
         apellidoP != "" &&
@@ -1268,7 +1195,11 @@ if (isset($_SESSION["Email"])) {
         nombre_Recibe != "" &&
         apellidoP_Recibe != "" &&
         apellidoM_Recibe != "" &&
-        txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
+        txtCel.value.length == 10  &&
+        email != "" &&
+        email !=1 &&
+        pass != "" &&
+        roll !=0){
           agregarUsuarios(nombre,
             apellidoP,
             apellidoM,
@@ -1301,62 +1232,83 @@ if (isset($_SESSION["Email"])) {
           apellidoM_Recibe = ' ';
           email= $('#txtEmailC').val();
 
-          if(validar_email( email ))
+          // =================================================
+          pass= 'Silver2020';
+          roll = 'COMUN';
+          // =================================================
+
+          if(nombre == ""){
+
+            alertify.error("Debe ingresar un nombre.");
+
+            return false;
+          }
+          if(apellidoP == ""){
+
+            alertify.error("Debe ingresar un apellido paterno.");
+
+            return false;
+
+          }if(apellidoM == ""){
+
+            alertify.error("Debe ingresar un apellido Materno.");
+
+            return false;
+          }
+          if(calle == ""){
+            alertify.error("Debe ingresar una calle.");
+
+            return false;
+
+          }if(numCalle == ""){
+            alertify.error("Debe ingresar un número de la ubicación.");
+
+            return false;
+          }
+          if(cp == ""){
+            alertify.error("Debe ingresar un código postal.");
+
+            return false;
+          }
+
+          if(ciudad == ""){
+            alertify.error("Debe ingresar una ciudad.");
+
+            return false;
+          }
+          if(estado == ""){
+            alertify.error("Debe ingresar un estado.");
+
+            return false;
+          }
+          if(cel == ""){
+            alertify.error("Debe ingresar un número de contacto.");
+
+            return false;
+          }
+
+          if (txtCelC.value.length != 10) {
+            alertify.error("El número celular es incorrecto ya que tiene " + txtCelC.value.length + " caracteres y debe contener 10.");
+            txtCelC.focus();
+            return false;
+          }
+
+          if(email == ""){
+            alertify.error("Debe ingresar un E-mail.");
+
+            return false;
+          }
+          if(validar_email( email ) )
           {
           }
           else
           {
-            alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+            alertify.error("El correo: " + email + " no contiene el formato correcto, verifíquelo.");
+
             email = 1;
-          }
-          pass= 'Silver2020';
-
-
-          roll = 'COMUN';
-
-          if(nombre == ""){
-
-            alert("Debe ingresar un nombrel...");
-          }
-          if(apellidoP == ""){
-
-            alert("Debe ingresar un apellido paterno...");
-          }if(apellidoM == ""){
-
-            alert("Debe ingresar un apellido Materno...");
-          }
-          if(calle == ""){
-
-            alert("Debe ingresar una calle...");
-          }if(numCalle == ""){
-
-            alert("Debe ingresar un número de la hubicación...");
-          }
-          if(cp == ""){
-
-            alert("Debe ingresar un código postal...");
-          }if(ciudad == ""){
-
-            alert("Debe ingresar una ciudad...");
-          }
-          if(estado == ""){
-
-            alert("Debe ingresar un estado...");
-          }
-          if(cel == ""){
-
-            alert("Debe ingresar un número de contacto...");
+            return false;
           }
 
-          if (txtCelC.value.length != 10) {
-            alert('El número celular es incorrecto ya que tiene ' + txtCelC.value.length + ' caracteres y debe contener 10...');
-            txtCelC.focus();
-          }
-
-          if(email == ""){
-
-            alert("Debe ingresar un E-mail...");
-          }
 
           if(nombre != "" &&
           apellidoP != "" &&
@@ -1367,7 +1319,9 @@ if (isset($_SESSION["Email"])) {
           ciudad != "" &&
           estado != "" &&
           cel != "" &&
-          txtCelC.value.length == 10  && email != "" && email !=1){
+          txtCelC.value.length == 10  &&
+          email != "" &&
+          email !=1){
             agregarUsuarios(nombre,
               apellidoP,
               apellidoM,
@@ -1385,17 +1339,16 @@ if (isset($_SESSION["Email"])) {
             }
           });
 
+
           $('#btnEntrarModal').click(function(){
 
             $('#ModalViewAccount').hide();
-
           });
 
 
           $('#btnRegistrateModal').click(function(){
 
             $('#ModalViewAccount').hide();
-
           });
 
           $('#btnGuardarArt').click(function(){
@@ -1522,17 +1475,15 @@ if (isset($_SESSION["Email"])) {
             });
 
             $('#btnEntrar').click(function(){
-
               email= $('#txt_Email').val();
               pass= $('#txt_Pass').val();
-
               if(email == ""){
-
-                alert("Debe ingresar un E-mail...");
+                alertify.error("Debe ingresar un E-mail.");
+                return false;
               }
               if(pass == ""){
-
-                alert("Debe ingresar una contraseña...");
+                alertify.error("Debe ingresar una contraseña.");
+                return false;
               }
               if(email != "" && pass != ""){
                 login(email, pass);
@@ -1541,19 +1492,25 @@ if (isset($_SESSION["Email"])) {
 
 
             $('#btnBus').click(function(){
-
-              nombreCliente = $('#txtBus').val();
-
+              nombreCliente = $('#txtBusName').val();
+              apellidoCliente = $('#txtBusApe').val();
+              debugger;
               if(nombreCliente == ""){
-                alert("Debe ingresar un nombre o apellido...");
+                alertify.error("Debe ingresar un nombre.");
+                return false;
               }
-              if(nombreCliente != "" ){
-                busClienteConsigna(nombreCliente);
+              if(apellidoCliente == ""){
+                alertify.error("Debe ingresar un apellido.");
+                return false;
+              }
+              if(nombreCliente != "" && apellidoCliente !=""){
+                nombreCompleto = nombreCliente + ' ' + apellidoCliente;
+                busClienteConsigna(nombreCompleto );
               }
             });
 
             // Enter buscador
-            var txtBus = document.getElementById("txtBus");
+            var txtBus = document.getElementById("txtBusApe");
             txtBus.addEventListener("keyup", function(event) {
               // Number 13 is the "Enter" key on the keyboard
               if (event.keyCode === 13) {
