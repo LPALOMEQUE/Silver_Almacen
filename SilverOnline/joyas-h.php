@@ -136,7 +136,6 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
       <script src="alertifyjs/alertify.js"></script>
 
       <script src="js/funciones.js"></script>
-      <script src="librerias/alertify/alertify.js"></script>
       <!-- end -->
 
     </head>
@@ -1335,7 +1334,7 @@ $(document).ready(function(){
 
       if(nombre == ""){
 
-        alertify.warning("Debe ingresar un nombre...");
+        alertify.error("Debe ingresar un nombre...");
 
         return false;
       }
