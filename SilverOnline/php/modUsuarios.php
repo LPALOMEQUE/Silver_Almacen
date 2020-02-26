@@ -15,7 +15,7 @@ $cel = $_POST['CEL'];
 $email = $_POST['EMAIL'];
 
 if ($_SESSION['status'] == 'ADMIN') {
-  $ID = $_SESSION['ID_USER'];
+  $ID = $_SESSION['ID_CLIENTE'];
 }
 else{
   $ID = $_SESSION['ID_USER'];
