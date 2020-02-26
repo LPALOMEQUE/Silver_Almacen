@@ -130,14 +130,14 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
     <link href="css/responsive.css" rel="stylesheet">
 
     <!-- css LFPO -->
-    <link rel="stylesheet" type="text/css" href="librerias/alertify/css/alertify.css" >
-    <link rel="stylesheet" type="text/css" href="librerias/alertify/css/themes/default.css" >
+    <link rel="stylesheet" type="text/css" href="alertifyjs/css/alertify.css">
+    <link rel="stylesheet" type="text/css" href="alertifyjs/css/themes/default.css">
     <!-- end -->
 
     <!-- scripts LFPO -->
     <script src="js/jquery/jquery-2.2.4.min.js"></script>
+    <script src="alertifyjs/alertify.js"></script>
     <script src="js/funciones.js"></script>
-    <script src="librerias/alertify/alertify.js"></script>
     <!-- end -->
 
   </head>

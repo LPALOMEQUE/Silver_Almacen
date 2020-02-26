@@ -130,7 +130,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
       <!-- end -->
 
       <!-- scripts LFPO -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
 
       <script src="js/jquery/jquery-2.2.4.min.js"></script>
       <script src="alertifyjs/alertify.js"></script>

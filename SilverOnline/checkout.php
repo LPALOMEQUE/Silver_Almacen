@@ -111,7 +111,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   <!-- The above 4 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
   <!-- Title  -->
-  <title>Karl - Fashion Ecommerce Template | Checkout</title>
+  <title>Siler - Evolution | Revisa</title>
 
   <!-- Favicon  -->
   <link rel="icon" href="img/core-img/favicon.ico">
@@ -129,13 +129,11 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   <!-- end -->
 
   <!-- scripts LFPO -->
-  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
-
   <script src="js/jquery/jquery-2.2.4.min.js"></script>
   <script src="alertifyjs/alertify.js"></script>
-
   <script src="js/funciones.js"></script>
   <!-- end -->
+
 </head>
 
 <body>
