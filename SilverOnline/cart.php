@@ -916,6 +916,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
   <script type="text/javascript">
 
   $(document).ready(function(){
+    alertify.set('notifier','position', 'top-right');
 
     $('#btnGuardar').click(function(){
 
