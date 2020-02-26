@@ -50,24 +50,27 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
 }
 
-//Imprimimos datos globales del carrito
+//Imprimiendo datos globales del carrito
+require_once "php/Conexion.php";
+$con = conexion();
 if (isset($_SESSION['ID_ARTICLES'])) {
-  require_once "php/Conexion.php";
-  $con = conexion();
+
   foreach($ID_ARTICLES as $key => $item){
 
     $id = $item['id'];
     $sql = "SELECT PRECIO AS ULT_COSTO FROM PRECIO_X_PROD" .$BD. " WHERE CVE_ART = '$id' AND  CVE_PRECIO = $ID_PRECIO";
+
     $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
     if (0 !== sqlsrv_num_rows($res)){
-      while ($arti = sqlsrv_fetch_array($res)) {
+      while ($fila = sqlsrv_fetch_array($res)) {
 
-        $precioNormal = $arti['ULT_COSTO'];
+        $precioNormal = $fila['ULT_COSTO'];
         $TotalxArtGlobal += $precioNormal * $item['cantidad'];
         $vtaTotal = $TotalxArtGlobal + $_COOKIE['express'];
       }
     }
   }
+
   sqlsrv_close($con);
 }
 
@@ -168,7 +171,7 @@ $mpdf->SetHTMLFooter('
 // almacenara todo el cuerpo html
 $dataHTML = '<link rel="stylesheet" href="style.css">';
 
-$dataHTML .= '<img src="img/core-img/silverEvolution.png"><br/><br/>';
+$dataHTML .= '<img src="img/core-img/silverEvolution.png"><br/>';
 
 $dataHTML .= '<h1>Comprobante de Pedido</h1>';
 
@@ -308,7 +311,17 @@ $i=1;
 if (isset($_SESSION['ID_ARTICLES'])) {
   foreach ($ID_ARTICLES as $key => $item) {
     $id= $item['id'];
-    $sql = "SELECT CVE_ART,COSTO_PROM FROM INVE" .$BD. " where CVE_ART='$id'";
+    // $sql = "SELECT CVE_ART,COSTO_PROM FROM INVE" .$BD. " where CVE_ART='$id'";
+
+$sql = "			SELECT
+  I.CVE_ART,
+  I.ULT_COSTO,
+  PP.PRECIO AS COSTO_PROM
+  FROM INVE" .$BD. " I
+  INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
+  WHERE
+  I.CVE_ART = '$id' AND
+  PP.CVE_PRECIO = $ID_PRECIO";
 
     $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
     if (0 !== sqlsrv_num_rows($res)){
@@ -327,8 +340,8 @@ if (isset($_SESSION['ID_ARTICLES'])) {
         // echo $fecha_php;
         $fecha_php;
         // echo "----";
-        $SUPER_PRECIO_ART = $arti['COSTO_PROM'];
-        $PRECIO_ART = $arti['COSTO_PROM']*3;
+        $SUPER_PRECIO_ART = $arti['ULT_COSTO'];
+        $PRECIO_ART = $arti['COSTO_PROM'];
         $CANTIDAD_ART = $item['cantidad'];
         $TotalxArt = $PRECIO_ART * $item['cantidad'];
         $CVE_ART = $arti['CVE_ART'];
@@ -746,8 +759,8 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 
 sendEmail($pdf, $sendData);
 
-// header('Location: index.php?vaciar=2');
-// die();
+header('Location: index.php?vaciar=2');
+die();
 
 function sendEmail($pdf, $sendData){
 
@@ -760,7 +773,7 @@ function sendEmail($pdf, $sendData){
     $mail->Host       = 'smtp.gmail.com';                    //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
     $mail->Username   = 'fernando18092105@gmail.com';                     // SMTP username  gerenciageneral@evolutionsilver.com
-    $mail->Password   = '**********';                              // SMTP password
+    $mail->Password   = '******';                              // SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
     $mail->SMTPSecure = 'tls';
     $mail->Port  = 587;                                    // TCP port to connect to
