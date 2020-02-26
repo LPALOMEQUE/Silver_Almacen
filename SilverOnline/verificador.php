@@ -918,7 +918,7 @@ function sendEmail($pdf, $sendData){
     $mail->Host       = 'smtp.gmail.com';                    //Set the SMTP server to send through
     $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
     $mail->Username   = 'fernando18092105@gmail.com';                     // SMTP username  gerenciageneral@evolutionsilver.com
-    $mail->Password   = '*******';                               // SMTP password
+    $mail->Password   = 'ferxoykaren';                               // SMTP password
     $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
     $mail->SMTPSecure = 'tls';
     $mail->Port  = 587;                                    // TCP port to connect to
@@ -971,7 +971,7 @@ function sendEmail($pdf, $sendData){
   <script src="librerias/alertify/alertify.js"></script>
 </head>
 <body>
-  <!-- <?php echo $dataHTML ?> -->
+  <?php echo $dataHTML ?>
 
 </body>
 </html>

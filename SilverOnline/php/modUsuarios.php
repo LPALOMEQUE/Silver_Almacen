@@ -14,11 +14,11 @@ $estado = $_POST['ESTADO'];
 $cel = $_POST['CEL'];
 $email = $_POST['EMAIL'];
 
-if ($_SESSION['ID_USER'] == 'ADMIN') {
+if ($_SESSION['status'] == 'ADMIN') {
   $ID = $_SESSION['ID_USER'];
 }
 else{
-  $ID = $_SESSION['ID_CLIENTE'];
+  $ID = $_SESSION['ID_USER'];
 }
 
 $MAIL = $_SESSION['Email'];

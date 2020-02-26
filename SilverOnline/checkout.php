@@ -123,9 +123,18 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   <!-- Responsive CSS -->
   <link href="css/responsive.css" rel="stylesheet">
 
+  <!-- css LFPO -->
+  <link rel="stylesheet" type="text/css" href="alertifyjs/css/alertify.css">
+  <link rel="stylesheet" type="text/css" href="alertifyjs/css/themes/default.css">
+  <!-- end -->
+
   <!-- scripts LFPO -->
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+
+  <script src="js/jquery/jquery-2.2.4.min.js"></script>
+  <script src="alertifyjs/alertify.js"></script>
+
   <script src="js/funciones.js"></script>
-  <script src="librerias/alertify/alertify.js"></script>
   <!-- end -->
 </head>
 
@@ -682,6 +691,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 <script type="text/javascript">
 
 $(document).ready(function(){
+  alertify.set('notifier','position', 'top-right');
 
   $('#btnLogOut').click(function(){
     vaciar = 1;
@@ -728,7 +738,7 @@ $(document).ready(function(){
 
 
     $('#btnActualizarDatos').click(function(){
-
+debugger;
       nombre = $('#txtName').val();
       nombre_recibe = $('#txtName_Recibe').val();
       calle = $('#txtCalle').val();

@@ -1,8 +1,7 @@
 
 
 function ModDatosUsuarios(nombre,nombre_recibe,calle,numCalle,cp,ciudad,estado,cel,email){
-  alertify.set('notifier','position', 'top-right');
-
+debugger;
   cadena = "NOMBRE=" +nombre +
   "&NOMBRE_RECIBE=" +nombre_recibe +
   "&CALLE=" + calle +
@@ -18,14 +17,16 @@ function ModDatosUsuarios(nombre,nombre_recibe,calle,numCalle,cp,ciudad,estado,c
     url: "php/modUsuarios.php",
     data:cadena,
     success:function(result){
+      debugger;
+
       if(result==1){
+        alertify.success("Se actualizarón los datos de forma correcta.");
 
-        alert("Se actualizarón los datos de forma correcta...");
-
-        location.reload();
+        // location.reload();
       }
       else{
-        alert("Error...");
+        alertify.error("Error.");
+
       }
 
     }
@@ -150,7 +151,7 @@ function agregarUsuarios(nombre,apellidoP,apellidoM,calle,numCalle,cp,ciudad,est
         $('#ModalRegistroUsuarios').hide();
 
         alertify.success("Se registro el usuario de forma correcta.");
-        
+
         // location.reload();
       }
       else{

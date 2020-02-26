@@ -177,6 +177,79 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
       </div>
     </div>
 
+    <!-- Modal para registro de Clientes -->
+    <div class="modal fade" id="ModalRegistroCliente" tabindex="-1" role="dialog" aria-labelledby="ModalRegistroCliente" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="ModalRegistroCliente">Registro de Cliente</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="txtNombreC">Nombre(s)</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtNombreC" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtApellidoPC">Apellido Paterno</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoPC" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtApellidoMC">Apellido Materno</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtApellidoMC" value="" required>
+              </div>
+            </div>
+            <h6>Datos de dirección...</h6>
+
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <label for="txtCalleC">Calle</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCalleC" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtNumCalleC">Núm(#)</label>
+                <input type="number" class="form-control" id="txtNumCalleC" value="" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label for="txtCpC">C.P.</label>
+                <input type="number" class="form-control" id="txtCpC" value="" required>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-4" "mb-3">
+                <label for="txtCiudadC">Ciudad</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtCiudadC" value="" required>
+              </div>
+              <div class="col-md-4" "mb-3">
+                <label for="txtEstadoC">Estado</label>
+                <input type="text" onkeyup="mayus(this);" class="form-control" id="txtEstadoC" value="" required>
+              </div>
+              <div class="col-md-4" "mb-3">
+                <label for="txtCelC">Celular</label>
+                <input type="number" class="form-control" id="txtCelC" value="" required>
+              </div>
+            </div>
+            <br/>
+            <br/>
+            <h6>Datos de cuenta...</h6>
+            <div class="row">
+              <div class="col-md-12 mb-12">
+                <label for="txtEmailC">E-MaiL</label>
+                <input type="email" onkeyup="minus(this);" class="form-control" id="txtEmailC" value="" required>
+              </div>
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-primary" id="btnGuardarC">Registrarse</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Modal para inicio de sesion valida envio y location a checkout.php -->
     <div class="modal fade" id="ModalLoginVal" tabindex="-1" role="dialog" aria-labelledby="ModalLoginVal" aria-hidden="true">
@@ -207,59 +280,6 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             <button type="button" class="btn btn-primary" id="btnEntrarVal">Entrar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Modal para View StatusLoginError -->
-    <div class="modal fade" id="ModalViewStatusLoginError" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatusLoginError" aria-hidden="true">
-      <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="ModalViewStatusLoginError">Mensaje del sistema...</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <br/>
-            <!-- <br/> -->
-            <!-- <br/> -->
-            <div class="row">
-              <div class="col-md-12 mb-3">
-                <h6><strong>Usuario o contraseña incorrecto...</strong></h6>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Modal para View StatusEnvioError -->
-    <div class="modal fade" id="ModalViewStatusEnvioError" tabindex="-1" role="dialog" aria-labelledby="ModalViewStatusEnvioError" aria-hidden="true">
-      <div class="modal-dialog modal-md" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="ModalViewStatusEnvioError">Mensaje del sistema...</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <br/>
-            <!-- <br/> -->
-            <!-- <br/> -->
-            <div class="row">
-              <div class="col-md-12 mb-3">
-                <h6><strong>Debe seleccionar un método de envío....</strong></h6>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
           </div>
         </div>
       </div>
@@ -707,7 +727,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
                                 posicion);
                               }
                               else {
-                                alert("No hay stock disponible, solo puede agregar la cantidad maxima de: " + <?php echo $EXISTENCIA ?>);
+                                alertify.error("No hay stock disponible, solo puede agregar la cantidad máxima de: " + <?php echo $EXISTENCIA ?>)
                                 valor.value --;
                               }
 
@@ -740,7 +760,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
                                     posicion);
                                   }
                                   else {
-                                    alert("No hay stock disponible, solo puede agregar la cantidad maxima de: " + <?php echo $EXISTENCIA ?>);
+                                    alertify.error("No hay stock disponible, solo puede agregar la cantidad máxima de: " + <?php echo $EXISTENCIA ?>)
                                     valor.value = "<?php echo $item['cantidad'] ?>";
                                   }
 
@@ -898,6 +918,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
   $(document).ready(function(){
 
     $('#btnGuardar').click(function(){
+
       nombre = $('#txtNombre').val();
       apellidoP = $('#txtApellidoP').val();
       apellidoM = $('#txtApellidoM').val();
@@ -911,82 +932,107 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
       apellidoP_Recibe = $('#txtApellidoP_Recibe').val();
       apellidoM_Recibe = $('#txtApellidoM_Recibe').val();
       email= $('#txtEmail').val();
+      pass= $('#txtPass').val();
+      roll = 'COMUN';
 
+      if(nombre == ""){
+
+        alertify.error("Debe ingresar un nombre.");
+
+        return false;
+      }
+      if(apellidoP == ""){
+
+        alertify.error("Debe ingresar un apellido paterno.");
+
+        return false;
+
+      }if(apellidoM == ""){
+
+        alertify.error("Debe ingresar un apellido Materno.");
+
+        return false;
+      }
+      if(calle == ""){
+        alertify.error("Debe ingresar una calle.");
+
+        return false;
+
+      }if(numCalle == ""){
+        alertify.error("Debe ingresar un número de la ubicación.");
+
+        return false;
+      }
+      if(cp == ""){
+        alertify.error("Debe ingresar un código postal.");
+
+        return false;
+      }
+      if(ciudad == ""){
+        alertify.error("Debe ingresar una ciudad.");
+
+        return false;
+      }
+      if(estado == ""){
+        alertify.error("Debe ingresar un estado.");
+
+        return false;
+      }
+      if(cel == ""){
+        alertify.error("Debe ingresar un número de contacto.");
+
+        return false;
+      }
+
+      if (txtCel.value.length != 10) {
+        alertify.error("El número celular es incorrecto ya que tiene " + txtCel.value.length + " caracteres y debe contener 10.");
+        txtCel.focus();
+        return false;
+      }
+
+      if(nombre_Recibe == ""){
+        alertify.error("Debe ingresar un nombre de quien recibirá el producto.");
+
+        return false;
+      }
+      if(apellidoP_Recibe == ""){
+        alertify.error("Debe ingresar un apellido paterno de quien recibirá el producto.");
+
+        return false;
+      }
+
+      if(apellidoM_Recibe == ""){
+        alertify.error("Debe ingresar un apellido Materno de quien recibirá el producto.");
+
+        return false;
+      }
+
+      if(email == ""){
+        alertify.error("Debe ingresar un E-mail.");
+
+        return false;
+      }
       if(validar_email( email ) )
       {
       }
       else
       {
-        alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+        alertify.error("El correo: " + email + " no contiene el formato correcto, verifíquelo.");
+
         email = 1;
-      }
-      pass= $('#txtPass').val();
-
-
-      roll = 'COMUN';
-
-      if(nombre == ""){
-
-        alert("Debe ingresar un nombrel...");
-      }
-      if(apellidoP == ""){
-
-        alert("Debe ingresar un apellido paterno...");
-      }if(apellidoM == ""){
-
-        alert("Debe ingresar un apellido Materno...");
-      }
-      if(calle == ""){
-
-        alert("Debe ingresar una calle...");
-      }if(numCalle == ""){
-
-        alert("Debe ingresar un número de la hubicación...");
-      }
-      if(cp == ""){
-
-        alert("Debe ingresar un código postal...");
-      }if(ciudad == ""){
-
-        alert("Debe ingresar una ciudad...");
-      }
-      if(estado == ""){
-
-        alert("Debe ingresar un estado...");
-      }
-      if(cel == ""){
-
-        alert("Debe ingresar un número de contacto...");
+        return false;
       }
 
-      if(nombre_Recibe == ""){
-
-        alert("Debe ingresar un nombre de quien recibirá el producto...");
-      }
-      if(apellidoP_Recibe == ""){
-
-        alert("Debe ingresar un apellido paterno de quien recibirá el producto...");
-      }if(apellidoM_Recibe == ""){
-
-        alert("Debe ingresar un apellido Materno de quien recibirá el producto...");
-      }
-
-      if (txtCel.value.length != 10) {
-        alert('El número celular es incorrecto ya que tiene ' + txtCel.value.length + ' caracteres y debe contener 10...');
-        txtCel.focus();
-      }
-
-      if(email == ""){
-
-        alert("Debe ingresar un E-mail...");
-      }
       if(pass == ""){
+        alertify.error("Debe ingresar una contraseña.");
 
-        alert("Debe ingresar una contraseña...");
+        return false;
       }
-      if(roll == 0){
 
-        alert("Debe seleccionar un roll de usuario...");
+      if(roll == 0){
+        alertify.error("Debe seleccionar un roll de usuario.");
+
+        return false;
       }
       if(nombre != "" &&
       apellidoP != "" &&
@@ -1000,7 +1046,11 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
       nombre_Recibe != "" &&
       apellidoP_Recibe != "" &&
       apellidoM_Recibe != "" &&
-      txtCel.value.length == 10  && email != "" && email !=1 && pass != "" && roll !=0){
+      txtCel.value.length == 10  &&
+      email != "" &&
+      email !=1 &&
+      pass != "" &&
+      roll !=0){
         agregarUsuarios(nombre,
           apellidoP,
           apellidoM,
@@ -1018,153 +1068,276 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
         }
       });
 
-      $('#btnEntrarModal').click(function(){
+      $('#btnGuardarC').click(function(){
+        nombre = $('#txtNombreC').val();
+        apellidoP = $('#txtApellidoPC').val();
+        apellidoM = $('#txtApellidoMC').val();
+        calle = $('#txtCalleC').val();
+        numCalle = $('#txtNumCalleC').val();
+        cp = $('#txtCpC').val();
+        ciudad = $('#txtCiudadC').val();
+        estado = $('#txtEstadoC').val();
+        cel = $('#txtCelC').val();
+        nombre_Recibe = ' ';
+        apellidoP_Recibe = ' ';
+        apellidoM_Recibe = ' ';
+        email= $('#txtEmailC').val();
 
-        $('#ModalViewAccount').hide();
+        // =================================================
+        pass= 'Silver2020';
+        roll = 'COMUN';
+        // =================================================
 
-      });
+        if(nombre == ""){
 
+          alertify.error("Debe ingresar un nombre.");
 
-      $('#btnRegistrateModal').click(function(){
-
-        $('#ModalViewAccount').hide();
-
-      });
-
-      $("input[name=rbDelivery]").change(function () {
-        precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
-
-        if (precioEnvio == 'express') {
-
-          x = 700;
+          return false;
         }
-        else{
-          x = 250;
+        if(apellidoP == ""){
+
+          alertify.error("Debe ingresar un apellido paterno.");
+
+          return false;
+
+        }if(apellidoM == ""){
+
+          alertify.error("Debe ingresar un apellido Materno.");
+
+          return false;
         }
-        z = <?php echo $TotalxArtGlobal ?>;
-        total = x + z;
-        getPriceDeli(x,total);
+        if(calle == ""){
+          alertify.error("Debe ingresar una calle.");
 
-      });
+          return false;
 
-      $('#btnPay2').click(function(){
-        valUser ='<?php
-        if (isset($_SESSION["ID_USER"])) {
-          echo $_SESSION["ID_USER"];
-        }else {
-          echo $valida = 0;
-        } ?>';
+        }if(numCalle == ""){
+          alertify.error("Debe ingresar un número de la ubicación.");
 
-        valTotal = <?php echo $TotalxArtGlobal ?>;
-
-        if (valTotal == 0) {
-          alert('No cuenta con artículos en el carrito.');
-
+          return false;
         }
-        else {
+        if(cp == ""){
+          alertify.error("Debe ingresar un código postal.");
 
-          if (valUser == 0) {
-            $("#ModalLoginVal").modal("show");
-          }
-          else {
-            validaEnvio();
-          }
+          return false;
         }
-      });
 
-      $('#btnEntrar').click(function(){
+        if(ciudad == ""){
+          alertify.error("Debe ingresar una ciudad.");
 
-        email= $('#txt_Email').val();
-        pass= $('#txt_Pass').val();
+          return false;
+        }
+        if(estado == ""){
+          alertify.error("Debe ingresar un estado.");
+
+          return false;
+        }
+        if(cel == ""){
+          alertify.error("Debe ingresar un número de contacto.");
+
+          return false;
+        }
+
+        if (txtCelC.value.length != 10) {
+          alertify.error("El número celular es incorrecto ya que tiene " + txtCelC.value.length + " caracteres y debe contener 10.");
+          txtCelC.focus();
+          return false;
+        }
 
         if(email == ""){
+          alertify.error("Debe ingresar un E-mail.");
 
-          alert("Debe ingresar un E-mail...");
+          return false;
         }
-        if(pass == ""){
-
-          alert("Debe ingresar una contraseña...");
+        if(validar_email( email ) )
+        {
         }
-        if(email != "" && pass != ""){
-          login(email, pass);
+        else
+        {
+          alertify.error("El correo: " + email + " no contiene el formato correcto, verifíquelo.");
+
+          email = 1;
+          return false;
         }
-      });
-      $('#btnEntrarVal').click(function(){
 
-        email= $('#txt_EmailVal').val();
-        pass= $('#txt_PassVal').val();
 
-        if(email == ""){
+        if(nombre != "" &&
+        apellidoP != "" &&
+        apellidoM != "" &&
+        calle != "" &&
+        numCalle != "" &&
+        cp != "" &&
+        ciudad != "" &&
+        estado != "" &&
+        cel != "" &&
+        txtCelC.value.length == 10  &&
+        email != "" &&
+        email !=1){
+          agregarUsuarios(nombre,
+            apellidoP,
+            apellidoM,
+            calle,
+            numCalle,
+            cp,ciudad,
+            estado,
+            cel,
+            nombre_Recibe,
+            apellidoP_Recibe,
+            apellidoM_Recibe,
+            email,
+            pass,
+            roll);
+          }
+        });
 
-          alert("Debe ingresar un E-mail...");
-        }
-        if(pass == ""){
 
-          alert("Debe ingresar una contraseña...");
-        }
-        if(email != "" && pass != ""){
-          loginValidaCostoEnv(email, pass);
-        }
-      });
-      $('#btnLogOut').click(function(){
-        vaciar = 1;
+        $('#btnEntrarModal').click(function(){
 
-        logOut(vaciar);
+          $('#ModalViewAccount').hide();
 
-      });
+        });
 
-      function validaEnvio(){
-        if($("#customRadio1").is(':checked') || $("#customRadio2").is(':checked')) {
 
+        $('#btnRegistrateModal').click(function(){
+
+          $('#ModalViewAccount').hide();
+
+        });
+
+        $("input[name=rbDelivery]").change(function () {
           precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
 
           if (precioEnvio == 'express') {
+
             x = 700;
           }
           else{
             x = 250;
           }
-          pruebas(x);
-        }else{
-          $('#ModalViewStatusEnvioError').modal('toggle');
+          z = <?php echo $TotalxArtGlobal ?>;
+          total = x + z;
+          getPriceDeli(x,total);
+
+        });
+
+        $('#btnPay2').click(function(){
+          valUser ='<?php
+          if (isset($_SESSION["ID_USER"])) {
+            echo $_SESSION["ID_USER"];
+          }else {
+            echo $valida = 0;
+          } ?>';
+
+          valTotal = <?php echo $TotalxArtGlobal ?>;
+
+          if (valTotal == 0) {
+            alert('No cuenta con artículos en el carrito.');
+
+          }
+          else {
+
+            if (valUser == 0) {
+              $("#ModalLoginVal").modal("show");
+            }
+            else {
+              validaEnvio();
+            }
+          }
+        });
+
+        $('#btnEntrar').click(function(){
+
+          email= $('#txt_Email').val();
+          pass= $('#txt_Pass').val();
+
+          if(email == ""){
+            alertify.error("Debe ingresar un E-mail.");
+            return false;
+          }
+          if(pass == ""){
+            alertify.error("Debe ingresar una contraseña.");
+            return false;
+          }
+          if(email != "" && pass != ""){
+            login(email, pass);
+          }
+        });
+        $('#btnEntrarVal').click(function(){
+
+          email= $('#txt_EmailVal').val();
+          pass= $('#txt_PassVal').val();
+
+          if(email == ""){
+            alertify.error("Debe ingresar un E-mail.");
+            return false;
+          }
+          if(pass == ""){
+            alertify.error("Debe ingresar una contraseña.");
+            return false;
+          }
+          if(email != "" && pass != ""){
+            loginValidaCostoEnv(email, pass);
+          }
+        });
+        $('#btnLogOut').click(function(){
+          vaciar = 1;
+
+          logOut(vaciar);
+
+        });
+
+        function validaEnvio(){
+          if($("#customRadio1").is(':checked') || $("#customRadio2").is(':checked')) {
+
+            precioEnvio = $('input:radio[name=rbDelivery]:checked').val();
+
+            if (precioEnvio == 'express') {
+              x = 700;
+            }
+            else{
+              x = 250;
+            }
+            pruebas(x);
+          }else{
+            alertify.error("Debe seleccinar un método de envío.")
+          }
+
         }
 
-      }
+        <?php
+        if (isset($_SESSION['ID_ARTICLES'])) {
+          $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
+          foreach ($ID_ARTICLES as $key => $item) {
+            $id = $item['id'];
+            ?>
+            $('#qty<?php echo $id ?>').val(<?php echo $item['cantidad'] ?>);
 
-      <?php
-      if (isset($_SESSION['ID_ARTICLES'])) {
-        $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
-        foreach ($ID_ARTICLES as $key => $item) {
-          $id = $item['id'];
+            <?php }
+          }
           ?>
-          $('#qty<?php echo $id ?>').val(<?php echo $item['cantidad'] ?>);
+          // Enter de inicio de sesion
+          var input = document.getElementById("txt_Pass");
+          input.addEventListener("keyup", function(event) {
+            // Number 13 is the "Enter" key on the keyboard
+            if (event.keyCode === 13) {
+              // Cancel the default action, if needed
+              event.preventDefault();
+              // Trigger the button element with a click
+              document.getElementById("btnEntrar").click();
+            }
+          });
 
-          <?php }
-        }
-        ?>
-        // Enter de inicio de sesion
-        var input = document.getElementById("txt_Pass");
-        input.addEventListener("keyup", function(event) {
-          // Number 13 is the "Enter" key on the keyboard
-          if (event.keyCode === 13) {
-            // Cancel the default action, if needed
-            event.preventDefault();
-            // Trigger the button element with a click
-            document.getElementById("btnEntrar").click();
-          }
+          // Enter de inicio de sesion
+          var input = document.getElementById("txt_PassVal");
+          input.addEventListener("keyup", function(event) {
+            // Number 13 is the "Enter" key on the keyboard
+            if (event.keyCode === 13) {
+              // Cancel the default action, if needed
+              event.preventDefault();
+              // Trigger the button element with a click
+              document.getElementById("btnEntrarVal").click();
+            }
+          });
         });
 
-        // Enter de inicio de sesion
-        var input = document.getElementById("txt_PassVal");
-        input.addEventListener("keyup", function(event) {
-          // Number 13 is the "Enter" key on the keyboard
-          if (event.keyCode === 13) {
-            // Cancel the default action, if needed
-            event.preventDefault();
-            // Trigger the button element with a click
-            document.getElementById("btnEntrarVal").click();
-          }
-        });
-      });
-
-      </script>
+        </script>
