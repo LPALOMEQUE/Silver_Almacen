@@ -81,9 +81,9 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 }
 $p =   $key+1;
 
-if(isset($_POST['ID']) && isset($_POST['PRECIO']) && isset($_POST['CANTIDAD'])) {
+// anydando articulos al carrito
+if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
   $ultimaPos = count($_SESSION['ID_ARTICLES']);
-
   $_SESSION['ID_ARTICLES'][$p]=
   array(
     "id" => $_POST['ID'],

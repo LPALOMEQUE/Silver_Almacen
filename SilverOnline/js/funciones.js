@@ -224,7 +224,7 @@ function AddCart(id, cantidad){
 
   $.ajax({
     type:"POST",
-    url: "joyas-h.php",
+    url: "index.php",
     data:cadena,
     success:function(result){
       location.reload();
