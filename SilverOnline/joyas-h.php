@@ -1079,30 +1079,53 @@ if (0 !== sqlsrv_num_rows($res)){
             WHERE EXIST > 0
             ORDER BY CVE_ART
             OFFSET $Reg_Ignorados ROWS
-            FETCH NEXT  $cantidadRegistros ROWS ONLY";
+            FETCH NEXT  $cantidadRegistros ROWS ONLY
+            ";
             ?>
-            <!-- <li><a href="joyas-h.php?p=<?php echo $pagina-1?>">«</a></li> -->
-            <li><a href="joyas-h.php?p=0">«</a></li>
+            <li><a href="joyas-h.php?p=<?php echo $_GET['p']-1 ?>">«</a></li>
             <?php
             $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+            $Num_Art =  sqlsrv_num_rows($res);
+            $num_total = $Num_Art;
             if (0 !== sqlsrv_num_rows($res)){
               while ($category = sqlsrv_fetch_array($res)) {
                 ?>
-                <li><a href="joyas-h.php?p=<?php
-                if($pagina <= 9){
-                  echo $i;
-                }else{
-                  echo $paginaADD;
-                }
-                ?>">
-                <?php
-                if($pagina <= 9){
-                  echo $i+1;
-                }
-                else{
-                  echo $paginaADD;
-                }
-                ?>  </a></li>
+                <li>
+                  <a class="
+                  <?php
+                  if(isset($_GET['p'])){
+                    if($pagina <= 9){
+                      if ($_GET['p'] == $i){
+                        echo 'fondo-a';
+                      }
+                      else{
+                        echo '';
+                      }
+                    }
+                    elseif($_GET['p'] == $paginaADD){
+                      echo 'fondo-a';
+                    }
+                    else{
+                      echo '';
+                    }
+                  }?>"
+                  href="joyas-h.php?p=<?php
+                  if($pagina <= 9){
+                    echo $i;
+                  }else{
+                    echo $paginaADD;
+                  }
+                  ?>">
+
+                  <?php
+                  if($pagina <= 9){
+                    echo $i+1;
+                  }
+                  else{
+                    echo $paginaADD+1;
+                  }
+                  ?>
+                </a></li>
                 <?php
                 $i++;
                 $paginaADD++;
@@ -1118,7 +1141,7 @@ if (0 !== sqlsrv_num_rows($res)){
       </div>
       <div class="row">
         <div class="col-md-3">
-          <!-- <a>Pagina: </a> -->
+          <a href="joyas-h.php?p=0"><strong> Inicio... </strong> </a>
         </div>
         <div class="col-md-3">
           <!-- <a>Pagina: </a> -->
@@ -1127,7 +1150,7 @@ if (0 !== sqlsrv_num_rows($res)){
           <!-- <a>Pagina: </a> -->
         </div>
         <div class="col-md-3">
-          <a><strong>Pagina: <?php echo $pagina+1 ?></strong> </a>
+          <a><strong>Página: <?php echo $pagina+1 ?></strong> </a>
         </div>
       </div>
     </div>
