@@ -29,6 +29,20 @@ $paymentID = '';
 
 $ID = '';
 
+
+$array_stock = [];
+
+// PRECIO CON DESCUENTO (SUPER PRECIO)
+$ID_PRECIO = 2;
+
+// FILTRADO POR PRECIO DEPENDIENDO DEL TIPO DE USUARIO
+if(isset($_SESSION['status'])){
+  if($_SESSION["status"] == 'ADMIN'){
+    // PRECIO NORMAL
+    $ID_PRECIO = 1;
+  }
+}
+
 if (!isset($_SESSION["ID_USER"]) || !isset($_COOKIE['express'])) {
   header('Location: index.php');
 }
@@ -77,7 +91,7 @@ if (isset($_POST['MONTO'])) {
   $costoEnvio = $_COOKIE['express'];
 }
 
-//Imprimimos datos globales del carrito
+//Imprimiendo datos globales del carrito
 require_once "php/Conexion.php";
 $con = conexion();
 if (isset($_SESSION['ID_ARTICLES'])) {
@@ -85,15 +99,19 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   foreach($ID_ARTICLES as $key => $item){
 
     $id = $item['id'];
-    $sql = "SELECT COSTO_PROM FROM INVE" .$BD. " where CVE_ART='$id'";
+    $sql = "SELECT PRECIO AS ULT_COSTO FROM PRECIO_X_PROD" .$BD. " WHERE CVE_ART = '$id' AND  CVE_PRECIO = $ID_PRECIO";
+
     $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
     if (0 !== sqlsrv_num_rows($res)){
-      while ($arti = sqlsrv_fetch_array($res)) {
-        $TotalxArtGlobal += $arti['COSTO_PROM'] * $item['cantidad'];
+      while ($fila = sqlsrv_fetch_array($res)) {
+
+        $precioNormal = $fila['ULT_COSTO'];
+        $TotalxArtGlobal += $precioNormal * $item['cantidad'];
         $vtaTotal = $TotalxArtGlobal + $_COOKIE['express'];
       }
     }
   }
+
   sqlsrv_close($con);
 }
 
@@ -484,7 +502,10 @@ if (isset($_SESSION['ID_ARTICLES'])) {
         </div>
 
         <ul class="order-details-form mb-4">
-          <li><span>Artículos</span> <span>Total</span></li>
+          <li>
+            <span>Artículos</span>
+            <span>CANTIDAD</span>
+          </li>
           <div class="scroll-divCheckout">
             <?php
             require_once "php/Conexion.php";
@@ -492,16 +513,17 @@ if (isset($_SESSION['ID_ARTICLES'])) {
             if (isset($_SESSION['ID_ARTICLES'])) {
               foreach ($ID_ARTICLES as $key => $item) {
                 $id= $item['id'];
-                $sql = "SELECT DESCR as Nombre,COSTO_PROM FROM INVE" .$BD. " where CVE_ART='$id'";
+                $sql = "SELECT DESCR as Nombre FROM INVE" .$BD. " where CVE_ART='$id'";
 
                 $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
                 if (0 !== sqlsrv_num_rows($res)){
                   while ($arti = sqlsrv_fetch_array($res)) {
 
-
-                    $TotalxArt = $arti['COSTO_PROM'] * $item['cantidad'];
                     ?>
-                    <li><span><?php echo $arti['Nombre'] ?></span> <span>$<?php echo number_format($TotalxArt,2) ?></span></li>
+                    <li>
+                      <span><?php echo $arti['Nombre'] ?></span>
+                      <span><?php echo $item['cantidad'] ?> pz(s)</span>
+                    </li>
 
                   <?php }
                 }
@@ -614,6 +636,33 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 </div>
 <!-- ****** Checkout Area End ****** -->
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- ****** Footer Area Start ****** -->
 <footer class="footer_area">
   <div class="container">
@@ -687,14 +736,125 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 </html>
 
 <script type="text/javascript">
+function refrescar(){
+  //Actualiza la página
+  location.reload();
+}
+
 
 $(document).ready(function(){
   alertify.set('notifier','position', 'top-right');
+  var arrayStock_BD = [];
+  var validador = 1;
+  function cargaStock_BD(){
+    debugger;
+
+    if(validador != 0){
+      <?php
+
+      $validador = 0;
+      $i=0;
+      if (isset($_SESSION['ID_ARTICLES'])) {
+        foreach ($ID_ARTICLES as $key => $item) {
+          // ==============ID===================
+          $id= $item['id'];
+          // ===================================
+
+          // ==============Cant_art===================
+          $cantidad_art_cart = $item['cantidad'];
+          // =========================================
+
+          require_once "php/Conexion.php";
+          $con = conexion();
+
+          $sql = "SELECT EXIST,DESCR,CVE_ART FROM INVE" .$BD. " where CVE_ART= '$id'";
+
+          $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+          if (0 !== sqlsrv_num_rows($res)){
+            while ($arti = sqlsrv_fetch_array($res)) {
+
+              $exist_BD =  $arti['EXIST'];
+              $array_stock[$i] = $exist_BD;
+
+              if ($cantidad_art_cart > $exist_BD) {
+
+                ?>
+                alertify.warning('Sera eliminado del carrito');
+
+                alertify.error('El artículo: <br/>' + '<?php echo $arti['DESCR'] ?>' + '<br/> Clave: <br/>' + '<?php echo $arti['CVE_ART'] ?>' + '<br/> no se encuentra disponible.' );
+
+
+                <?php
+              }
+
+              $i++;
+            }
+          }
+          // sqlsrv_close($con);
+        }
+      }
+
+      ?>
+
+    }
+
+  }
+
+
+
+
+
+
+  var time = setInterval(refrescar, 15000);
+
+
+
+  // var time = setTimeout(cargaStock_BD, 5000);
+
+// setTimeout(cargaStock_BD, 5000);
 
   $('#btnLogOut').click(function(){
     vaciar = 1;
 
     logOut(vaciar);
+
+  });
+
+  $('#btnConsigna').click(function(){
+    debugger;
+    cargaStock_BD();
+
+    cantidad_Art = <?php echo count($array_stock) ?>;
+
+    <?php
+    $recorrido = count($array_stock);
+    $i = 0;
+    $x = 1;
+    while ($x <= $recorrido) {
+      ?>
+
+      x= <?php echo $i?>;
+
+      arrayStock_BD[<?php echo $i ?>] = <?php echo $array_stock[$i] ?>;
+
+      <?php
+      $i++;
+      $x++;
+    }
+    ?>
+
+    // Imprimimos el contenido del array en javascript
+    console.log(arrayStock_BD);
+
+    // con este bsucammos si en el array hay un stock de valor = 0 y retorna TRUE en caso de que halla ese valor.
+    // console.info( arrayStock_BD.includes(0) ); // true
+
+
+    tiempo = 1;
+    if (arrayStock_BD.includes(0) != true) {
+      location.href = 'prueba.php'
+    }
+
 
   });
 
@@ -718,103 +878,93 @@ $(document).ready(function(){
 
   });
 
-
   $('#btnRegistrateModal').click(function(){
 
     $('#ModalViewAccount').hide();
 
   });
 
+  $('#btnActualizarDatos').click(function(){
+    debugger;
+    nombre = $('#txtName').val();
+    nombre_recibe = $('#txtName_Recibe').val();
+    calle = $('#txtCalle').val();
+    numCalle = $('#txtNumCalle').val();
+    cp = $('#txtCp').val();
+    ciudad = $('#txtCiudad').val();
+    estado = $('#txtEstado').val();
+    cel = $('#txtCel').val();
+    email= $('#txtEmail').val();
 
-  $('#btnConsigna').click(function(){
-    <?php if (isset($_SESSION["ID_USER"]) && isset($_SESSION['Email'])){ ?>
-
-      location.href = 'verificadorConsig.php'
-
-      <?php } ?>
-    });
-
-
-    $('#btnActualizarDatos').click(function(){
-debugger;
-      nombre = $('#txtName').val();
-      nombre_recibe = $('#txtName_Recibe').val();
-      calle = $('#txtCalle').val();
-      numCalle = $('#txtNumCalle').val();
-      cp = $('#txtCp').val();
-      ciudad = $('#txtCiudad').val();
-      estado = $('#txtEstado').val();
-      cel = $('#txtCel').val();
-      email= $('#txtEmail').val();
-
-      if(validar_email( email ) )
-      {
-      }
-      else
-      {
-        alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
-        email = 1;
-      }
-
-      pass= $('#txtPass').val();
-
-      if(nombre == ""){
-
-        alert("Debe ingresar un nombre...");
-      }
-      if(nombre_recibe == ""){
-
-        alert("Debe ingresar nombre de la persona que recibbirá el producto...");
-      }
-      if(calle == ""){
-
-        alert("Debe ingresar una calle...");
-      }if(numCalle == ""){
-
-        alert("Debe ingresar un número de la hubicación...");
-      }
-      if(cp == ""){
-
-        alert("Debe ingresar un código postal...");
-      }if(ciudad == ""){
-
-        alert("Debe ingresar una ciudad...");
-      }
-      if(estado == ""){
-
-        alert("Debe ingresar un estado...");
-      }
-      if(cel == ""){
-
-        alert("Debe ingresar un número de contacto...");
-      }
-      if(email == ""){
-
-        alert("Debe ingresar un E-mail...");
-      }
-      if(pass == ""){
-
-        alert("Debe ingresar una contraseña...");
-      }
-
-      if(nombre != "" && nombre_recibe != ""  && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && pass != ""){
-        ModDatosUsuarios(nombre,nombre_recibe,calle,numCalle,cp,ciudad,estado,cel,email, pass);
-      }
-
-    });
-
-
-    function validar_email( email )
+    if(validar_email( email ) )
     {
-      var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-      return regex.test(email) ? true : false;
+    }
+    else
+    {
+      alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+      email = 1;
+    }
+
+    pass= $('#txtPass').val();
+
+    if(nombre == ""){
+
+      alert("Debe ingresar un nombre...");
+    }
+    if(nombre_recibe == ""){
+
+      alert("Debe ingresar nombre de la persona que recibbirá el producto...");
+    }
+    if(calle == ""){
+
+      alert("Debe ingresar una calle...");
+    }if(numCalle == ""){
+
+      alert("Debe ingresar un número de la hubicación...");
+    }
+    if(cp == ""){
+
+      alert("Debe ingresar un código postal...");
+    }if(ciudad == ""){
+
+      alert("Debe ingresar una ciudad...");
+    }
+    if(estado == ""){
+
+      alert("Debe ingresar un estado...");
+    }
+    if(cel == ""){
+
+      alert("Debe ingresar un número de contacto...");
+    }
+    if(email == ""){
+
+      alert("Debe ingresar un E-mail...");
+    }
+    if(pass == ""){
+
+      alert("Debe ingresar una contraseña...");
+    }
+
+    if(nombre != "" && nombre_recibe != ""  && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && pass != ""){
+      ModDatosUsuarios(nombre,nombre_recibe,calle,numCalle,cp,ciudad,estado,cel,email, pass);
     }
 
   });
-  function mayus(e) {
-    e.value = e.value.toUpperCase();
+
+
+  function validar_email( email )
+  {
+    var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    return regex.test(email) ? true : false;
   }
-  function minus(e) {
-    e.value = e.value.toLowerCase();
-  }
+
+});
+
+function mayus(e) {
+  e.value = e.value.toUpperCase();
+}
+function minus(e) {
+  e.value = e.value.toLowerCase();
+}
 </script>
