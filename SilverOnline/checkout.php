@@ -382,7 +382,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
       <div class="scroll-divDel">
 
         <div class="modal-body">
-          <h4 style="color:#FF0000;">Stock no disponible, favor de eliminar el artículo.</h4>
+          <h4 style="color:#FF0000;">Stock no disponible.</h4>
           <table class="table table-responsive">
             <thead>
               <tr>
@@ -437,7 +437,15 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                             <h6 id="h6Stock<?php echo $id ?>"><br/><?php echo $exist_cart ?></h6></td>
                           <td>
                             <br/>
-                            <input type="number" class="qty-text" id="qty<?php echo $id ?>" name="CANTIDAD" autocomplete="off"></td>
+                            <input type="number" class="stockNumber" id="qty<?php echo $id ?>" name="CANTIDAD" autocomplete="off"
+                            <?php if ($exist_bd == 0){
+                              echo 'disabled'
+                              ?>
+
+
+
+                            <?php } ?>
+                            ></td>
 
                           <td>
                             <br/>
