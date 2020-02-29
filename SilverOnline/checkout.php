@@ -736,82 +736,9 @@ if (isset($_SESSION['ID_ARTICLES'])) {
 </html>
 
 <script type="text/javascript">
-function refrescar(){
-  //Actualiza la página
-  location.reload();
-}
-
-
 $(document).ready(function(){
+
   alertify.set('notifier','position', 'top-right');
-  var arrayStock_BD = [];
-  var validador = 1;
-  function cargaStock_BD(){
-    debugger;
-
-    if(validador != 0){
-      <?php
-
-      $validador = 0;
-      $i=0;
-      if (isset($_SESSION['ID_ARTICLES'])) {
-        foreach ($ID_ARTICLES as $key => $item) {
-          // ==============ID===================
-          $id= $item['id'];
-          // ===================================
-
-          // ==============Cant_art===================
-          $cantidad_art_cart = $item['cantidad'];
-          // =========================================
-
-          require_once "php/Conexion.php";
-          $con = conexion();
-
-          $sql = "SELECT EXIST,DESCR,CVE_ART FROM INVE" .$BD. " where CVE_ART= '$id'";
-
-          $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
-          if (0 !== sqlsrv_num_rows($res)){
-            while ($arti = sqlsrv_fetch_array($res)) {
-
-              $exist_BD =  $arti['EXIST'];
-              $array_stock[$i] = $exist_BD;
-
-              if ($cantidad_art_cart > $exist_BD) {
-
-                ?>
-                alertify.warning('Sera eliminado del carrito');
-
-                alertify.error('El artículo: <br/>' + '<?php echo $arti['DESCR'] ?>' + '<br/> Clave: <br/>' + '<?php echo $arti['CVE_ART'] ?>' + '<br/> no se encuentra disponible.' );
-
-
-                <?php
-              }
-
-              $i++;
-            }
-          }
-          // sqlsrv_close($con);
-        }
-      }
-
-      ?>
-
-    }
-
-  }
-
-
-
-
-
-
-  var time = setInterval(refrescar, 15000);
-
-
-
-  // var time = setTimeout(cargaStock_BD, 5000);
-
-// setTimeout(cargaStock_BD, 5000);
 
   $('#btnLogOut').click(function(){
     vaciar = 1;
@@ -821,56 +748,11 @@ $(document).ready(function(){
   });
 
   $('#btnConsigna').click(function(){
-    debugger;
-    cargaStock_BD();
 
-    cantidad_Art = <?php echo count($array_stock) ?>;
-
-    <?php
-    $recorrido = count($array_stock);
-    $i = 0;
-    $x = 1;
-    while ($x <= $recorrido) {
-      ?>
-
-      x= <?php echo $i?>;
-
-      arrayStock_BD[<?php echo $i ?>] = <?php echo $array_stock[$i] ?>;
-
-      <?php
-      $i++;
-      $x++;
-    }
-    ?>
-
-    // Imprimimos el contenido del array en javascript
-    console.log(arrayStock_BD);
-
-    // con este bsucammos si en el array hay un stock de valor = 0 y retorna TRUE en caso de que halla ese valor.
-    // console.info( arrayStock_BD.includes(0) ); // true
-
-
-    tiempo = 1;
-    if (arrayStock_BD.includes(0) != true) {
-      location.href = 'prueba.php'
-    }
-
+    valStock();
 
   });
 
-  $('#btnPaypal').click(function(){
-    Email.send({
-      Host : "smtp.elasticemail.com",
-      Username : "fernando18092105@gmail.com",
-      Password : "C8C00D5D9EEF4F923A4B7190F4F83F9D4E5B",
-      To : 'fer18092105@icloud.com',
-      From : "fernando18092105@gmail.com",
-      Subject : "This is the subject",
-      Body : "And this is the body"
-    }).then(
-      message => alert(message)
-    );
-  });
 
   $('#btnEntrarModal').click(function(){
 
@@ -885,7 +767,6 @@ $(document).ready(function(){
   });
 
   $('#btnActualizarDatos').click(function(){
-    debugger;
     nombre = $('#txtName').val();
     nombre_recibe = $('#txtName_Recibe').val();
     calle = $('#txtCalle').val();

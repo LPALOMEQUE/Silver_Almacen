@@ -35,6 +35,26 @@ debugger;
 
 }
 
+function valStock(){
+debugger;
+cadena = '';
+  $.ajax({
+    type:"POST",
+    url: "checkStock.php",
+    data:cadena,
+    success:function(result){
+      debugger;
+
+      if(result==1){
+        alertify.error("Hay un artículo que ya no esta disponible, verifiquelo.");
+      }
+      else{
+        location.href = 'VerificadorConsig.php';
+
+      }
+    }
+  });
+}
 
 function busClienteConsigna(nombreCliente){
   cadena = "NOMBREC_Consigna=" +nombreCliente;
