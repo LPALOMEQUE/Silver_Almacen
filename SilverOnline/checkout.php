@@ -439,7 +439,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                             id = '<?php echo $id ?>';
                             posicion = <?php echo $key ?>;
                             valida = 1;
-                            eliminarArticulo(id, posicion, valida);
+                            eliminarArticuloCheck(id, posicion, valida);
 
                           });
                         });

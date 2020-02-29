@@ -353,6 +353,21 @@ function eliminarArticulo(id, posicion, valida){
   });
 }
 
+function eliminarArticuloCheck(id, posicion, valida){
+  cadena = "ID=" + id + "&Posicion=" + posicion + "&DelArt=" + valida;
+
+  $.ajax({
+    type:"POST",
+    url: "cart.php",
+    data:cadena,
+    success:function(result){
+      location.href="checkout.php";
+      // location.reload();
+      // $('#ModalDelArt').hide();
+    }
+  });
+}
+
 function getPriceDeli(precioEnvio, total){
 
   cadena = "MONTO=" + precioEnvio + "&finalTotal=" + total;
