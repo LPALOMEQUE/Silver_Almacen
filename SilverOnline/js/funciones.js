@@ -21,8 +21,6 @@ debugger;
 
       if(result==1){
         alertify.success("Se actualizarón los datos de forma correcta.");
-
-        // location.reload();
       }
       else{
         alertify.error("Error.");
@@ -47,6 +45,8 @@ cadena = '';
 
       if(result==1){
         alertify.error("Hay un artículo que ya no esta disponible, verifiquelo.");
+        location.href = 'checkout.php?Del=8';
+
       }
       else{
         location.href = 'VerificadorConsig.php';

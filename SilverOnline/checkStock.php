@@ -4,14 +4,9 @@ session_start();
 $BD = '01';
 $i=0;
 
-
-
 if (isset($_SESSION['ID_ARTICLES'])) {
   $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
 }
-
-
-
 
 if (isset($_SESSION['ID_ARTICLES'])) {
   foreach ($ID_ARTICLES as $key => $item) {

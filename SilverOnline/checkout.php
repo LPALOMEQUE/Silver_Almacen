@@ -360,6 +360,109 @@ if (isset($_SESSION['ID_ARTICLES'])) {
     </div>
   </div>
 </div>
+
+<!-- Modal para ELIMINAR ARTICULO -->
+<div class="modal fade" id="ModalDelArt" tabindex="-1" role="dialog" aria-labelledby="ModalDelArt" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalDelArt">Mensaje del sistema...</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="scroll-divDel">
+
+        <div class="modal-body">
+          <h4 style="color:#FF0000;">Stock no disponible, favor de eliminar el artículo.</h4>
+          <table class="table table-responsive">
+            <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Status</th>
+                <th>Stock</th>
+                <th>Carrito</th>
+                <th> ...</th>
+                <th> ...</th>
+                <th> </th>
+              </tr>
+            </thead>
+            <tbody>
+
+              <?php
+              require_once "php/Conexion.php";
+              $con = conexion();
+              if (isset($_SESSION['ID_ARTICLES'])) {
+                foreach ($ID_ARTICLES as $key => $item) {
+                  $id= $item['id'];
+
+                  $sql = "SELECT
+                  I.EXIST,
+                  I.DESCR,
+                  I.CVE_IMAGEN
+                  FROM INVE" .$BD. " I
+                  where
+                  I.CVE_ART= '$id'";
+
+                  $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+                  if (0 !== sqlsrv_num_rows($res)){
+                    while ($arti = sqlsrv_fetch_array($res)) {
+                      $exist_bd = $arti['EXIST'];
+                      $exist_cart = $item['cantidad'];
+
+                      if ( $exist_cart > $exist_bd  ) {
+                        // code...
+
+
+                        ?>
+                        <tr>
+                          <td class="cart_product_img d-flex align-items-center">
+                            <a href="#"><img src="img/product-img/product-12.jpg" alt="Product"></a>
+                            <h6 id="h6Nombre<?php echo $id ?>"><?php echo $arti['DESCR'] ?></h6>
+                          </td>
+                          <td><h6 style="color:#FF0000;"><br/>No disponible</h6></td>
+                          <td><h6 id="h6Stock<?php echo $id ?>"><br/><?php echo $arti['EXIST'] ?></h6></td>
+                          <td><h6 id="h6Stock<?php echo $id ?>"><br/><?php echo $exist_cart ?></h6></td>
+                          <td></td>
+                          <td></td>
+                          <td>
+                            <br/>
+                            <button type="button" class="btn btn-danger" id="btnDel<?php echo $id ?>">X</button>
+                          </td>
+
+                        </tr>
+
+                        <script type="text/javascript">
+                        $(document).ready(function(){
+                          $('#btnDel<?php echo $id ?>').click(function(){
+                            debugger;
+                            id = '<?php echo $id ?>';
+                            posicion = <?php echo $key ?>;
+                            valida = 1;
+                            eliminarArticulo(id, posicion, valida);
+
+                          });
+                        });
+                        </script>
+                        <?php
+                      }
+                    }
+                  }
+                }
+                sqlsrv_close($con);
+              }
+              ?>
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- Help Line -->
 <div class="help-line">
   <a href="tel:9221197785"><i class="ti-headphone-alt"></i> +52 922 1197 785</a>
@@ -740,112 +843,125 @@ $(document).ready(function(){
 
   alertify.set('notifier','position', 'top-right');
 
-  $('#btnLogOut').click(function(){
-    vaciar = 1;
-
-    logOut(vaciar);
-
-  });
-
-  $('#btnConsigna').click(function(){
-
-    valStock();
-
-  });
 
 
-  $('#btnEntrarModal').click(function(){
+  <?php if(isset($_GET['Del']) && $_GET['Del'] == 8){ ?>
 
-    $('#ModalViewAccount').hide();
+    $('#ModalDelArt').modal('toggle');
 
-  });
+    <?php } ?>
 
-  $('#btnRegistrateModal').click(function(){
 
-    $('#ModalViewAccount').hide();
 
-  });
 
-  $('#btnActualizarDatos').click(function(){
-    nombre = $('#txtName').val();
-    nombre_recibe = $('#txtName_Recibe').val();
-    calle = $('#txtCalle').val();
-    numCalle = $('#txtNumCalle').val();
-    cp = $('#txtCp').val();
-    ciudad = $('#txtCiudad').val();
-    estado = $('#txtEstado').val();
-    cel = $('#txtCel').val();
-    email= $('#txtEmail').val();
 
-    if(validar_email( email ) )
+
+    $('#btnLogOut').click(function(){
+      vaciar = 1;
+
+      logOut(vaciar);
+
+    });
+
+    $('#btnConsigna').click(function(){
+
+      valStock();
+
+    });
+
+
+    $('#btnEntrarModal').click(function(){
+
+      $('#ModalViewAccount').hide();
+
+    });
+
+    $('#btnRegistrateModal').click(function(){
+
+      $('#ModalViewAccount').hide();
+
+    });
+
+    $('#btnActualizarDatos').click(function(){
+      nombre = $('#txtName').val();
+      nombre_recibe = $('#txtName_Recibe').val();
+      calle = $('#txtCalle').val();
+      numCalle = $('#txtNumCalle').val();
+      cp = $('#txtCp').val();
+      ciudad = $('#txtCiudad').val();
+      estado = $('#txtEstado').val();
+      cel = $('#txtCel').val();
+      email= $('#txtEmail').val();
+
+      if(validar_email( email ) )
+      {
+      }
+      else
+      {
+        alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
+        email = 1;
+      }
+
+      pass= $('#txtPass').val();
+
+      if(nombre == ""){
+
+        alert("Debe ingresar un nombre...");
+      }
+      if(nombre_recibe == ""){
+
+        alert("Debe ingresar nombre de la persona que recibbirá el producto...");
+      }
+      if(calle == ""){
+
+        alert("Debe ingresar una calle...");
+      }if(numCalle == ""){
+
+        alert("Debe ingresar un número de la hubicación...");
+      }
+      if(cp == ""){
+
+        alert("Debe ingresar un código postal...");
+      }if(ciudad == ""){
+
+        alert("Debe ingresar una ciudad...");
+      }
+      if(estado == ""){
+
+        alert("Debe ingresar un estado...");
+      }
+      if(cel == ""){
+
+        alert("Debe ingresar un número de contacto...");
+      }
+      if(email == ""){
+
+        alert("Debe ingresar un E-mail...");
+      }
+      if(pass == ""){
+
+        alert("Debe ingresar una contraseña...");
+      }
+
+      if(nombre != "" && nombre_recibe != ""  && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && pass != ""){
+        ModDatosUsuarios(nombre,nombre_recibe,calle,numCalle,cp,ciudad,estado,cel,email, pass);
+      }
+
+    });
+
+
+    function validar_email( email )
     {
-    }
-    else
-    {
-      alert("El correo: " +email+ " no contiene el formato correcto, verifíquelo...");
-      email = 1;
-    }
-
-    pass= $('#txtPass').val();
-
-    if(nombre == ""){
-
-      alert("Debe ingresar un nombre...");
-    }
-    if(nombre_recibe == ""){
-
-      alert("Debe ingresar nombre de la persona que recibbirá el producto...");
-    }
-    if(calle == ""){
-
-      alert("Debe ingresar una calle...");
-    }if(numCalle == ""){
-
-      alert("Debe ingresar un número de la hubicación...");
-    }
-    if(cp == ""){
-
-      alert("Debe ingresar un código postal...");
-    }if(ciudad == ""){
-
-      alert("Debe ingresar una ciudad...");
-    }
-    if(estado == ""){
-
-      alert("Debe ingresar un estado...");
-    }
-    if(cel == ""){
-
-      alert("Debe ingresar un número de contacto...");
-    }
-    if(email == ""){
-
-      alert("Debe ingresar un E-mail...");
-    }
-    if(pass == ""){
-
-      alert("Debe ingresar una contraseña...");
-    }
-
-    if(nombre != "" && nombre_recibe != ""  && calle != "" && numCalle != "" && cp != "" && ciudad != "" && estado != "" && cel != ""  && email != "" && email !=1 && pass != ""){
-      ModDatosUsuarios(nombre,nombre_recibe,calle,numCalle,cp,ciudad,estado,cel,email, pass);
+      var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      return regex.test(email) ? true : false;
     }
 
   });
 
-
-  function validar_email( email )
-  {
-    var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    return regex.test(email) ? true : false;
+  function mayus(e) {
+    e.value = e.value.toUpperCase();
   }
-
-});
-
-function mayus(e) {
-  e.value = e.value.toUpperCase();
-}
-function minus(e) {
-  e.value = e.value.toLowerCase();
-}
+  function minus(e) {
+    e.value = e.value.toLowerCase();
+  }
 </script>

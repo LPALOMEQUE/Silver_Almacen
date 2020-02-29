@@ -2177,6 +2177,14 @@ overflow-y: scroll;
 overflow-x: hidden;
 width: 390px;
 }
+
+.scroll-divDel{
+height:400px;
+overflow-y: scroll;
+overflow-x: hidden;
+width: 795px;
+}
+
  .fondo-a{
        background-color: #ff084e;
  }
