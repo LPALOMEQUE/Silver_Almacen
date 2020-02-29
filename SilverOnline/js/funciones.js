@@ -43,8 +43,8 @@ cadena = '';
     success:function(result){
       debugger;
 
-      if(result==1){
-        alertify.error("Hay un artículo que ya no esta disponible, verifiquelo.");
+      if(result=='error'){
+        // alertify.error("Hay un artículo que ya no cuenta con stock disponible, verifiquelo.");
         location.href = 'checkout.php?Del=8';
 
       }

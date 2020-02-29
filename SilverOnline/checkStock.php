@@ -4,6 +4,8 @@ session_start();
 $BD = '01';
 $i=0;
 
+$validador = 'exitoso';
+
 if (isset($_SESSION['ID_ARTICLES'])) {
   $ID_ARTICLES=$_SESSION['ID_ARTICLES'];
 }
@@ -12,6 +14,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
   foreach ($ID_ARTICLES as $key => $item) {
     // ==============ID===================
     $id= $item['id'];
+    $stock_cart = $item['cantidad'];
     // ===================================
 
     // ==============Cant_art===================
@@ -28,8 +31,12 @@ if (isset($_SESSION['ID_ARTICLES'])) {
       while ($arti = sqlsrv_fetch_array($res)) {
 
         $exist_BD =  $arti['EXIST'];
-        $array_stock[$i] = $exist_BD;
+        $array_stock_BD[$i] = $exist_BD;
+        $array_cantidad_cart[$i] = $stock_cart;
+        if($stock_cart > $exist_BD){
 
+
+        }
 
         $i++;
       }
@@ -37,12 +44,39 @@ if (isset($_SESSION['ID_ARTICLES'])) {
     sqlsrv_close($con);
   }
 
-if (in_array(0,$array_stock)) {
-  echo 1;
-}
-else{
-  echo 0;
-}
+// echo "STOCK BASE   ";
+// var_dump($array_stock_BD);
+// echo "------------ STOCK CARRITO ";
+// var_dump($array_cantidad_cart);
+// echo "------------";
+
+$cantidad  = count($array_cantidad_cart)-1;
+
+  for ($i=0; $i <= $cantidad ; $i++) {
+    // echo "-----------";
+    // echo $array_cantidad_cart[$i] . ' <=  ' . $array_stock_BD[$i];
+    // echo "-----------";
+    if ($array_cantidad_cart[$i] <= $array_stock_BD[$i]) {
+
+      // echo $validador;
+    }
+    else{
+      // echo "********";
+    echo   $validador = 'error';
+      break;
+    }
+
+  }
+
+
+
+
+// if (in_array(0,$array_stock_BD)) {
+//   echo 1;
+// }
+// else{
+//   echo 0;
+// }
 
 }
 
