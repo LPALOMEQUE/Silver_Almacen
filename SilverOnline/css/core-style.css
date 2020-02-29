@@ -2188,3 +2188,15 @@ width: 795px;
  .fondo-a{
        background-color: #ff084e;
  }
+
+
+.qty-text {
+   border: 1px solid #ddd;
+   height: 40px;
+   padding: 5px 15px;
+   width: 80px;
+   -moz-appearance: textfield;
+   -webkit-appearance: textfield;
+   appearance: textfield;
+   font-size: 14px;
+ }

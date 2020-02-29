@@ -338,6 +338,20 @@ function cartModPrice(id, cantidad, posicion){
   });
 
 }
+function cartModPriceCheck(id, cantidad, posicion){
+  cadena = "ID=" + id + "&CANTIDAD=" + cantidad + "&Posicion=" + posicion;
+
+  $.ajax({
+    type:"POST",
+    url: "cart.php",
+    data:cadena,
+    success:function(result){
+      location.href ="checkout.php";
+    }
+
+  });
+
+}
 
 function eliminarArticulo(id, posicion, valida){
   cadena = "ID=" + id + "&Posicion=" + posicion + "&DelArt=" + valida;

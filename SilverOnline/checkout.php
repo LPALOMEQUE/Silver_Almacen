@@ -284,6 +284,14 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                       <a class="dropdown-item" href="#">Ropa</a>
                     </div>
                   </li>
+                  <div class="<?php
+                  if (isset($_GET["Del"]) && $_GET["Del"] == 8) {
+                    echo $category = 'inline';
+                  }else {
+                    echo $category = 'none';
+                  } ?>">
+                  <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalDelArt"><span class="karl-level">*****</span>Verifica Stock</a></li>
+                </div>
                 </ul>
               </div>
             </nav>
@@ -378,12 +386,12 @@ if (isset($_SESSION['ID_ARTICLES'])) {
           <table class="table table-responsive">
             <thead>
               <tr>
-                <th>Producto</th>
-                <th>Status</th>
+                <th>ARTículo</th>
+                <!-- <th>Status</th> -->
                 <th>Stock</th>
-                <th>Carrito</th>
-                <th> ...</th>
-                <th> ...</th>
+                <th>Cart</th>
+                <th>C.N</th>
+
                 <th> </th>
               </tr>
             </thead>
@@ -420,11 +428,17 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                             <a href="#"><img src="img/product-img/product-12.jpg" alt="Product"></a>
                             <h6 id="h6Nombre<?php echo $id ?>"><?php echo $arti['DESCR'] ?></h6>
                           </td>
-                          <td><h6 style="color:#FF0000;"><br/>No disponible</h6></td>
-                          <td><h6 id="h6Stock<?php echo $id ?>"><br/><?php echo $arti['EXIST'] ?></h6></td>
-                          <td><h6 id="h6Stock<?php echo $id ?>"><br/><?php echo $exist_cart ?></h6></td>
-                          <td></td>
-                          <td></td>
+                          <!-- <td><h6 style="color:#FF0000;"><br/>No disponible</h6></td> -->
+                          <td>
+                            <br/>
+                            <h6 id="h6Stock<?php echo $id ?>"><br/><?php echo $arti['EXIST'] ?></h6></td>
+                          <td>
+                            <br/>
+                            <h6 id="h6Stock<?php echo $id ?>"><br/><?php echo $exist_cart ?></h6></td>
+                          <td>
+                            <br/>
+                            <input type="number" class="qty-text" id="qty<?php echo $id ?>" name="CANTIDAD" autocomplete="off"></td>
+
                           <td>
                             <br/>
                             <button type="button" class="btn btn-danger" id="btnDel<?php echo $id ?>">X</button>
@@ -442,6 +456,33 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                             eliminarArticuloCheck(id, posicion, valida);
 
                           });
+
+                          var input = document.getElementById("qty<?php echo $id ?>");
+                          // Execute a function when the user releases a key on the keyboard
+                          input.addEventListener("keyup", function(event) {
+                            // Number 13 is the "Enter" key on the keyboard
+                            if (event.keyCode === 13) {
+                              // Cancel the default action, if needed
+                              event.preventDefault();
+                              // Trigger the button element with a click
+                              valor = document.getElementById("qty<?php echo $id ?>");
+                              // valor.value ++;
+                              id = '<?php echo $id ?>';
+                              cantidad=$('#qty<?php echo $id ?>').val();
+                              posicion = <?php echo $key ?>;
+                              if (cantidad <= <?php echo $exist_bd ?>) {
+                                cartModPriceCheck(id,
+                                  cantidad,
+                                  posicion);
+                                }
+                                else {
+                                  alertify.error("No hay stock disponible, solo puede agregar la cantidad máxima de: " + <?php echo $exist_bd ?>)
+                                  valor.value = "<?php echo $item['cantidad'] ?>";
+                                }
+
+                              }
+                            });
+
                         });
                         </script>
                         <?php
@@ -713,7 +754,9 @@ if (isset($_SESSION['ID_ARTICLES'])) {
             }else {
               echo 'none';
             } ?>">
-            <div class="card">
+            <button type="button" class="btn karl-checkout-btn" id="btnConsigna">Pedir</button>
+
+            <!-- <div class="card">
               <div class="card-header" role="tab" id="headingTwo">
                 <h6 class="mb-0">
                   <a class="collapsed" data-toggle="collapse" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"><i class="fa fa-circle-o mr-3"></i>Consigna</a>
@@ -725,7 +768,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                   <button type="button" class="btn karl-checkout-btn" id="btnConsigna">Pedir</button>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
 
         </div>
