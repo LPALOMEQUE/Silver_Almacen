@@ -386,7 +386,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
           <table class="table table-responsive">
             <thead>
               <tr>
-                <th>ARTículo</th>
+                <th>Artículo</th>
                 <!-- <th>Status</th> -->
                 <th>Stock</th>
                 <th>Cart</th>
@@ -744,7 +744,7 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                       onAuthorize: function (data, actions) {
                         return actions.payment.execute().then(function () {
                           // console.log(data);
-                          window.location="verificador.php?paymentToken="+ data.paymentToken +
+                          window.location="prueba.php?paymentToken="+ data.paymentToken +
                           "&paymentID=" + data.paymentID +
                           "&EMAIL=" + '<?php echo $email ?>';
                         });
