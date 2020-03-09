@@ -692,7 +692,7 @@ if (isset($_SESSION["Email"])) {
 
 
 
-  <!-- ****** Footer Area End ****** -->
+<!-- ****** Footer Area End ****** -->
 </div>
 <!-- /.wrapper end -->
 
@@ -721,10 +721,8 @@ PP.PRECIO AS ULT_COSTO,
 I.CVE_IMAGEN,
 I.DESCR as Descripcion
 FROM INVE" .$BD. " I
-LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
 INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
 WHERE I.EXIST > 0 AND
-M.CVE_ALM = 1 AND
 PP.CVE_PRECIO = $ID_PRECIO AND
 I.CVE_ART = '".$_GET['SKU']. "'";
 
@@ -737,66 +735,61 @@ if (0 !== sqlsrv_num_rows($res)){
 
 
     ?>
-<!-- <section class="top-discount-area d-md-flex align-items-center"> -->
-<div class="row">
-
-  <div class="col-12 col-lg-5">
-    <!-- <div class="quickview_pro_img">
-      <img src="img/product-img/product-18.jpeg" alt="">
-
-    </div> -->
-
-    <!-- <img id="zoom_01" src='img/product-img/product-18.jpeg' data-zoom-image="img/product-img/product-1.jpg"/> -->
-    <!-- <img id="zoom_01" src='images/small/image1.png' data-zoom-image="images/large/image1.jpg"/> -->
-    <img id="zoom_01" src='images/small/image1.png' data-zoom-image="images/large/image1.jpg"/>
-    <br/>
-    <a href="indexIMG.php" target="_blank">ver imagenes</a>
-
-  </div>
-  <div class="col-12 col-lg-7">
-    <div class="quickview_pro_des">
-      <h4 class="title"><?php echo $category['Nombre'] ?></h4>
-      <div class="top_seller_product_rating mb-15">
-        <i class="fa fa-star" aria-hidden="true"></i>
-        <i class="fa fa-star" aria-hidden="true"></i>
-        <i class="fa fa-star" aria-hidden="true"></i>
-        <i class="fa fa-star" aria-hidden="true"></i>
-        <i class="fa fa-star" aria-hidden="true"></i>
-      </div>
-      <h5 class="price">$<?php echo number_format($precio,2) ?> <span>$624</span></h5>
-      <p>Marca: SILVER</p>
-      <p><?php echo $category['Descripcion'] ?></p>
-      <p style="color: #ff084e;"><strong>STOCK DISPONIBLE: <?php echo $category['EXIST'] ?></strong></p>
-    </div>
     <div class="row">
-      <div class="quantity">
-        <!-- <button type="button" class="qty-minus" id="btnMenos<?php echo $category['CVE_ART'] ?>" minVal="1">-</button> -->
-        <input type="number" class="qty-text" id="qty<?php echo $category['CVE_ART'] ?>" name="CANTIDAD" min="1" value="1">
-        <!-- <button type="button" class="qty-minus" id="btnMas<?php echo $category['CVE_ART'] ?>">+</button> -->
+
+      <div class="col-12 col-lg-4" align="center" >
+        <img id="img<?php $_GET['SKU']?>" src='img/product-img/nozoom2.jpg' height="200px" width="117px" data-zoom-image="img/product-img/pruba2.jpg"/>
+        <br/>
+        <img id="img<?php $_GET['SKU']?>_1" src='img/product-img/nozoom2.jpg' height="200px" width="117px" data-zoom-image="images/large/image1.jpg"/>
+        <br/>
+        <img id="img<?php $_GET['SKU']?>_2" src='img/product-img/nozoom2.jpg' height="200px" width="117px" data-zoom-image="images/large/image1.jpg"/>
 
       </div>
-
-      <button type="button" class="btn cart-submit" id="btnSendPost<?php echo $category['CVE_ART'] ?>"> + CARRITO</button>
-
-
-      </div>
-
-      <!-- END ENVIO DE DATOS POR URL ESCONDIDA -->
-      <div class="share_wf mt-30">
-        <p>Comparte con tus amigos</p>
-        <div class="_icon">
-          <a href="https://es-la.facebook.com/newsilverevolution/"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-          <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-          <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
-          <a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+      <div class="col-12 col-lg-7">
+        <div class="quickview_pro_des">
+          <h4 class="title"><?php echo $category['Nombre'] ?></h4>
+          <div class="top_seller_product_rating mb-15">
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star" aria-hidden="true"></i>
+            <i class="fa fa-star" aria-hidden="true"></i>
+          </div>
+          <h5 class="price">$<?php echo number_format($precio,2) ?> <span>$624</span></h5>
+          <p>Marca: SILVER</p>
+          <p><?php echo $category['Descripcion'] ?></p>
+          <p style="color: #ff084e;"><strong>STOCK DISPONIBLE: <?php echo $category['EXIST'] ?></strong></p>
         </div>
+        <div class="row">
+
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <!-- END ENVIO DE DATOS POR URL ESCONDIDA -->
+        <div class="share_wf mt-30">
+          <p>Comparte con tus amigos</p>
+          <div class="_icon">
+            <a href="https://es-la.facebook.com/newsilverevolution/"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+            <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+            <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
+            <a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+          </div>
+        </div>
+
       </div>
 
     </div>
-  </div>
-  <?php
-}
-sqlsrv_close($con);
+    <?php
+  }
+  sqlsrv_close($con);
 }
 ?>
 <!-- </section> -->
@@ -806,513 +799,422 @@ sqlsrv_close($con);
 
 <script type="text/javascript">
 
-    $(document).ready(function(){
-      alertify.set('notifier','position', 'top-right');
+$(document).ready(function(){
+  alertify.set('notifier','position', 'top-right');
 
 
-      $('#zoom_01').elevateZoom({
-      easing: true,
-      zoomType: "inner",
-      cursor: "crosshair",
-      zoomWindowFadeIn: 500,
-      zoomWindowFadeOut: 750
+  $('#img<?php $_GET['SKU']?>').elevateZoom({
+    easing: true,
+    scrollZoom : true,
+    cursor: "crosshair",
+    zoomWindowFadeIn: 500,
+    zoomWindowFadeOut: 750
+  });
+  $('#img<?php $_GET['SKU']?>_1').elevateZoom({
+    easing: true,
+    zoomType: "inner",
+    cursor: "crosshair",
+    zoomWindowFadeIn: 500,
+    zoomWindowFadeOut: 750
+  });
+  $('#img<?php $_GET['SKU']?>_2').elevateZoom({
+    easing: true,
+    zoomType: "inner",
+    cursor: "crosshair",
+    zoomWindowFadeIn: 500,
+    zoomWindowFadeOut: 750
+  });
+
+  var validaImg =0;
+  var nameArticulo ="";
+
+  $('#btnGuardar').click(function(){
+
+    nombre = $('#txtNombre').val();
+    apellidoP = $('#txtApellidoP').val();
+    apellidoM = $('#txtApellidoM').val();
+    calle = $('#txtCalle').val();
+    numCalle = $('#txtNumCalle').val();
+    cp = $('#txtCp').val();
+    ciudad = $('#txtCiudad').val();
+    estado = $('#txtEstado').val();
+    cel = $('#txtCel').val();
+    nombre_Recibe = $('#txtNombre_Recibe').val();
+    apellidoP_Recibe = $('#txtApellidoP_Recibe').val();
+    apellidoM_Recibe = $('#txtApellidoM_Recibe').val();
+    email= $('#txtEmail').val();
+    pass= $('#txtPass').val();
+    roll = 'COMUN';
+
+    if(nombre == ""){
+
+      alertify.error("Debe ingresar un nombre.");
+
+      return false;
+    }
+    if(apellidoP == ""){
+
+      alertify.error("Debe ingresar un apellido paterno.");
+
+      return false;
+
+    }if(apellidoM == ""){
+
+      alertify.error("Debe ingresar un apellido Materno.");
+
+      return false;
+    }
+    if(calle == ""){
+      alertify.error("Debe ingresar una calle.");
+
+      return false;
+
+    }if(numCalle == ""){
+      alertify.error("Debe ingresar un número de la ubicación.");
+
+      return false;
+    }
+    if(cp == ""){
+      alertify.error("Debe ingresar un código postal.");
+
+      return false;
+    }
+    if(ciudad == ""){
+      alertify.error("Debe ingresar una ciudad.");
+
+      return false;
+    }
+    if(estado == ""){
+      alertify.error("Debe ingresar un estado.");
+
+      return false;
+    }
+    if(cel == ""){
+      alertify.error("Debe ingresar un número de contacto.");
+
+      return false;
+    }
+
+    if (txtCel.value.length != 10) {
+      alertify.error("El número celular es incorrecto ya que tiene " + txtCel.value.length + " caracteres y debe contener 10.");
+      txtCel.focus();
+      return false;
+    }
+
+    if(nombre_Recibe == ""){
+      alertify.error("Debe ingresar un nombre de quien recibirá el producto.");
+
+      return false;
+    }
+    if(apellidoP_Recibe == ""){
+      alertify.error("Debe ingresar un apellido paterno de quien recibirá el producto.");
+
+      return false;
+    }
+
+    if(apellidoM_Recibe == ""){
+      alertify.error("Debe ingresar un apellido Materno de quien recibirá el producto.");
+
+      return false;
+    }
+
+    if(email == ""){
+      alertify.error("Debe ingresar un E-mail.");
+
+      return false;
+    }
+    if(validar_email( email ) )
+    {
+    }
+    else
+    {
+      alertify.error("El correo: " + email + " no contiene el formato correcto, verifíquelo.");
+
+      email = 1;
+      return false;
+    }
+
+    if(pass == ""){
+      alertify.error("Debe ingresar una contraseña.");
+
+      return false;
+    }
+
+    if(roll == 0){
+      alertify.error("Debe seleccionar un roll de usuario.");
+
+      return false;
+    }
+    if(nombre != "" &&
+    apellidoP != "" &&
+    apellidoM != "" &&
+    calle != "" &&
+    numCalle != "" &&
+    cp != "" &&
+    ciudad != "" &&
+    estado != "" &&
+    cel != "" &&
+    nombre_Recibe != "" &&
+    apellidoP_Recibe != "" &&
+    apellidoM_Recibe != "" &&
+    txtCel.value.length == 10  &&
+    email != "" &&
+    email !=1 &&
+    pass != "" &&
+    roll !=0){
+      agregarUsuarios(nombre,
+        apellidoP,
+        apellidoM,
+        calle,
+        numCalle,
+        cp,ciudad,
+        estado,
+        cel,
+        nombre_Recibe,
+        apellidoP_Recibe,
+        apellidoM_Recibe,
+        email,
+        pass,
+        roll);
+      }
+    });
+
+    $('#btnGuardarC').click(function(){
+      nombre = $('#txtNombreC').val();
+      apellidoP = $('#txtApellidoPC').val();
+      apellidoM = $('#txtApellidoMC').val();
+      calle = $('#txtCalleC').val();
+      numCalle = $('#txtNumCalleC').val();
+      cp = $('#txtCpC').val();
+      ciudad = $('#txtCiudadC').val();
+      estado = $('#txtEstadoC').val();
+      cel = $('#txtCelC').val();
+      nombre_Recibe = ' ';
+      apellidoP_Recibe = ' ';
+      apellidoM_Recibe = ' ';
+      email= $('#txtEmailC').val();
+
+      // =================================================
+      pass= 'Silver2020';
+      roll = 'COMUN';
+      // =================================================
+
+      if(nombre == ""){
+
+        alertify.error("Debe ingresar un nombre.");
+
+        return false;
+      }
+      if(apellidoP == ""){
+
+        alertify.error("Debe ingresar un apellido paterno.");
+
+        return false;
+
+      }if(apellidoM == ""){
+
+        alertify.error("Debe ingresar un apellido Materno.");
+
+        return false;
+      }
+      if(calle == ""){
+        alertify.error("Debe ingresar una calle.");
+
+        return false;
+
+      }if(numCalle == ""){
+        alertify.error("Debe ingresar un número de la ubicación.");
+
+        return false;
+      }
+      if(cp == ""){
+        alertify.error("Debe ingresar un código postal.");
+
+        return false;
+      }
+
+      if(ciudad == ""){
+        alertify.error("Debe ingresar una ciudad.");
+
+        return false;
+      }
+      if(estado == ""){
+        alertify.error("Debe ingresar un estado.");
+
+        return false;
+      }
+      if(cel == ""){
+        alertify.error("Debe ingresar un número de contacto.");
+
+        return false;
+      }
+
+      if (txtCelC.value.length != 10) {
+        alertify.error("El número celular es incorrecto ya que tiene " + txtCelC.value.length + " caracteres y debe contener 10.");
+        txtCelC.focus();
+        return false;
+      }
+
+      if(email == ""){
+        alertify.error("Debe ingresar un E-mail.");
+
+        return false;
+      }
+      if(validar_email( email ) )
+      {
+      }
+      else
+      {
+        alertify.error("El correo: " + email + " no contiene el formato correcto, verifíquelo.");
+
+        email = 1;
+        return false;
+      }
+
+
+      if(nombre != "" &&
+      apellidoP != "" &&
+      apellidoM != "" &&
+      calle != "" &&
+      numCalle != "" &&
+      cp != "" &&
+      ciudad != "" &&
+      estado != "" &&
+      cel != "" &&
+      txtCelC.value.length == 10  &&
+      email != "" &&
+      email !=1){
+        agregarUsuarios(nombre,
+          apellidoP,
+          apellidoM,
+          calle,
+          numCalle,
+          cp,ciudad,
+          estado,
+          cel,
+          nombre_Recibe,
+          apellidoP_Recibe,
+          apellidoM_Recibe,
+          email,
+          pass,
+          roll);
+        }
       });
 
 
-      var validaImg =0;
-      var nameArticulo ="";
+      $('#btnEntrarModal').click(function(){
 
-      $('#btnGuardar').click(function(){
+        $('#ModalViewAccount').hide();
+      });
 
-        nombre = $('#txtNombre').val();
-        apellidoP = $('#txtApellidoP').val();
-        apellidoM = $('#txtApellidoM').val();
-        calle = $('#txtCalle').val();
-        numCalle = $('#txtNumCalle').val();
-        cp = $('#txtCp').val();
-        ciudad = $('#txtCiudad').val();
-        estado = $('#txtEstado').val();
-        cel = $('#txtCel').val();
-        nombre_Recibe = $('#txtNombre_Recibe').val();
-        apellidoP_Recibe = $('#txtApellidoP_Recibe').val();
-        apellidoM_Recibe = $('#txtApellidoM_Recibe').val();
-        email= $('#txtEmail').val();
-        pass= $('#txtPass').val();
-        roll = 'COMUN';
 
-        if(nombre == ""){
+      $('#btnRegistrateModal').click(function(){
 
-          alertify.error("Debe ingresar un nombre.");
+        $('#ModalViewAccount').hide();
+      });
 
-          return false;
+      // Enter de inicio de sesion
+      var input = document.getElementById("txt_Pass");
+      input.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnEntrar").click();
         }
-        if(apellidoP == ""){
+      });
 
-          alertify.error("Debe ingresar un apellido paterno.");
 
-          return false;
+      $('#btnLogOut').click(function(){
+        vaciar = 1;
 
-        }if(apellidoM == ""){
+        logOut(vaciar);
+      });
 
-          alertify.error("Debe ingresar un apellido Materno.");
-
-          return false;
-        }
-        if(calle == ""){
-          alertify.error("Debe ingresar una calle.");
-
-          return false;
-
-        }if(numCalle == ""){
-          alertify.error("Debe ingresar un número de la ubicación.");
-
-          return false;
-        }
-        if(cp == ""){
-          alertify.error("Debe ingresar un código postal.");
-
-          return false;
-        }
-        if(ciudad == ""){
-          alertify.error("Debe ingresar una ciudad.");
-
-          return false;
-        }
-        if(estado == ""){
-          alertify.error("Debe ingresar un estado.");
-
-          return false;
-        }
-        if(cel == ""){
-          alertify.error("Debe ingresar un número de contacto.");
-
-          return false;
-        }
-
-        if (txtCel.value.length != 10) {
-          alertify.error("El número celular es incorrecto ya que tiene " + txtCel.value.length + " caracteres y debe contener 10.");
-          txtCel.focus();
-          return false;
-        }
-
-        if(nombre_Recibe == ""){
-          alertify.error("Debe ingresar un nombre de quien recibirá el producto.");
-
-          return false;
-        }
-        if(apellidoP_Recibe == ""){
-          alertify.error("Debe ingresar un apellido paterno de quien recibirá el producto.");
-
-          return false;
-        }
-
-        if(apellidoM_Recibe == ""){
-          alertify.error("Debe ingresar un apellido Materno de quien recibirá el producto.");
-
-          return false;
-        }
-
+      $('#btnEntrar').click(function(){
+        email= $('#txt_Email').val();
+        pass= $('#txt_Pass').val();
         if(email == ""){
           alertify.error("Debe ingresar un E-mail.");
-
           return false;
         }
-        if(validar_email( email ) )
-        {
-        }
-        else
-        {
-          alertify.error("El correo: " + email + " no contiene el formato correcto, verifíquelo.");
-
-          email = 1;
-          return false;
-        }
-
         if(pass == ""){
           alertify.error("Debe ingresar una contraseña.");
-
           return false;
         }
+        if(email != "" && pass != ""){
+          login(email, pass);
+        }
+      });
 
-        if(roll == 0){
-          alertify.error("Debe seleccionar un roll de usuario.");
 
+      $('#btnBus').click(function(){
+        nombreCliente = $('#txtBusName').val();
+        apellidoCliente = $('#txtBusApe').val();
+        debugger;
+        if(nombreCliente == ""){
+          alertify.error("Debe ingresar un nombre.");
           return false;
         }
-        if(nombre != "" &&
-        apellidoP != "" &&
-        apellidoM != "" &&
-        calle != "" &&
-        numCalle != "" &&
-        cp != "" &&
-        ciudad != "" &&
-        estado != "" &&
-        cel != "" &&
-        nombre_Recibe != "" &&
-        apellidoP_Recibe != "" &&
-        apellidoM_Recibe != "" &&
-        txtCel.value.length == 10  &&
-        email != "" &&
-        email !=1 &&
-        pass != "" &&
-        roll !=0){
-          agregarUsuarios(nombre,
-            apellidoP,
-            apellidoM,
-            calle,
-            numCalle,
-            cp,ciudad,
-            estado,
-            cel,
-            nombre_Recibe,
-            apellidoP_Recibe,
-            apellidoM_Recibe,
-            email,
-            pass,
-            roll);
-          }
-        });
+        if(apellidoCliente == ""){
+          alertify.error("Debe ingresar un apellido.");
+          return false;
+        }
+        if(nombreCliente != "" && apellidoCliente !=""){
+          nombreCompleto = nombreCliente + ' ' + apellidoCliente;
+          busClienteConsigna(nombreCompleto );
+        }
+      });
 
-        $('#btnGuardarC').click(function(){
-          nombre = $('#txtNombreC').val();
-          apellidoP = $('#txtApellidoPC').val();
-          apellidoM = $('#txtApellidoMC').val();
-          calle = $('#txtCalleC').val();
-          numCalle = $('#txtNumCalleC').val();
-          cp = $('#txtCpC').val();
-          ciudad = $('#txtCiudadC').val();
-          estado = $('#txtEstadoC').val();
-          cel = $('#txtCelC').val();
-          nombre_Recibe = ' ';
-          apellidoP_Recibe = ' ';
-          apellidoM_Recibe = ' ';
-          email= $('#txtEmailC').val();
+      // Enter buscador
+      var txtBus = document.getElementById("txtBusApe");
+      txtBus.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnBus").click();
+        }
+      });
 
-          // =================================================
-          pass= 'Silver2020';
-          roll = 'COMUN';
-          // =================================================
+      // Enter guardar clientes Consigna
+      var txtEmailC = document.getElementById("txtEmailC");
+      txtEmailC.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnGuardarC").click();
+        }
+      });
 
-          if(nombre == ""){
-
-            alertify.error("Debe ingresar un nombre.");
-
-            return false;
-          }
-          if(apellidoP == ""){
-
-            alertify.error("Debe ingresar un apellido paterno.");
-
-            return false;
-
-          }if(apellidoM == ""){
-
-            alertify.error("Debe ingresar un apellido Materno.");
-
-            return false;
-          }
-          if(calle == ""){
-            alertify.error("Debe ingresar una calle.");
-
-            return false;
-
-          }if(numCalle == ""){
-            alertify.error("Debe ingresar un número de la ubicación.");
-
-            return false;
-          }
-          if(cp == ""){
-            alertify.error("Debe ingresar un código postal.");
-
-            return false;
-          }
-
-          if(ciudad == ""){
-            alertify.error("Debe ingresar una ciudad.");
-
-            return false;
-          }
-          if(estado == ""){
-            alertify.error("Debe ingresar un estado.");
-
-            return false;
-          }
-          if(cel == ""){
-            alertify.error("Debe ingresar un número de contacto.");
-
-            return false;
-          }
-
-          if (txtCelC.value.length != 10) {
-            alertify.error("El número celular es incorrecto ya que tiene " + txtCelC.value.length + " caracteres y debe contener 10.");
-            txtCelC.focus();
-            return false;
-          }
-
-          if(email == ""){
-            alertify.error("Debe ingresar un E-mail.");
-
-            return false;
-          }
-          if(validar_email( email ) )
-          {
-          }
-          else
-          {
-            alertify.error("El correo: " + email + " no contiene el formato correcto, verifíquelo.");
-
-            email = 1;
-            return false;
-          }
+      // Enter guardar clientes
+      var txtEmail = document.getElementById("txtEmail");
+      txtEmail.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.keyCode === 13) {
+          // Cancel the default action, if needed
+          event.preventDefault();
+          // Trigger the button element with a click
+          document.getElementById("btnGuardar").click();
+        }
+      });
 
 
-          if(nombre != "" &&
-          apellidoP != "" &&
-          apellidoM != "" &&
-          calle != "" &&
-          numCalle != "" &&
-          cp != "" &&
-          ciudad != "" &&
-          estado != "" &&
-          cel != "" &&
-          txtCelC.value.length == 10  &&
-          email != "" &&
-          email !=1){
-            agregarUsuarios(nombre,
-              apellidoP,
-              apellidoM,
-              calle,
-              numCalle,
-              cp,ciudad,
-              estado,
-              cel,
-              nombre_Recibe,
-              apellidoP_Recibe,
-              apellidoM_Recibe,
-              email,
-              pass,
-              roll);
-            }
-          });
+    });
 
-
-          $('#btnEntrarModal').click(function(){
-
-            $('#ModalViewAccount').hide();
-          });
-
-
-          $('#btnRegistrateModal').click(function(){
-
-            $('#ModalViewAccount').hide();
-          });
-
-          $('#btnGuardarArt').click(function(){
-
-            nomArt= $('#txtNameArt').val();
-            descArt= $('#txtDescArt').val();
-            barCode = $('#txtBarCode').val();
-            modelArt = $('#txtModelo').val();
-            marcaArt = $("#cbmMarca option:selected").val();
-            precioArt = $('#txtPrecio').val();
-            categoria = $("#cbmCategoria option:selected").val();
-            subCatego = $("#cbmSubcategoria option:selected").val();
-            statusArt = $("#cbmStatus option:selected").val();
-            nombreImg = $('#txtNameIMG').val();
-
-
-            if(nomArt == ""){
-
-              alert("Debe ingresar el nombre del artículo...");
-            }
-            if(descArt == ""){
-
-              alert("Debe ingresar la descripción del artículo...");
-            }
-            if(barCode == ""){
-
-              alert("Debe ingresar el codigo de barra del artículo...");
-            }
-
-            if (txtBarCode.value.length != 11) {
-              alert('El codigo de barra es incorrecto ya que tiene una longitud de ' + txtBarCode.value.length + ' y debe contener 11 caracteres...');
-              txtBarCode.focus();
-            }
-
-            if(modelArt == ""){
-
-              alert("Debe ingresar el modelo del artículo...");
-            }
-            if(marcaArt == 0){
-
-              alert("Debe seleccionar una marca...");
-            }
-            if(precioArt == "" && precioArt !=0){
-
-              alert("Debe ingresar el precio del artículo...");
-            }
-            if(categoria == 0){
-
-              alert("Debe seleccionar una categoría...");
-            }
-            if(subCatego == 0){
-
-              alert("Debe seleccionar una subcategoría...");
-            }
-            if(statusArt == 2){
-
-              alert("Debe seleccionar un estatus del artículo...");
-            }
-
-            if (validaImg == 0) {
-
-              alert("Debe cargar la imagen del artículo...");
-            }
-
-            if (nomArt != "" && descArt != "" && barCode != "" && txtBarCode.value.length == 11 && modelArt != "" && precioArt != "" && precioArt != 0 && nameArticulo != "" && marcaArt !=0 && statusArt !=2 && validaImg != 0){
-              guardarArt(nomArt,
-                descArt,
-                barCode,
-                modelArt,
-                marcaArt,
-                precioArt,
-                categoria,
-                subCatego,
-                statusArt,
-                nameArticulo);
-                validaImg=0;
-                nameArticulo = "";
-              }
-
-            });
-            $('#upload').on('click', function() {
-
-              var file_data = $('#sortpicture').prop('files')[0];
-              var form_data = new FormData();
-              form_data.append('file', file_data);
-              $.ajax({
-                url: 'cargaIMG.php', // point to server-side PHP script
-                dataType: 'text',  // what to expect back from the PHP script, if anything
-                cache: false,
-                contentType: false,
-                processData: false,
-                data: form_data,
-                type: 'post',
-                success: function(result){
-                  if (result != "") {
-                    validaImg =1;
-                    nameArticulo = result;
-                    document.getElementById("sortpicture").value = "";
-                  }else{
-                    validaImg=0;
-                    document.getElementById("sortpicture").value = "";
-                  }
-                }
-              });
-            });
-
-            // Enter de inicio de sesion
-            var input = document.getElementById("txt_Pass");
-            input.addEventListener("keyup", function(event) {
-              // Number 13 is the "Enter" key on the keyboard
-              if (event.keyCode === 13) {
-                // Cancel the default action, if needed
-                event.preventDefault();
-                // Trigger the button element with a click
-                document.getElementById("btnEntrar").click();
-              }
-            });
-
-
-            $('#btnLogOut').click(function(){
-              vaciar = 1;
-
-              logOut(vaciar);
-            });
-
-            $('#btnEntrar').click(function(){
-              email= $('#txt_Email').val();
-              pass= $('#txt_Pass').val();
-              if(email == ""){
-                alertify.error("Debe ingresar un E-mail.");
-                return false;
-              }
-              if(pass == ""){
-                alertify.error("Debe ingresar una contraseña.");
-                return false;
-              }
-              if(email != "" && pass != ""){
-                login(email, pass);
-              }
-            });
-
-
-            $('#btnBus').click(function(){
-              nombreCliente = $('#txtBusName').val();
-              apellidoCliente = $('#txtBusApe').val();
-              debugger;
-              if(nombreCliente == ""){
-                alertify.error("Debe ingresar un nombre.");
-                return false;
-              }
-              if(apellidoCliente == ""){
-                alertify.error("Debe ingresar un apellido.");
-                return false;
-              }
-              if(nombreCliente != "" && apellidoCliente !=""){
-                nombreCompleto = nombreCliente + ' ' + apellidoCliente;
-                busClienteConsigna(nombreCompleto );
-              }
-            });
-
-            // Enter buscador
-            var txtBus = document.getElementById("txtBusApe");
-            txtBus.addEventListener("keyup", function(event) {
-              // Number 13 is the "Enter" key on the keyboard
-              if (event.keyCode === 13) {
-                // Cancel the default action, if needed
-                event.preventDefault();
-                // Trigger the button element with a click
-                document.getElementById("btnBus").click();
-              }
-            });
-
-            // Enter guardar clientes Consigna
-            var txtEmailC = document.getElementById("txtEmailC");
-            txtEmailC.addEventListener("keyup", function(event) {
-              // Number 13 is the "Enter" key on the keyboard
-              if (event.keyCode === 13) {
-                // Cancel the default action, if needed
-                event.preventDefault();
-                // Trigger the button element with a click
-                document.getElementById("btnGuardarC").click();
-              }
-            });
-
-            // Enter guardar clientes
-            var txtEmail = document.getElementById("txtEmail");
-            txtEmail.addEventListener("keyup", function(event) {
-              // Number 13 is the "Enter" key on the keyboard
-              if (event.keyCode === 13) {
-                // Cancel the default action, if needed
-                event.preventDefault();
-                // Trigger the button element with a click
-                document.getElementById("btnGuardar").click();
-              }
-            });
-
-
-          });
-
-          function mayus(e) {
-            e.value = e.value.toUpperCase();
-          }
-          function minus(e) {
-            e.value = e.value.toLowerCase();
-          }
-          function validar_email( email )
-          {
-            var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-            return regex.test(email) ? true : false;
-          }
-          </script>
+    function mayus(e) {
+      e.value = e.value.toUpperCase();
+    }
+    function minus(e) {
+      e.value = e.value.toLowerCase();
+    }
+    function validar_email( email )
+    {
+      var regex = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+      return regex.test(email) ? true : false;
+    }
+    </script>
