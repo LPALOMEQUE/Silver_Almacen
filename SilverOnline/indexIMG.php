@@ -738,11 +738,11 @@ if (0 !== sqlsrv_num_rows($res)){
     <div class="row">
 
       <div class="col-12 col-lg-4" align="center" >
-        <img id="img<?php $_GET['SKU']?>" src='img/product-img/nozoom2.jpg' height="200px" width="117px" data-zoom-image="img/product-img/pruba2.jpg"/>
+        <img id="img<?php echo $_GET['SKU']?>" src="images/small/<?php echo $_GET['SKU']?>.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>-.jpg"/>
         <br/>
-        <img id="img<?php $_GET['SKU']?>_1" src='img/product-img/nozoom2.jpg' height="200px" width="117px" data-zoom-image="images/large/image1.jpg"/>
+        <img id="img<?php echo $_GET['SKU']?>2" src="images/small/<?php echo $_GET['SKU']?>.1.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>-1.jpg"/>
         <br/>
-        <img id="img<?php $_GET['SKU']?>_2" src='img/product-img/nozoom2.jpg' height="200px" width="117px" data-zoom-image="images/large/image1.jpg"/>
+        <img id="img<?php echo $_GET['SKU']?>3" src="images/small/<?php echo $_GET['SKU']?>.2.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>-2.jpg"/>
 
       </div>
       <br/>
@@ -750,7 +750,11 @@ if (0 !== sqlsrv_num_rows($res)){
       <br/>
       <br/>
       <div class="col-12 col-lg-7">
+
         <div class="quickview_pro_des">
+          <div id="showIMG">
+
+          </div>
           <h4 class="title"><?php echo $category['Nombre'] ?></h4>
           <div class="top_seller_product_rating mb-15">
             <i class="fa fa-star" aria-hidden="true"></i>
@@ -761,18 +765,18 @@ if (0 !== sqlsrv_num_rows($res)){
           </div>
           <h5 class="price">$<?php echo number_format($precio,2) ?> <span>$624</span></h5>
           <p>Marca: SILVER</p>
+          <p>SKU: <?php echo $_GET['SKU']?></p>
           <p><?php echo $category['Descripcion'] ?></p>
           <p style="color: #ff084e;"><strong>STOCK DISPONIBLE: <?php echo $category['EXIST'] ?></strong></p>
         </div>
-        <div class="row">
 
-        </div>
         <br/>
         <br/>
         <br/>
         <br/>
         <br/>
-        <br/>
+        
+
         <!-- END ENVIO DE DATOS POR URL ESCONDIDA -->
         <div class="share_wf mt-30">
           <p>Comparte con tus amigos</p>
@@ -802,28 +806,47 @@ if (0 !== sqlsrv_num_rows($res)){
 $(document).ready(function(){
   alertify.set('notifier','position', 'top-right');
 
-
-  $('#img<?php $_GET['SKU']?>').elevateZoom({
-    easing: true,
+//   $('#img<?php echo $_GET['SKU']?>').elevateZoom({
+//     easing: true,
+//     scrollZoom : true,
+// zoomWindowPosition: 1, zoomWindowOffetx: 10,    // cursor: "crosshair",
+//     zoomWindowFadeIn: 500,
+//     zoomWindowFadeOut: 750,
+//     zoomWindowWidth:450,
+//             zoomWindowHeight:450,
+//             zoomWindowPosition: 1
+//   });
+$("#img<?php echo $_GET['SKU']?>").elevateZoom({
+  zoomWindowPosition: "showIMG ",
+  scrollZoom : true,
+  cursor: "crosshair",
+  zoomWindowHeight: 400,
+  zoomWindowWidth:430,
+  borderSize: 1,
+  easing:true
+});
+$("#img<?php echo $_GET['SKU']?>2").elevateZoom({
+  zoomWindowPosition: "showIMG ",
+  scrollZoom : true,
+  cursor: "crosshair",
+  zoomWindowHeight: 400,
+  zoomWindowWidth:430,
+  borderSize: 1,
+  easing:true
+});
+  $("#img<?php echo $_GET['SKU']?>3").elevateZoom({
+    zoomWindowPosition: "showIMG ",
     scrollZoom : true,
     cursor: "crosshair",
-    zoomWindowFadeIn: 500,
-    zoomWindowFadeOut: 750
+    zoomWindowHeight: 400,
+    zoomWindowWidth:430,
+    borderSize: 1,
+    easing:true
   });
-  $('#img<?php $_GET['SKU']?>_1').elevateZoom({
-    easing: true,
-    zoomType: "inner",
-    cursor: "crosshair",
-    zoomWindowFadeIn: 500,
-    zoomWindowFadeOut: 750
-  });
-  $('#img<?php $_GET['SKU']?>_2').elevateZoom({
-    easing: true,
-    zoomType: "inner",
-    cursor: "crosshair",
-    zoomWindowFadeIn: 500,
-    zoomWindowFadeOut: 750
-  });
+
+
+
+
 
   var validaImg =0;
   var nameArticulo ="";
