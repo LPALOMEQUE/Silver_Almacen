@@ -679,6 +679,10 @@ if (0 !== sqlsrv_num_rows($res)){
                     <div class="quickview_pro_img">
                       <img src="img/product-img/<?php echo $category['CVE_IMAGEN'] ?>.JPG" alt="">
                     </div>
+                    <div class="" align="right">
+                      <a href="indexIMG.php?SKU=<?php echo $category['CVE_ART'] ?>" target="_blank" class="btn btn-link">ver imagenes</a>
+
+                    </div>
                   </div>
                   <div class="col-12 col-lg-7">
                     <div class="quickview_pro_des">
