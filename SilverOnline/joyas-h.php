@@ -684,7 +684,7 @@ if (0 !== sqlsrv_num_rows($res)){
 
                   <div class="col-12 col-lg-5">
                     <div class="quickview_pro_img">
-                      <img src="images\small\ALI000001PL.png" alt="">
+                      <img src="images\large\<?php echo $category['CVE_IMAGEN']?>-.jpg" alt="">
                     </div>
                     <div class="" align="right">
                       <a href="indexIMG.php?SKU=<?php echo $category['CVE_ART'] ?>" target="_blank" class="btn btn-link">ver imagenes</a>
@@ -1039,7 +1039,7 @@ if (0 !== sqlsrv_num_rows($res)){
                 <!-- Product Image -->
                 <div class="product-img">
                   <h6 class="title" style="color: #ff084e;">STOCK DIPONBLE: <?php echo $category['EXIST'] ?></h6>
-                  <img src="images\large\ALI000001PL.png" alt="">
+                  <img src="images\large\<?php echo $category['CVE_IMAGEN']?>-.jpg" alt="">
                   <div class="product-quicview">
                     <a href="#" id="btnShowquickview<?php echo $category['CVE_ART'] ?>" data-toggle="modal" data-target="#quickview<?php echo $category['CVE_ART'] ?>"><i class="ti-plus"></i></a>
                   </div>

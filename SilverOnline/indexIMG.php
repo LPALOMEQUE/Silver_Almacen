@@ -738,11 +738,12 @@ if (0 !== sqlsrv_num_rows($res)){
     <div class="row">
 
       <div class="col-12 col-lg-4" align="center" >
-        <img id="img<?php echo $_GET['SKU']?>" src="images/small/<?php echo $_GET['SKU']?>.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>-.jpg"/>
         <br/>
-        <img id="img<?php echo $_GET['SKU']?>2" src="images/small/<?php echo $_GET['SKU']?>.1.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>-1.jpg"/>
+        <img id="img<?php echo $_GET['SKU']?>" src="images/large/<?php echo $_GET['SKU']?>-0.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>-0.jpg"/>
         <br/>
-        <img id="img<?php echo $_GET['SKU']?>3" src="images/small/<?php echo $_GET['SKU']?>.2.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>-2.jpg"/>
+        <img id="img<?php echo $_GET['SKU']?>2" src="images/large/<?php echo $_GET['SKU']?>-1.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>-1.jpg"/>
+        <br/>
+        <img id="img<?php echo $_GET['SKU']?>3" src="images/large/<?php echo $_GET['SKU']?>-2.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>-2.jpg"/>
 
       </div>
       <br/>
@@ -775,7 +776,7 @@ if (0 !== sqlsrv_num_rows($res)){
         <br/>
         <br/>
         <br/>
-        
+
 
         <!-- END ENVIO DE DATOS POR URL ESCONDIDA -->
         <div class="share_wf mt-30">
