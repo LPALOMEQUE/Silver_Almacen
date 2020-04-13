@@ -662,13 +662,16 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
                   $id= $item['id'];
 
                   $sql = "SELECT
-                  I.EXIST,
+                  M.EXIST,
                   I.DESCR,
-                  I.CVE_IMAGEN,
+                  I.CVE_ART AS CVE_IMAGEN,
                   PP.PRECIO AS COSTO_PROM
                   FROM INVE" .$BD. " I
+                  LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
                   INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
                   where
+                  M.EXIST > 0 AND
+                  M.CVE_ALM = 1 AND
                   I.CVE_ART= '$id' AND
                   PP.CVE_PRECIO = $ID_PRECIO";
 

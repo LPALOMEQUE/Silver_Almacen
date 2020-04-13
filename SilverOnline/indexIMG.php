@@ -150,15 +150,18 @@ if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
   require_once "php/Conexion.php";
   $con = conexion();
   $sql="SELECT
-  I.EXIST,
+  M.EXIST,
   I.CVE_ART,
   I.DESCR as Nombre,
   PP.PRECIO AS ULT_COSTO,
   I.CVE_IMAGEN,
   I.DESCR as Descripcion
   FROM INVE" .$BD. " I
+  LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
   INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
-  WHERE I.EXIST > 0 AND
+  WHERE
+  M.EXIST > 0 AND
+  M.CVE_ALM = 1 AND
   PP.CVE_PRECIO = $ID_PRECIO AND
   I.CVE_ART = '".$_GET['SKU']. "'";
 

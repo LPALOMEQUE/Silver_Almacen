@@ -24,7 +24,15 @@ if (isset($_SESSION['ID_ARTICLES'])) {
     require_once "php/Conexion.php";
     $con = conexion();
 
-    $sql = "SELECT EXIST,DESCR,CVE_ART FROM INVE" .$BD. " where CVE_ART= '$id'";
+    $sql = "SELECT
+    M.EXIST,
+    I.DESCR
+    FROM INVE" .$BD. " I
+    LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
+    where
+    M.EXIST > 0 AND
+    M.CVE_ALM = 1 AND
+    I.CVE_ART= '$id'";
 
     $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
     if (0 !== sqlsrv_num_rows($res)){

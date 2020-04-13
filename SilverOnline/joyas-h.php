@@ -620,7 +620,7 @@ if($queryVal == 2) {
     $accesorio = '___________';
   }
   $sql="SELECT
-  I.EXIST,
+  M.EXIST,
   I.CVE_ART,
   I.DESCR as Nombre,
   PP.PRECIO AS ULT_COSTO,
@@ -629,7 +629,7 @@ if($queryVal == 2) {
   FROM INVE" .$BD. " I
   LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
   INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
-  WHERE I.EXIST > 0 AND
+  WHERE M.EXIST > 0 AND
   M.CVE_ALM = 1 AND
   PP.CVE_PRECIO = $ID_PRECIO AND
   I.CVE_ART LIKE '$material' AND
@@ -642,7 +642,7 @@ if($queryVal == 2) {
 else {
 
   $sql="SELECT
-  I.EXIST,
+  M.EXIST,
   I.CVE_ART,
   I.DESCR as Nombre,
   PP.PRECIO AS ULT_COSTO,
@@ -651,7 +651,7 @@ else {
   FROM INVE" .$BD. " I
   LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
   INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
-  WHERE I.EXIST > 0 AND
+  WHERE M.EXIST > 0 AND
   M.CVE_ALM = 1 AND
   PP.CVE_PRECIO = $ID_PRECIO
   ORDER BY I.CVE_ART
@@ -987,7 +987,7 @@ if (0 !== sqlsrv_num_rows($res)){
               $accesorio = '___________';
             }
             $sql="SELECT
-            I.EXIST,
+            M.EXIST,
             I.CVE_ART,
             I.DESCR as Nombre,
             PP.PRECIO AS ULT_COSTO,
@@ -996,7 +996,7 @@ if (0 !== sqlsrv_num_rows($res)){
             FROM INVE" .$BD. " I
             LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
             INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
-            WHERE I.EXIST > 0 AND
+            WHERE M.EXIST > 0 AND
             M.CVE_ALM = 1 AND
             PP.CVE_PRECIO = $ID_PRECIO AND
             I.CVE_ART LIKE '$material' AND
@@ -1009,7 +1009,7 @@ if (0 !== sqlsrv_num_rows($res)){
           else {
 
             $sql="SELECT
-            I.EXIST,
+            M.EXIST,
             I.CVE_ART,
             I.DESCR as Nombre,
             PP.PRECIO AS ULT_COSTO,
@@ -1018,7 +1018,7 @@ if (0 !== sqlsrv_num_rows($res)){
             FROM INVE" .$BD. " I
             LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
             INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
-            WHERE I.EXIST > 0 AND
+            WHERE M.EXIST > 0 AND
             M.CVE_ALM = 1 AND
             PP.CVE_PRECIO = $ID_PRECIO
             ORDER BY I.CVE_ART
