@@ -151,8 +151,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               <li data-toggle="collapse" data-target="#joyas" class="collapsed active">
                 <a href="#">Joyas<span class="arrow"></span></a>
                 <ul class="sub-menu collapse" id="joyas">
-                  <li><a href="joyas-h.php">Hombre</a></li>
-                  <li><a href="joyas-m.php">Mujer</a></li>
+                  <li><a href="joyas-m.php">Joyas</a></li>
                 </ul>
               </li>
 
@@ -781,9 +780,9 @@ if (0 !== sqlsrv_num_rows($res)){
                   <ul id="menu-content2" class="menu-content collapse out">
                     <!-- Single Item -->
                     <li data-toggle="collapse" data-target="#women2">
-                      <a href="#">Joyeria</a>
+                      <a href="joyas-h.php">Joyeria</a>
                       <ul class="sub-menu collapse show" id="women2">
-                        <li><a href="joyas-h.php">Hombre</a></li>
+                        <!-- <li><a href="joyas-h.php">Joyas</a></li> -->
                       </ul>
                     </li>
 

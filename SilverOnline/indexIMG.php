@@ -130,7 +130,7 @@ if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
 
   </head>
 
-  <body>
+  <body class="divRes">
 
     <!-- jQuery (Necessary for All JavaScript Plugins) -->
     <script src="js/jquery/jquery-2.2.4.min.js"></script>
