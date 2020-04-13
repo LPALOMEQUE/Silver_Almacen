@@ -410,8 +410,9 @@ if (isset($_SESSION['ID_ARTICLES'])) {
                   FROM INVE" .$BD. " I
                   LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
                   where
-                  M.EXIST > 0 AND
-				          M.CVE_ALM = 1 AND
+                  I.EXIST >0 AND
+			            M.CVE_ALM=1 AND
+			            M.EXIST >0 AND
                   I.CVE_ART= '$id'";
 
                   $res =  sqlsrv_query($con, $sql, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));

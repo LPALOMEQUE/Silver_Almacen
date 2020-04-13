@@ -670,8 +670,9 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
                   LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
                   INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
                   where
-                  M.EXIST > 0 AND
+                  I.EXIST >0 AND 
                   M.CVE_ALM = 1 AND
+                  M.EXIST > 0 AND
                   I.CVE_ART= '$id' AND
                   PP.CVE_PRECIO = $ID_PRECIO";
 

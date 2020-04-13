@@ -624,8 +624,10 @@ if($queryVal == 2) {
   FROM INVE" .$BD. " I
   LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
   INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
-  WHERE M.EXIST > 0 AND
+  WHERE
+  I.EXIST >0 AND
   M.CVE_ALM = 1 AND
+  M.EXIST > 0 AND
   PP.CVE_PRECIO = $ID_PRECIO AND
   I.CVE_ART LIKE '$material' AND
   I.CVE_ART  LIKE '$accesorio' AND
@@ -646,8 +648,10 @@ else {
   FROM INVE" .$BD. " I
   LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
   INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
-  WHERE M.EXIST > 0 AND
+  WHERE
+  I.EXIST >0 AND
   M.CVE_ALM = 1 AND
+  M.EXIST > 0 AND
   PP.CVE_PRECIO = $ID_PRECIO
   ORDER BY I.CVE_ART
   OFFSET $Reg_Ignorados ROWS
@@ -984,8 +988,10 @@ if (0 !== sqlsrv_num_rows($res)){
             FROM INVE" .$BD. " I
             LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
             INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
-            WHERE M.EXIST > 0 AND
+            WHERE
+            I.EXIST >0 AND
             M.CVE_ALM = 1 AND
+            M.EXIST > 0 AND
             PP.CVE_PRECIO = $ID_PRECIO AND
             I.CVE_ART LIKE '$material' AND
             I.CVE_ART  LIKE '$accesorio' AND
@@ -1006,8 +1012,10 @@ if (0 !== sqlsrv_num_rows($res)){
             FROM INVE" .$BD. " I
             LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
             INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
-            WHERE M.EXIST > 0 AND
-            M.CVE_ALM = 1 AND
+            WHERE
+            I.EXIST >0 AND
+			      M.CVE_ALM=1 AND
+			      M.EXIST >0 AND
             PP.CVE_PRECIO = $ID_PRECIO
             ORDER BY I.CVE_ART
             OFFSET $Reg_Ignorados ROWS
@@ -1066,9 +1074,13 @@ if (0 !== sqlsrv_num_rows($res)){
             $Reg_Ignorados = $pagina * $cantidadRegistros;
 
             $sql="SELECT 0
-            FROM INVE" .$BD. "
-            WHERE EXIST > 0
-            ORDER BY CVE_ART
+            FROM INVE" .$BD. " I
+            LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
+            WHERE
+            I.EXIST >0 AND
+            M.CVE_ALM = 1 AND
+            M.EXIST > 0 AND
+            ORDER BY I.CVE_ART
             OFFSET $Reg_Ignorados ROWS
             FETCH NEXT  $cantidadRegistros ROWS ONLY
             ";

@@ -189,7 +189,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
           $accesorio = '___________';
         }
         $sql="SELECT
-        I.EXIST,
+        M.EXIST,
         I.CVE_ART,
         I.DESCR as Nombre,
         PP.PRECIO AS ULT_COSTO,
@@ -198,8 +198,10 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
         FROM INVE" .$BD. " I
         LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
         INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
-        WHERE I.EXIST > 0 AND
-        M.CVE_ALM = 1 AND
+        WHERE
+        I.EXIST >0 AND
+			  M.CVE_ALM=1 AND
+			  M.EXIST >0 AND
         PP.CVE_PRECIO = $ID_PRECIO AND
         I.CVE_ART LIKE '$material' AND
         I.CVE_ART  LIKE '$accesorio' AND
@@ -211,7 +213,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
       else {
 
         $sql="SELECT
-        I.EXIST,
+        M.EXIST,
         I.CVE_ART,
         I.DESCR as Nombre,
         PP.PRECIO AS ULT_COSTO,
@@ -220,8 +222,10 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
         FROM INVE" .$BD. " I
         LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
         INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
-        WHERE I.EXIST > 0 AND
-        M.CVE_ALM = 1 AND
+        WHERE
+        I.EXIST >0 AND
+			  M.CVE_ALM=1 AND
+			  M.EXIST >0 AND
         PP.CVE_PRECIO = $ID_PRECIO
         ORDER BY I.CVE_ART
         OFFSET $Reg_Ignorados ROWS
@@ -1055,7 +1059,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
               $accesorio = '___________';
             }
             $sql="SELECT
-            I.EXIST,
+            M.EXIST,
             I.CVE_ART,
             I.DESCR as Nombre,
             PP.PRECIO AS ULT_COSTO,
@@ -1064,8 +1068,10 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
             FROM INVE" .$BD. " I
             LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
             INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
-            WHERE I.EXIST > 0 AND
-            M.CVE_ALM = 1 AND
+            WHERE
+            I.EXIST >0 AND
+			      M.CVE_ALM=1 AND
+		    	  M.EXIST >0 AND
             PP.CVE_PRECIO = $ID_PRECIO AND
             I.CVE_ART LIKE '$material' AND
             I.CVE_ART  LIKE '$accesorio' AND
@@ -1077,7 +1083,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
           else {
 
             $sql="SELECT
-            I.EXIST,
+            M.EXIST,
             I.CVE_ART,
             I.DESCR as Nombre,
             PP.PRECIO AS ULT_COSTO,
@@ -1086,8 +1092,10 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
             FROM INVE" .$BD. " I
             LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
             INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
-            WHERE I.EXIST > 0 AND
-            M.CVE_ALM = 1 AND
+            WHERE
+            I.EXIST >0 AND 
+			      M.CVE_ALM=1 AND
+			      M.EXIST >0 AND
             PP.CVE_PRECIO = $ID_PRECIO
             ORDER BY I.CVE_ART
             OFFSET $Reg_Ignorados ROWS
