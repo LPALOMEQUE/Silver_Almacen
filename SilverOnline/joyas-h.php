@@ -705,7 +705,7 @@ if (0 !== sqlsrv_num_rows($res)){
                       <h5 class="price">$<?php echo number_format($precio,2) ?> <span>$624</span></h5>
                       <p>Marca: SILVER</p>
                       <p><?php echo $category['Descripcion'] ?></p>
-                      <p style="color: #ff084e;"><strong>STOCK DISPONIBLE: <?php echo $category['EXIST'] ?></strong></p>
+                      <p style="color: #d0368c;"><strong>STOCK DISPONIBLE: <?php echo $category['EXIST'] ?></strong></p>
                     </div>
                     <div class="row">
                       <div class="quantity">
@@ -1038,7 +1038,7 @@ if (0 !== sqlsrv_num_rows($res)){
               <div class="col-12 col-sm-6 col-lg-4 single_gallery_item wow fadeInUpBig" data-wow-delay="0.2s">
                 <!-- Product Image -->
                 <div class="product-img">
-                  <h6 class="title" style="color: #ff084e;">STOCK DIPONBLE: <?php echo $category['EXIST'] ?></h6>
+                  <h6 class="title" style="color: #d0368c;">STOCK DIPONBLE: <?php echo $category['EXIST'] ?></h6>
                   <img src="images\large\<?php echo $category['CVE_IMAGEN']?>-.jpg" alt="">
                   <div class="product-quicview">
                     <a href="#" id="btnShowquickview<?php echo $category['CVE_ART'] ?>" data-toggle="modal" data-target="#quickview<?php echo $category['CVE_ART'] ?>"><i class="ti-plus"></i></a>

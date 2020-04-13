@@ -60,9 +60,9 @@ ul.pagination li a {
 }
 
 ul.pagination li a.active {
-    background-color: #ff084e;
+    background-color: #d0368c;
     color: white;
-    border: 1px solid #ff084e;
+    border: 1px solid #d0368c;
 }
 
-ul.pagination li a:hover:not(.active) {background-color: #ff084e;}
+ul.pagination li a:hover:not(.active) {background-color: #d0368c;}

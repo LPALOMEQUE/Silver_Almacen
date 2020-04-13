@@ -190,7 +190,7 @@ if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
       </div>
 
       <!-- ****** Header Area Start ****** -->
-      <header class="header_area">
+      <header class="header_area bg-img background-overlay-white" style="background-image: url(img/bg-img/bg-1.jpg);">
         <!-- Top Header Area Start -->
         <div class="top_header_area">
           <div class="container h-100">
@@ -289,6 +289,10 @@ if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
 
                 <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalViewClientes"><span class="karl-level">Seleccione</span>Cliente</a></li>
               </div>
+              <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+              <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+              <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+              <li class="nav-item active"><a class="nav-link" href="#"></a></li>
               <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categorías</a>
@@ -762,8 +766,8 @@ if (isset($_SESSION["Email"])) {
           <div class="col-12">
             <div class="welcome_slide_text">
               <h6 data-animation="fadeInDown" data-delay="0" data-duration="500ms">* Excelencia y calidad</h6>
-              <h2 data-animation="fadeInUp" data-delay="500ms" data-duration="500ms">Summer Collection</h2>
-              <a href="#" class="btn karl-btn" data-animation="fadeInLeftBig" data-delay="1s" data-duration="500ms">Check Collection</a>
+              <h2 data-animation="fadeInUp" data-delay="500ms" data-duration="500ms">Lo mejor en joyeria</h2>
+              <a href="joyas-m.php" class="btn karl-btn" data-animation="fadeInLeftBig" data-delay="1s" data-duration="500ms">Compra Ya</a>
             </div>
           </div>
         </div>
@@ -787,7 +791,7 @@ if (isset($_SESSION["Email"])) {
   <div class="single_catagory_area d-flex align-items-center bg-img" style="background-image: url(img/bg-img/bg-3.jpg);">
     <div class="catagory-content">
       <!-- <h6>in Bags excepting the new collection</h6> -->
-      <h2>Nuestros diseños</h2>
+      <h2>Lo mas nuevo</h2>
       <!-- <a href="#" class="btn karl-btn">SHOP NOW</a> -->
     </div>
   </div>
@@ -871,7 +875,7 @@ if (isset($_SESSION["Email"])) {
     <div class="row">
       <div class="col-12">
         <div class="section_heading text-center">
-          <h2>Testimonials</h2>
+          <h2>Testimonios</h2>
         </div>
       </div>
     </div>
@@ -890,7 +894,7 @@ if (isset($_SESSION["Email"])) {
               </div>
               <div class="testi-data">
                 <p>Michelle Williams</p>
-                <span>Client, Los Angeles</span>
+                <span>Cliente, Minatitlán, Veracruz. </span>
               </div>
             </div>
           </div>
@@ -905,7 +909,7 @@ if (isset($_SESSION["Email"])) {
               </div>
               <div class="testi-data">
                 <p>Michelle Williams</p>
-                <span>Client, Los Angeles</span>
+                <span>Cliente, Minatitlán, Veracruz.</span>
               </div>
             </div>
           </div>
@@ -920,7 +924,7 @@ if (isset($_SESSION["Email"])) {
               </div>
               <div class="testi-data">
                 <p>Michelle Williams</p>
-                <span>Client, Los Angeles</span>
+                <span>Cliente, Minatitlán, Veracruz.</span>
               </div>
             </div>
           </div>

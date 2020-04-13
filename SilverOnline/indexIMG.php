@@ -186,7 +186,7 @@ if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
         <div class="">
           <div class="quickview_pro_des" aling="right">
 
-            <h4 class="title" style="color: #ff084e;"><?php echo $category['Nombre'] ?></h4>
+            <h4 class="title" style="color: #d0368c;"><?php echo $category['Nombre'] ?></h4>
             <div class="top_seller_product_rating mb-15">
               <i class="fa fa-star" aria-hidden="true"></i>
               <i class="fa fa-star" aria-hidden="true"></i>
@@ -198,7 +198,7 @@ if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
             <p>Marca: SILVER</p>
             <p>SKU: <?php echo $_GET['SKU']?></p>
             <p><?php echo $category['Descripcion'] ?></p>
-            <p style="color: #ff084e;"><strong>STOCK DISPONIBLE: <?php echo $category['EXIST'] ?></strong></p>
+            <p style="color: #d0368c;"><strong>STOCK DISPONIBLE: <?php echo $category['EXIST'] ?></strong></p>
           </div>
 
           <br/>
@@ -213,7 +213,7 @@ if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
           </div>
           <!-- END ENVIO DE DATOS POR URL ESCONDIDA -->
           <div class="share_wf mt-30" align="right">
-            <p style="color: #ff084e;">Comparte con tus amigos</p>
+            <p style="color: #d0368c;">Comparte con tus amigos</p>
             <div class="_icon">
               <a href="https://es-la.facebook.com/newsilverevolution/"><i class="fa fa-facebook" aria-hidden="true"></i></a>
               <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
