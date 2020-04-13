@@ -1079,7 +1079,7 @@ if (0 !== sqlsrv_num_rows($res)){
             WHERE
             I.EXIST >0 AND
             M.CVE_ALM = 1 AND
-            M.EXIST > 0 AND
+            M.EXIST > 0
             ORDER BY I.CVE_ART
             OFFSET $Reg_Ignorados ROWS
             FETCH NEXT  $cantidadRegistros ROWS ONLY
