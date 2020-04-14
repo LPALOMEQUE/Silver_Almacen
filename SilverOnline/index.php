@@ -142,10 +142,10 @@ if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
 
             <!-- Single Item -->
             <li data-toggle="collapse" data-target="#joyas" class="collapsed active">
-              <a href="#">Joyas<span class="arrow"></span></a>
+              <a href="joyas-m.php">Joyeria<span class="arrow"></span></a>
               <ul class="sub-menu collapse" id="joyas">
-                <li><a href="joyas-h.php">Hombre</a></li>
-                <li><a href="joyas-m.php">Mujer</a></li>
+                <!-- <li><a href="joyas-h.php">Hombre</a></li> -->
+                <!-- <li><a href="joyas-m.php">Mujer</a></li> -->
               </ul>
             </li>
 

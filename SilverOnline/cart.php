@@ -48,7 +48,7 @@ if(isset($_GET['vaciar'])) {
   echo "
 
   <script type='text/javascript'>
-  window.location= 'joyas-h.php';
+  window.location= 'joyas-m.php';
   </script>";
   //session_destroy();
 }
@@ -297,10 +297,10 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
 
             <!-- Single Item -->
             <li data-toggle="collapse" data-target="#joyas" class="collapsed active">
-              <a href="#">Joyas<span class="arrow"></span></a>
+              <a href="joyas-m.php">Joyeria<span class="arrow"></span></a>
               <ul class="sub-menu collapse" id="joyas">
-                <li><a href="joyas-h.php">Hombre</a></li>
-                <li><a href="joyas-m.php">Mujer</a></li>
+                <!-- <li><a href="joyas-h.php">Hombre</a></li>
+                <li><a href="joyas-m.php">Mujer</a></li> -->
               </ul>
             </li>
 
@@ -670,7 +670,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
                   LEFT JOIN MULT" .$BD. " M ON M.CVE_ART = I.CVE_ART
                   INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
                   where
-                  I.EXIST >0 AND 
+                  I.EXIST >0 AND
                   M.CVE_ALM = 1 AND
                   M.EXIST > 0 AND
                   I.CVE_ART= '$id' AND
