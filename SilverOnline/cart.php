@@ -48,7 +48,7 @@ if(isset($_GET['vaciar'])) {
   echo "
 
   <script type='text/javascript'>
-  window.location= 'joyas-m.php';
+  window.location= 'joyas-h.php';
   </script>";
   //session_destroy();
 }
@@ -297,10 +297,10 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
 
             <!-- Single Item -->
             <li data-toggle="collapse" data-target="#joyas" class="collapsed active">
-              <a href="joyas-m.php">Joyeria<span class="arrow"></span></a>
+              <a href="#">Joyas<span class="arrow"></span></a>
               <ul class="sub-menu collapse" id="joyas">
-                <!-- <li><a href="joyas-h.php">Hombre</a></li>
-                <li><a href="joyas-m.php">Mujer</a></li> -->
+                <li><a href="joyas-h.php">Hombre</a></li>
+                <li><a href="joyas-m.php">Mujer</a></li>
               </ul>
             </li>
 
@@ -685,7 +685,7 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
                       ?>
                       <tr>
                         <td class="cart_product_img d-flex align-items-center">
-                          <a href="#"><img src="img/product-img/<?php echo $arti['CVE_IMAGEN'] ?>.jpg" alt="Product"></a>
+                          <a href="#"><img src="images\large\<?php echo $arti['CVE_IMAGEN'] ?>_resultado.jpg" alt="Product"></a>
                           <h6 id="h6Nombre<?php echo $id ?>"><?php echo $arti['DESCR'] ?></h6>
                         </td>
                         <td class="price">$<?php echo number_format($arti['COSTO_PROM'],2) ?></span></td>

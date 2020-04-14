@@ -149,7 +149,7 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
 
               <!-- Single Item -->
               <li data-toggle="collapse" data-target="#joyas" class="collapsed active">
-                <a href="joyas-m.php">Joyas<span class="arrow"></span></a>
+                <a href="#">Joyas<span class="arrow"></span></a>
                 <ul class="sub-menu collapse" id="joyas">
                   <li><a href="joyas-m.php">Joyas</a></li>
                 </ul>
@@ -680,7 +680,7 @@ if (0 !== sqlsrv_num_rows($res)){
 
                   <div class="col-12 col-lg-5">
                     <div class="quickview_pro_img">
-                      <img src="images\large\<?php echo $category['CVE_IMAGEN'] ?>.jpg" alt="">
+                      <img src="images\large\<?php echo $category['CVE_IMAGEN'] ?>.1_resultado.jpg" alt="">
                     </div>
                     <div class="" align="right">
                       <a href="indexIMG.php?SKU=<?php echo $category['CVE_ART'] ?>" target="_blank" class="btn btn-link">ver imagenes</a>
@@ -780,7 +780,7 @@ if (0 !== sqlsrv_num_rows($res)){
                   <ul id="menu-content2" class="menu-content collapse out">
                     <!-- Single Item -->
                     <li data-toggle="collapse" data-target="#women2">
-                      <a href="joyas-m.php">Joyeria</a>
+                      <a href="joyas-h.php">Joyeria</a>
                       <ul class="sub-menu collapse show" id="women2">
                         <!-- <li><a href="joyas-h.php">Joyas</a></li> -->
                       </ul>
@@ -1032,7 +1032,7 @@ if (0 !== sqlsrv_num_rows($res)){
                 <!-- Product Image -->
                 <div class="product-img">
                   <h6 class="title" style="color: #d0368c;">STOCK DIPONBLE: <?php echo $category['EXIST'] ?></h6>
-                  <img src="images\large\<?php echo $category['CVE_IMAGEN'] ?>.1.jpg" alt="">
+                  <img src="images\large\<?php echo $category['CVE_IMAGEN'] ?>_resultado.jpg" alt="">
                   <div class="product-quicview">
                     <a href="#" data-toggle="modal" data-target="#quickview<?php echo $category['CVE_ART'] ?>"><i class="ti-plus"></i></a>
                   </div>
