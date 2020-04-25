@@ -146,6 +146,7 @@ if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
     <script src="js/active.js"></script>
 
   </body>
+
   <?php
   require_once "php/Conexion.php";
   $con = conexion();
