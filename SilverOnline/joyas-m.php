@@ -697,7 +697,26 @@ if (0 !== sqlsrv_num_rows($res)){
                         <i class="fa fa-star" aria-hidden="true"></i>
                         <i class="fa fa-star" aria-hidden="true"></i>
                       </div>
-                      <h5 class="price">$<?php echo number_format($precio,2) ?> <span>$624</span></h5>
+
+                      <?php
+
+                      $ID_SUPER = $category['CVE_ART'];
+                      $sql2 = "SELECT PRECIO AS Super_Precio
+                      FROM PRECIO_X_PROD01
+                      WHERE CVE_PRECIO = 1 AND
+                      CVE_ART = '$ID_SUPER'";
+
+                      $res2 =  sqlsrv_query($con, $sql2, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+                      if (0 !== sqlsrv_num_rows($res2)){
+                        while ($category2 = sqlsrv_fetch_array($res2)) {
+                          $super_precio = $category2['Super_Precio'];
+                          ?>
+
+                          <h5 class="price">$<?php echo number_format($precio,2) ?> <span>$<?php echo number_format($super_precio,2)?></span></h5>
+                          <?php
+                        }
+                      }
+                      ?>
                       <p>Marca: SILVER</p>
                       <p><?php echo $category['Descripcion'] ?></p>
                       <p style="color: #d0368c;"><strong>STOCK DISPONIBLE: <?php echo $category['EXIST'] ?></strong></p>
@@ -1013,8 +1032,8 @@ if (0 !== sqlsrv_num_rows($res)){
             INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
             WHERE
             I.EXIST >0 AND
-			      M.CVE_ALM=1 AND
-			      M.EXIST >0 AND
+            M.CVE_ALM=1 AND
+            M.EXIST >0 AND
             PP.CVE_PRECIO = $ID_PRECIO
             ORDER BY I.CVE_ART
             OFFSET $Reg_Ignorados ROWS

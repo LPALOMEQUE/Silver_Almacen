@@ -823,6 +823,17 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
                 <input type="radio" id="customRadio2" name="rbDelivery" class="custom-control-input" value="normal">
                 <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio2"><span>Entrega estandar</span><span>$250.00</span></label>
               </div>
+              <!-- <div class="<?php
+              if (isset($_SESSION["status"]) || $_SESSION["status"] != 'ADMIN') {
+                echo 'inline';
+              }else {
+                echo 'none';
+              } ?>">
+              <div class="custom-control custom-radio mb-30">
+                <input type="radio" id="customRadio3" name="paypal" class="custom-control-input" value="normal" checked="true">
+                <label class="custom-control-label d-flex align-items-center justify-content-between" for="customRadio2"><span>Comisiòn Paypay</span><span>$250.00</span></label>
+              </div>
+            </div> -->
             </div>
           </div>
           <div class="col-12 col-lg-4">
