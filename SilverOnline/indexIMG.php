@@ -180,7 +180,7 @@ if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
         <div class="col-12 col-lg-6" align="center" >
           <br/>
           <div id="showIMG" class="col-12 col-lg-6">
-            <img src="images/large/<?php echo $_GET['SKU']?>_resultado.jpg" height="600px" width="300px">
+            <img src="images/large/<?php echo $_GET['SKU']?>.jpg" height="600px" width="300px">
           </div>
         </div>
         <br/>
@@ -209,11 +209,11 @@ if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
           <div class="" aling="center">
 
 
-          <img id="img<?php echo $_GET['SKU']?>" src="images/large/<?php echo $_GET['SKU']?>_resultado.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>_resultado.jpg"/>
+          <img id="img<?php echo $_GET['SKU']?>" src="images/large/<?php echo $_GET['SKU']?>.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>.jpg"/>
 
-          <img id="img<?php echo $_GET['SKU']?>2" src="images/large/<?php echo $_GET['SKU']?>.1_resultado.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>.1_resultado.jpg"/>
+          <img id="img<?php echo $_GET['SKU']?>2" src="images/large/<?php echo $_GET['SKU']?>.1.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>.1.jpg"/>
 
-          <img id="img<?php echo $_GET['SKU']?>3" src="images/large/<?php echo $_GET['SKU']?>.2_resultado.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>.2_resultado.jpg"/>
+          <img id="img<?php echo $_GET['SKU']?>3" src="images/large/<?php echo $_GET['SKU']?>.2.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>.2.jpg"/>
           </div>
           <!-- END ENVIO DE DATOS POR URL ESCONDIDA -->
           <div class="share_wf mt-30" align="right">
