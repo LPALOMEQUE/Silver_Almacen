@@ -162,8 +162,8 @@ if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
   INNER JOIN PRECIO_X_PROD" .$BD. " PP ON PP.CVE_ART = I.CVE_ART
   WHERE
   I.EXIST >0 AND
-	M.CVE_ALM=1 AND
-	M.EXIST >0 AND
+  M.CVE_ALM=1 AND
+  M.EXIST >0 AND
   PP.CVE_PRECIO = $ID_PRECIO AND
   I.CVE_ART = '".$_GET['SKU']. "'";
 
@@ -199,7 +199,26 @@ if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
               <i class="fa fa-star" aria-hidden="true"></i>
               <i class="fa fa-star" aria-hidden="true"></i>
             </div>
-            <h5 class="price">$<?php echo number_format($precio,2) ?> <span>$624</span></h5>
+
+            <?php
+
+            $ID_SUPER = $_GET['SKU'];
+            $sql2 = "SELECT PRECIO AS Super_Precio
+            FROM PRECIO_X_PROD01
+            WHERE CVE_PRECIO = 1 AND
+            CVE_ART = '$ID_SUPER'";
+
+            $res2 =  sqlsrv_query($con, $sql2, array(), array("Scrollable" => SQLSRV_CURSOR_KEYSET ));
+            if (0 !== sqlsrv_num_rows($res2)){
+              while ($category2 = sqlsrv_fetch_array($res2)) {
+                $super_precio = $category2['Super_Precio'];
+                ?>
+
+                <h5 class="price">$<?php echo number_format($precio,2) ?> <span>$<?php echo number_format($super_precio,2)?></span></h5>
+                <?php
+              }
+            }
+            ?>
             <p>Marca: SILVER</p>
             <p>SKU: <?php echo $_GET['SKU']?></p>
             <p><?php echo $category['Descripcion'] ?></p>
@@ -210,11 +229,11 @@ if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
           <div class="" aling="center">
 
 
-          <img id="img<?php echo $_GET['SKU']?>" src="images/large/<?php echo $_GET['SKU']?>.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>.jpg"/>
+            <img id="img<?php echo $_GET['SKU']?>" src="images/large/<?php echo $_GET['SKU']?>.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>.jpg"/>
 
-          <img id="img<?php echo $_GET['SKU']?>2" src="images/large/<?php echo $_GET['SKU']?>.1.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>.1.jpg"/>
+            <img id="img<?php echo $_GET['SKU']?>2" src="images/large/<?php echo $_GET['SKU']?>.1.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>.1.jpg"/>
 
-          <img id="img<?php echo $_GET['SKU']?>3" src="images/large/<?php echo $_GET['SKU']?>.2.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>.2.jpg"/>
+            <img id="img<?php echo $_GET['SKU']?>3" src="images/large/<?php echo $_GET['SKU']?>.2.jpg" height="200px" width="110px" data-zoom-image="images/large/<?php echo $_GET['SKU']?>.2.jpg"/>
           </div>
           <!-- END ENVIO DE DATOS POR URL ESCONDIDA -->
           <div class="share_wf mt-30" align="right">

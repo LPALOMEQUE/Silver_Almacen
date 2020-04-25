@@ -1,7 +1,6 @@
 
 
 function ModDatosUsuarios(nombre,nombre_recibe,calle,numCalle,cp,ciudad,estado,cel,email){
-debugger;
   cadena = "NOMBRE=" +nombre +
   "&NOMBRE_RECIBE=" +nombre_recibe +
   "&CALLE=" + calle +
@@ -17,8 +16,6 @@ debugger;
     url: "php/modUsuarios.php",
     data:cadena,
     success:function(result){
-      debugger;
-
       if(result==1){
         alertify.success("Se actualizarón los datos de forma correcta.");
       }
@@ -34,15 +31,12 @@ debugger;
 }
 
 function valStock(){
-debugger;
 cadena = '';
   $.ajax({
     type:"POST",
     url: "checkStock.php",
     data:cadena,
     success:function(result){
-      debugger;
-
       if(result=='error'){
         // alertify.error("Hay un artículo que ya no cuenta con stock disponible, verifiquelo.");
         location.href = 'checkout.php?Del=8';

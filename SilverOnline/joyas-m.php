@@ -252,10 +252,10 @@ if (isset($_POST['MinVal']) && isset($_POST['MaxVal']) && isset($_POST['QUERY'])
                       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#karl-navbar" aria-controls="karl-navbar" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"><i class="ti-menu"></i></span></button>
                       <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
                         <ul class="navbar-nav animated" id="nav">
+                          <!-- <li class="nav-item active"><a class="nav-link" href="#"></a></li>
                           <li class="nav-item active"><a class="nav-link" href="#"></a></li>
                           <li class="nav-item active"><a class="nav-link" href="#"></a></li>
-                          <li class="nav-item active"><a class="nav-link" href="#"></a></li>
-                          <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                          <li class="nav-item active"><a class="nav-link" href="#"></a></li> -->
                           <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
                           <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categorías</a>

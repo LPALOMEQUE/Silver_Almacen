@@ -275,10 +275,10 @@ if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
 
             <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
               <ul class="navbar-nav animated" id="nav">
+                <!-- <li class="nav-item active"><a class="nav-link" href="#"></a></li>
                 <li class="nav-item active"><a class="nav-link" href="#"></a></li>
                 <li class="nav-item active"><a class="nav-link" href="#"></a></li>
-                <li class="nav-item active"><a class="nav-link" href="#"></a></li>
-                <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                <li class="nav-item active"><a class="nav-link" href="#"></a></li> -->
 
                 <div class="<?php
                 if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
@@ -289,10 +289,10 @@ if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
 
                 <li class="nav-item"><a class="nav-link" href="#" data-toggle="modal" data-target="#ModalViewClientes"><span class="karl-level">Seleccione</span>Cliente</a></li>
               </div>
+              <!-- <li class="nav-item active"><a class="nav-link" href="#"></a></li>
               <li class="nav-item active"><a class="nav-link" href="#"></a></li>
               <li class="nav-item active"><a class="nav-link" href="#"></a></li>
-              <li class="nav-item active"><a class="nav-link" href="#"></a></li>
-              <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+              <li class="nav-item active"><a class="nav-link" href="#"></a></li> -->
               <li class="nav-item active"><a class="nav-link" href="index.php">Inicio</a></li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="karlDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Categorías</a>

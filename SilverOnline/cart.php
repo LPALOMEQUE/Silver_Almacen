@@ -395,10 +395,10 @@ if(isset($_POST['ID']) && isset($_POST['Posicion']) && isset($_POST['CANTIDAD'])
 
                     <div class="collapse navbar-collapse align-items-start collapse" id="karl-navbar">
                       <ul class="navbar-nav animated" id="nav">
+                        <!-- <li class="nav-item active"><a class="nav-link" href="#"></a></li>
                         <li class="nav-item active"><a class="nav-link" href="#"></a></li>
                         <li class="nav-item active"><a class="nav-link" href="#"></a></li>
-                        <li class="nav-item active"><a class="nav-link" href="#"></a></li>
-                        <li class="nav-item active"><a class="nav-link" href="#"></a></li>
+                        <li class="nav-item active"><a class="nav-link" href="#"></a></li> -->
 
                         <div class="<?php
                         if (isset($_SESSION["status"]) && $_SESSION["status"] == 'ADMIN') {
