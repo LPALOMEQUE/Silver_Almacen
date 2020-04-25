@@ -261,8 +261,10 @@ if(isset($_POST['ID']) && isset($_POST['CANTIDAD'])) {
       <div class="col-12 d-md-flex justify-content-between">
         <!-- Header Social Area -->
         <div class="header-social-area">
-          <!-- <a href="#"><span class="karl-level">Comparte</span> <i class="fa fa-pinterest" aria-hidden="true"></i></a> -->
+          <a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a>
           <a href="https://es-la.facebook.com/newsilverevolution/"><span class="karl-level">Comparte</span><i class="fa fa-facebook" aria-hidden="true"></i></a>
+          <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+          <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
           <!-- <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a> -->
           <!-- <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a> -->
         </div>
