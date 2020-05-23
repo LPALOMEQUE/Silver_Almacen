@@ -719,6 +719,7 @@ if (0 !== sqlsrv_num_rows($res)){
                       ?>
                       <p>Marca: SILVER</p>
                       <p><?php echo $category['Descripcion'] ?></p>
+                      <p><?php echo $category['CVE_ART'] ?></p>  
                       <p style="color: #d0368c;"><strong>STOCK DISPONIBLE: <?php echo $category['EXIST'] ?></strong></p>
                     </div>
                     <div class="row">
